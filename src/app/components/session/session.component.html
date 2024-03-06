@@ -1,0 +1,29 @@
+<app-nav></app-nav>
+
+
+<div class="container" style="display:flexbox; justify-content: center;">
+    <h1>TrecAccount Sessions</h1><br>
+
+
+    <div class="userBorder">
+        <div *ngIf="sessionList && currentSession">
+            <table class="table table-hover">
+                <tr>
+                    <th>Session Id</th>
+                    <th>Application</th>
+                    <th>Device Info</th>
+                    <th>Notes</th>
+                    <th>Delete?</th>
+                </tr>
+                <tr *ngFor="let session of sessionList.sessions"
+                    style="background-color: white; margin: 10px 10px; border-radius: 5%;">
+                    <td>{{session.sessionId}}</td>
+                    <td>{{session.appId}}</td>
+                    <td>{{session.deviceInfo}}</td>
+                    <td>{{session.sessionId == currentSession ? "Current Session" : ""}} {{session.expiration ? session.expiration : "No Expiration"}}</td>
+                    <td><button class="btn {{session.sessionId == currentSession ? 'btn-danger' : 'btn-warning'}}" (click)="deleteSession(session.sessionId ? session.sessionId : '')">Delete Session</button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

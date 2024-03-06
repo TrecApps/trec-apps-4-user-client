@@ -1,0 +1,118 @@
+<app-nav></app-nav>
+
+<div class="container scrollable-child uShadow" style="position: relative;">
+    <button class="btn btn-info" (click)="routeToSubscriptions()"  *ngIf="userService.verificationStatus == 1">Subscriptions</button>
+    <button class="btn btn-info" (click)="routeToBrands()"  *ngIf="userService.verificationStatus == 1">Brands</button>
+
+    <div *ngIf="userActive.value" class="form">
+
+        <div class="sShadow" *ngIf="userService.currentUser.emailVerified">
+            <div *ngIf="userService.verificationStatus == 1">
+            <div class="profileContainer">
+                <img class="profilePic" src="{{userService.profilePic}}">
+            </div>
+            <button class="btn btn-info" (click)="onShowGallery(true)">Update Profile Pic</button>
+
+            <!--Has the User been fully verified by TrecApps staff?-->
+            <h2 >UserVerified</h2>
+
+        </div>
+
+        <div *ngIf="userService.verificationStatus != 1" style="padding: 5px;">
+            <h3>Verification Steps</h3>
+
+            <p>In order to take full advantage of what TrecApps has to offer (Image posting, Social Media Profile Creation, etc.), you will need to be fully verified. 
+                Since this is a test site, verification requires contacting the owner of the site (Assuming you know him personally).</p>
+            
+            <p>Your account id is "{{ userService.currentUser.id }}". Letting him know this can help him verify you.</p>
+
+        </div>
+            <!-- <button class="btn btn-submit" *ngIf="userService.verificationStatus == 0" (click)="requestVerification()">Request Verification</button>
+            <div *ngIf="userService.verificationStatus == -1">
+                <h6>Select a Photo TrecApps Administrators can use to verify your Identity</h6>
+                <input style="display: none" type="file" (change)="onVerifyFileChanged($event)" #fileInput>
+                <button class="btn btn-info" (click)="fileInput.click()">Select Verification Pic</button>
+                <button class="btn btn-submit" (click)="uploadVerfiyPic()" *ngIf="selectedVerfiyFile && selectedVerifyFileType">Upload Verify Pic</button><br>
+            </div> -->
+        </div>
+        <div class="sShadow" *ngIf="!userService.currentUser.emailVerified" class="textBackground">
+            <p>Welcome to TrecApps. To begin using our services in earnest, we need to ensure you are who you say you are.</p>
+            <p>The process is short and is as follows:</p>
+            <ol>
+                <li>Verify Your Email (after that, you can set a Profile Picture)</li>
+                <li>Request Verification.</li>
+                <li>Upload Proof of Identity. These are pictures that our employees will use to validate your Identity. Only they (and you) will have access to them!</li>
+            </ol>
+            <p>Once you are verified, you can perform tasks such as</p>
+            <ul>
+                <li>Create Brand Accounts that you can use in most services</li>
+                <li>Set up Subscriptions</li>
+                <li>Upload pictures of your recent trip to Hawaii</li>
+            </ul>
+        </div>
+
+        <br>
+
+        <div class="sShadow">
+            <h2>User Details</h2>
+
+            <label class="formEle">User ID: </label>
+            <input class="formEle" type="text" [(ngModel)]="userService.currentUser.id" readonly><br>
+
+            <label class="formEle">Username: </label>
+            <input class="formEle" type="text" [(ngModel)]="userService.currentUser.userProfile" readonly><br>
+
+            <!-- <label>Country Code: +</label>
+            <input type="number"  -->
+            <label class="formEle">Mobile Phone: (Right now, US +1 is assumed, as it is the only one currently supported)</label>
+            <input class="formEle" type="number" *ngIf="userService.currentUser.mobilePhone" [(ngModel)]="userService.currentUser.mobilePhone.number" > <br>
+            <button *ngIf="!userService?.currentUser?.phoneVerified" (click)="attemptPhoneVerification()">Verify Phone</button>
+            <br>
+
+            <label class="formEle">Email: </label>
+            <input class="formEle" type="email" [(ngModel)]="userService.currentUser.email"> 
+            <button *ngIf="!userService.currentUser.emailVerified" (click)="attemptEmailVerification()">Verify Email</button><br>
+  
+
+            <label class="formEle">Birthday:</label>
+            <input class="formEle" type="date" [(ngModel)]="userService.currentUser.birthday" readonly><br>
+
+            <label class="formEle">Birthday Privacy:</label>
+            <select class="formEle" [(ngModel)]="currentBirthdayDetail">
+                <option *ngFor="let birthOpt of birthdayDetails" (select)="birthOpt">{{birthOpt.setting}}</option>
+            </select><br>
+
+            <label class="formEle">Account Restrictions: </label>
+            <input class="formEle" type="text" [(ngModel)]="userService.currentUser.restrictions" readonly><br>
+
+            <label class="formEle">Credibility Rating: </label>
+            <input class="formEle" type="number" [(ngModel)]="userService.currentUser.credibilityRating" readonly><br>
+            <hr>
+            
+
+            <button class="btn btn-submit fButton" (click)="updateUser()">Update Details</button>
+            <button class="btn btn-submit fButton">Go to Brand Menu</button><!--  -->
+            <hr>
+
+            <button class="btn btn-submit fButton" (click)="setChangePassword(true)">Change Password Menu</button>
+            <br>
+
+            <label *ngIf="changePassword" class="formEle">Current Password: </label>
+            <input *ngIf="changePassword" class="formEle" type="password" [(ngModel)]="oldPassword"><br>
+
+            <label *ngIf="changePassword" class="formEle">New Password: </label>
+            <input *ngIf="changePassword" class="formEle" type="password" [(ngModel)]="newPassword1"><br>
+
+            <label *ngIf="changePassword" class="formEle">Re-enter New Password: </label>
+            <input *ngIf="changePassword" class="formEle" type="password" [(ngModel)]="newPassword2"><br>
+            <hr>
+
+            <button *ngIf="changePassword" class="btn btn-submit fButton" (click)="updatePassword()" >Update Password</button>
+        </div>
+
+        <br>
+        
+    </div>
+    <lib-image-gallery #imgGallery (useImage)="setProfilePic($event)" [appName]="'Main'" [executeMessage]="'Set Profile Pic'"></lib-image-gallery>
+    
+</div>

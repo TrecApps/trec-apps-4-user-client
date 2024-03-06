@@ -1,0 +1,57 @@
+.userBorder {
+	border-style: solid;
+	border-color: rgb(187, 44, 0);
+	border-width: 5px;
+}
+
+.textBackground {
+	background-color: darkgray;
+}
+
+.uShadow {
+    box-shadow: 8px 8px 5px black, -8px -8px 5px black;
+}
+
+.sShadow {
+	box-shadow: 4px 4px 2px black, -4px -4px 2px black;
+	margin: 5;
+	display: grid;
+    flex-wrap: wrap;
+	height: min-content;
+	justify-content: center;
+}
+
+.formEle {
+	margin-left: 30px;
+	margin-right: 30px;
+    /* box-shadow: -10px 0px 10px 1px #aaaaaa; */
+    display:block ;
+    border-radius: 15px;
+    /* font-family: 'Courier New', Courier, monospace; */
+}
+
+.fButton {
+	margin: 5px 30px;
+	border-radius: 15px;
+	width: 90%;
+}
+
+.profileContainer{
+	min-width: 100px;
+	max-width: 250px;
+	max-height: 250px;
+	width: 90%;
+	display:flexbox;
+	justify-content: center;
+	align-items: center;
+	clip-path: circle();
+}
+
+.profilePic{
+	margin: 0;
+	width:100%;
+	
+	
+	
+	vertical-align: middle;
+}

@@ -1,0 +1,68 @@
+<br>
+
+<div class="container" [style.background-color]=color1>
+
+    <div width="100%" class="form" [ngStyle]="{'background': gardiantTwo }">
+<div class="terms fadeInTerms" id="termBox" [ngStyle]="{'display': showTerms}"> <div class="TermsForm" [style.background-color]=color2 [style.color]=color3>
+     <label>Do agree to terms of service? (or other message we want to put here)</label> <br>
+     <input type="checkbox" id="termBox" name="termBox" value="agreed">
+    </div>
+
+    <div class="TermsForm" id="newsLetterId" [style.background-color]=color3 [style.color]=color4 style="opacity: 0;"> 
+        <label> Would you like to subscribe to news letter for fast app and news updates?</label>
+        <input type="checkbox" id="subscribeBox" name="subscribe" value="agreed">
+    </div>
+
+</div>
+        <div id="messageJumbo" [ngStyle]="{'background': loginGradient }" class="jumbotron">
+            <h2 [style.color]=color5 style="float:left"> Create Trec Account</h2> 
+            <div id="logoContainer" class="containGlobal">
+                <img class="LoginImage fadeInRight" src="../../../assets/icons/outline.png">
+                <div class="clearfix"></div>
+                <img (click)="moveToLogin()" class="LoginImage-ref-2 fadeInLeftRef" id="Globe1" src="../../../assets/icons/world-1.png">
+                <img id="Globe2" class="LoginImage-ref fadeInRightRef" src="../../../assets/icons/glob-2.png">
+            </div>
+        </div>
+
+        <h4 *ngIf="updateFail" color="red">Failed To Update</h4>
+        <h4 *ngIf="needsFields" color="red">Required Fields still needed</h4>
+        <h4 *ngIf="!usernameFree" color="red">Username is taken</h4>
+        <div style="margin-left: 47.5%;display: grid;
+        flex-wrap: wrap;height: min-content;">
+        <label class="RegForm">Username: </label>
+        <input class="RegForm" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="text" [(ngModel)]="user.userPrincipalName">
+        
+        <label class="RegForm">Display Name (your full name): </label>
+        <input class="RegForm" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="text" [(ngModel)]="user.displayName">
+        <p>Please use your real name here! You can later Create Brand Accounts to use with most of our services!</p>
+        <label class="RegForm">Password: </label>
+        <input class="RegForm" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="password" [(ngModel)]="firstPassword">
+        <label class="RegForm">Re-Enter Password: </label>
+        <input class="RegForm" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="password" [(ngModel)]="secondPassword">
+
+        <h4 *ngIf="secondPassword != firstPassword" class="RegForm" color="red">Passwords do NOT match</h4>
+
+        <!-- Placeholder for when Country Codes are supported -->
+        <p>Right now, only US numbers are supported</p>
+        <!-- <label class="RegForm">Country Code: +</label>
+        <input class="RegForm" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="number" [(ngModel)]="countryCode" max="999" min="0" [defaultValue]="1"> -->
+        <label class="RegForm">Phone Number: </label>
+        <input class="RegForm" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="number" [(ngModel)]="user.mobilePhone" max="9999999999">
+        <label class="RegForm">Birthday (Hidden from other users by Default): </label>
+        <input class="RegForm" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="date" [(ngModel)]="birthday">
+        <label class="RegForm">External Email: </label>
+        <input class="RegForm" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="email" [(ngModel)]="user.mail">
+      </div>
+        
+        <br>
+       
+        <div class="containGlobal">
+            
+            <br>     
+        <input id="registerButton" [style.background-color]=color3 [style.color]=color2  type="button" class="btn btn-submit" value="Submit" (click)="create()">
+        <br>
+        <input id="loginButton" [style.background-color]=color3 [style.color]=color2  type="button" class="btn btn-submit" value="Login" (click)="moveToLogin()">
+        </div>
+    </div>
+
+</div>
