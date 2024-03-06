@@ -14,12 +14,12 @@ export class SubscriptionService {
   constructor(private httpClient: HttpClient, private authService: AuthService, private router: Router) { }
 
   retrieveSubscriptions(list: Subscription[]){
-    this.httpClient.get<Subscription[]>(`${environment.user_subscription_url}Subscriptions/List`, {headers: this.authService.getHttpHeaders(true, false)}).
-    subscribe((sub:Subscription[]) => {
-      for(let s of sub){
-        list.push(s);
-      }
-    });
+    // this.httpClient.get<Subscription[]>(`${environment.user_subscription_url}Subscriptions/List`, {headers: this.authService.getHttpHeaders(true, false)}).
+    // subscribe((sub:Subscription[]) => {
+    //   for(let s of sub){
+    //     list.push(s);
+    //   }
+    // });
   }
 
   retrieveUserSubscriptions(callable:Function, isBilled: Boolean = false) {
@@ -36,8 +36,8 @@ export class SubscriptionService {
       }
     }
 
-    this.httpClient.get<UserSubscriptionList>(`${environment.user_subscription_url}Subscriptions/${isBilled ? 'Billed': 'Current'}`,
-      {headers: this.authService.getHttpHeaders(true, false)}).pipe(take(1)).subscribe(observe);
+    // this.httpClient.get<UserSubscriptionList>(`${environment.user_subscription_url}Subscriptions/${isBilled ? 'Billed': 'Current'}`,
+    //   {headers: this.authService.getHttpHeaders(true, false)}).pipe(take(1)).subscribe(observe);
   }
 
   updateUserSubscriptions(data: UserSubscriptionList) {
@@ -54,7 +54,7 @@ export class SubscriptionService {
       }
     }
 
-    this.httpClient.post<string>(`${environment.user_subscription_url}Subscriptions/Insert`, data,
-      {headers: this.authService.getHttpHeaders(true, true)}).pipe(take(1)).subscribe(observe);
+    // this.httpClient.post<string>(`${environment.user_subscription_url}Subscriptions/Insert`, data,
+    //   {headers: this.authService.getHttpHeaders(true, true)}).pipe(take(1)).subscribe(observe);
   }
 }
