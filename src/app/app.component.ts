@@ -25,6 +25,7 @@ export class AppComponent {
     this.backEndService.setUserService(true);
     this.authService.setLoginSuccessRoute("user");
     this.authService.attemptRefresh(undefined);
+    this.authService.requireAuthentication();
 
   }
 

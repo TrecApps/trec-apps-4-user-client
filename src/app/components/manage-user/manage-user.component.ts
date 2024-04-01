@@ -91,7 +91,7 @@ export class ManageUserComponent {
          if(this.authService.hasActiveTokens()){
             this.refreshUser();
          } else {
-           this.authService.attemptRefresh("/user",() => this.refreshUser());
+           this.authService.attemptRefresh(() => this.refreshUser());
          }
        }
      }

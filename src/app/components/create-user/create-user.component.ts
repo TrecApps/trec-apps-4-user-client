@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-create-user',
   standalone: true,
   imports: [CommonModule, FormsModule],
+  providers: [DatePipe],
   templateUrl: './create-user.component.html',
   styleUrl: './create-user.component.css'
 })
