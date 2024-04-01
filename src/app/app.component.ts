@@ -22,7 +22,10 @@ export class AppComponent {
   constructor(private backEndService: BackendService, private authService: AuthService){
     this.backEndService.appendUrl("UserService", environment.user_service_url);
     this.backEndService.appendUrl("ImageService", environment.image_service_url);
+    this.backEndService.setUserService(true);
     this.authService.setLoginSuccessRoute("user");
+    this.authService.attemptRefresh(undefined);
+
   }
 
   ngOnInit(): void {
