@@ -23,6 +23,7 @@ export class AppComponent {
     this.backEndService.appendUrl("UserService", environment.user_service_url);
     this.backEndService.appendUrl("ImageService", environment.image_service_url);
     this.backEndService.setUserService(true);
+    this.backEndService.setAppName(environment.app_name);
     this.authService.setLoginSuccessRoute("user");
     this.authService.attemptRefresh(undefined);
     this.authService.requireAuthentication();
