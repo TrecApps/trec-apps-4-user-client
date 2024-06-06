@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { SessionList } from '../../models/Sessions';
+import { SessionList, SessionListV2 } from '../../models/Sessions';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { NavComponent } from '../nav/nav.component';
+import { AuthService } from 'tc-ngx-general';
 
 @Component({
   selector: 'app-session',
@@ -14,11 +15,11 @@ import { NavComponent } from '../nav/nav.component';
 })
 export class SessionComponent {
 
-  sessionList: SessionList | undefined;
+  sessionList: SessionListV2 | undefined;
 
   currentSession: string | undefined;
 
-  constructor(private userService: UserService, private router: Router) { 
+  constructor(private userService: UserService, private router: Router, private authService: AuthService) { 
     router.events.subscribe((event) => {
       if(event instanceof NavigationEnd){
         let endEvent : NavigationEnd = event;
@@ -35,7 +36,7 @@ export class SessionComponent {
   }
 
   refreshSessions() {
-    this.userService.getSessions((sessionList : SessionList) => {
+    this.userService.getSessions((sessionList : SessionListV2) => {
       this.sessionList = sessionList;
       console.log("Got Session!");
     },
@@ -46,6 +47,14 @@ export class SessionComponent {
   }
 
   deleteSession(sessionId: string) {
-    this.userService.removeSession(sessionId, () => this.refreshSessions());
+    this.userService.removeSession(sessionId, () => {
+      if(this.currentSession == sessionId){
+        this.authService.clearAuth();
+        this.router.navigateByUrl("logon");
+      } else {
+        this.refreshSessions()
+      }
+    
+    });
   }
 }

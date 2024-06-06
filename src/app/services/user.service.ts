@@ -6,7 +6,7 @@ import { AuthService } from 'tc-ngx-general';
 import { LoginToken, PasswordChange } from 'tc-ngx-general/lib/models/Login';
 import { TcUser } from '../models/User';
 import { environment } from '../Environment/environment';
-import { SessionList } from '../models/Sessions';
+import { SessionList, SessionListV2 } from '../models/Sessions';
 import { UserPost } from '../models/User';
 import { BooleanRef } from '../models/Holders';
 
@@ -267,7 +267,7 @@ export class UserService {
 
   async getSessions(sessionListFunction: Function, currentSessionFunction : Function) {
     let observe1 = {
-      next: (response: SessionList) => { 
+      next: (response: SessionListV2) => { 
         console.log("SessionList is ", response.sessions.length);
         sessionListFunction(response);
         let observe2 = {
@@ -310,7 +310,7 @@ export class UserService {
 
 
 
-    this.httpClient.get<SessionList>(`${environment.user_service_url}Sessions/List`,
+    this.httpClient.get<SessionListV2>(`${environment.user_service_url}Sessions/List`,
       {headers: this.authService.getHttpHeaders(true, false)}).pipe(take(1)).subscribe(observe1);
     
   }
