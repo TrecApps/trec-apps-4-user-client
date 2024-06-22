@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { take, Observable } from 'rxjs';
 import { AuthService } from 'tc-ngx-general';
 import { LoginToken, PasswordChange } from 'tc-ngx-general/lib/models/Login';
-import { TcUser } from '../models/User';
+import { TcUser, filterUser } from '../models/User';
 import { environment } from '../Environment/environment';
 import { SessionList, SessionListV2 } from '../models/Sessions';
 import { UserPost } from '../models/User';
@@ -261,7 +261,13 @@ export class UserService {
       }
     };
 
-    this.httpClient.put(`${environment.user_service_url}Users/UserUpdate`, this.currentUser,
+    console.log("Current User (Unfiltered): ", this.currentUser);
+    let fUser = filterUser(this.currentUser);
+    
+    console.log("Current User (filtered): ", fUser);
+    fUser.birthday = undefined;
+
+    this.httpClient.put(`${environment.user_service_url}Users/UserUpdate`, fUser,
       {headers: this.authService.getHttpHeaders(true, true)}).pipe(take(1)).subscribe(observe);
   }
 

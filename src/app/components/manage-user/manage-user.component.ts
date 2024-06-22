@@ -39,7 +39,7 @@ export class ManageUserComponent {
 
   birthdayDetails: BirthdayDetails[] = [];
 
-  currentBirthdayDetail: BirthdayDetails;
+  currentBirthdayDetail: string;
 
   @ViewChild("imgGallery")
   imgGallery: ImageGalleryComponent | undefined;
@@ -70,7 +70,7 @@ export class ManageUserComponent {
    this.userService = userService;
 
    this.birthdayDetails = [];
-   this.currentBirthdayDetail = new BirthdayDetails("","");
+   this.currentBirthdayDetail = "";
 
    this.birthdayDetails.push(new BirthdayDetails("Public", "Your Birthday is readable by anyone!"));
    this.birthdayDetails.push(new BirthdayDetails("Broadcast", "Your Birthday will be public and services with 'friends' will broadcast it to your 'friends'!"));
@@ -131,10 +131,13 @@ export class ManageUserComponent {
    this.userService.refreshUser(this.userActive, () => {
      console.log("In RefreshUser Method. Current userActive Value is ", this.userActive.value);
      let currentBirthdaySetting = this.userService.currentUser.birthdaySetting;
+      console.log("Current Birthday: ", this.userService.currentUser.birthday);
+      console.log("Current Birthday Setting: ", currentBirthdaySetting);
+      console.log("Available Birthday Settings: ", this.birthdayDetails);
 
      for(let birthdayDetail of this.birthdayDetails) {
        if(birthdayDetail.setting == currentBirthdaySetting){
-         this.currentBirthdayDetail = birthdayDetail;
+         this.currentBirthdayDetail = birthdayDetail.setting;
          break;
        }
      }
@@ -154,9 +157,9 @@ export class ManageUserComponent {
  }
 
 
-
  updateUser(){
-   this.userService.currentUser.birthdaySetting = this.currentBirthdayDetail.setting;
+    console.log("About to set birthday setting to ", this.currentBirthdayDetail);
+   this.userService.currentUser.birthdaySetting = this.currentBirthdayDetail;
 
    this.userService.updateUser();
  }

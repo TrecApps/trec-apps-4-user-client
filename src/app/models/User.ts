@@ -52,3 +52,28 @@ export class TcUser {
 
     profilePics: Object | undefined;
 }
+
+export function filterUser(user: TcUser): TcUser {
+    let ret = new TcUser();
+
+    ret.id = user.id;
+    ret.displayName = user.displayName;
+    ret.userProfile = user.userProfile;
+
+    ret.mobilePhone = user.mobilePhone;
+    ret.phoneVerified = user.phoneVerified;
+
+    ret.email = user.email;
+    ret.emailVerified = user.emailVerified;
+
+    ret.birthday = user.birthday;
+    ret.birthdaySetting = user.birthdaySetting;
+
+    ret.address = user.address;
+    ret.restrictions = user.restrictions;
+
+    ret.credibilityRating = user.credibilityRating;
+    ret.profilePics = user.profilePics;
+
+    return ret;
+}

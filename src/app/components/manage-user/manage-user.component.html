@@ -77,9 +77,9 @@
             <label class="formEle">Birthday:</label>
             <input class="formEle" type="date" [(ngModel)]="userService.currentUser.birthday" readonly><br>
 
-            <label class="formEle">Birthday Privacy:</label>
+            <label class="formEle">Birthday Privacy: {{ currentBirthdayDetail }}</label>
             <select class="formEle" [(ngModel)]="currentBirthdayDetail">
-                <option *ngFor="let birthOpt of birthdayDetails" (select)="birthOpt">{{birthOpt.setting}}</option>
+                <option *ngFor="let birthOpt of birthdayDetails" [value]="birthOpt.setting">{{birthOpt.details}}</option>
             </select><br>
 
             <label class="formEle">Account Restrictions: </label>
