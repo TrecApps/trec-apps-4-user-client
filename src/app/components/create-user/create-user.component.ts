@@ -61,7 +61,6 @@ export class CreateUserComponent {
   }
 
   enterInput() {
-    console.log("entered")
     var termBox = document.getElementById("termBox")
     if(termBox) {
       termBox.style.display ="inline-block"
@@ -69,16 +68,7 @@ export class CreateUserComponent {
   }
 
   checkFormsCompletion() {
-    console.log("completion check----------")
-    console.log(this.user.userPrincipalName)
-    console.log(this.user.displayName)
-    console.log(this.firstPassword)
-    console.log(this.secondPassword )
-    console.log(this.user.mobilePhone)
-    console.log(this.birthday)
-    console.log(this.user.mail)
     if(this.user.userPrincipalName != undefined && this.user.displayName != undefined && this.firstPassword != "" && this.secondPassword != "" && this.user.mobilePhone != undefined && this.birthday != undefined && this.user.mail != undefined ) {
-      console.log("inside")
       let termBox = document.getElementById("termBox")
       if(termBox) {
         termBox.style.transition = "height 0.75s ease-in"

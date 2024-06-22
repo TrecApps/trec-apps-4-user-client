@@ -84,8 +84,6 @@ export class ManageUserComponent {
        let endEvent : NavigationEnd = event;
        
 
-       console.log("Navigation End url is "+ endEvent.url);
-
        if(endEvent.url == "/user"){
          
          if(this.authService.hasActiveTokens()){
@@ -129,11 +127,7 @@ export class ManageUserComponent {
 
  refreshUser() {
    this.userService.refreshUser(this.userActive, () => {
-     console.log("In RefreshUser Method. Current userActive Value is ", this.userActive.value);
      let currentBirthdaySetting = this.userService.currentUser.birthdaySetting;
-      console.log("Current Birthday: ", this.userService.currentUser.birthday);
-      console.log("Current Birthday Setting: ", currentBirthdaySetting);
-      console.log("Available Birthday Settings: ", this.birthdayDetails);
 
      for(let birthdayDetail of this.birthdayDetails) {
        if(birthdayDetail.setting == currentBirthdaySetting){
@@ -158,7 +152,6 @@ export class ManageUserComponent {
 
 
  updateUser(){
-    console.log("About to set birthday setting to ", this.currentBirthdayDetail);
    this.userService.currentUser.birthdaySetting = this.currentBirthdayDetail;
 
    this.userService.updateUser();

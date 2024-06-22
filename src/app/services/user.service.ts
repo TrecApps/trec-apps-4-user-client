@@ -103,7 +103,6 @@ export class UserService {
    requestProfileVerification() {
     let observe = {
       next: (response: string) => {
-        console.log("Response was " + response);
         this.verificationStatus = 0;
       },
       error: (error: Response | any) => {
@@ -140,7 +139,6 @@ export class UserService {
         ref.value = true;
         callable();
         
-        console.log("Pics are ", response.profilePics);
         if( response.profilePics && "Main" in response.profilePics){
           this.profilePic = `${environment.image_service_url}Profile/of/${response.id}`;
         } else {
@@ -261,10 +259,7 @@ export class UserService {
       }
     };
 
-    console.log("Current User (Unfiltered): ", this.currentUser);
     let fUser = filterUser(this.currentUser);
-    
-    console.log("Current User (filtered): ", fUser);
     fUser.birthday = undefined;
 
     this.httpClient.put(`${environment.user_service_url}Users/UserUpdate`, fUser,

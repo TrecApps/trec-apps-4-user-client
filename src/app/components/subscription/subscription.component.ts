@@ -24,8 +24,6 @@ export class SubscriptionComponent {
       if(event instanceof NavigationEnd){
         let endEvent : NavigationEnd = event;
 
-        console.log("Navigation End url is "+ endEvent.url);
-
         if(endEvent.url == "/subscriptions"){
           this.refreshUserSubScription(false);
         }

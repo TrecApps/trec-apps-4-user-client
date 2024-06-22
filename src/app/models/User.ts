@@ -15,7 +15,6 @@ export class UserPost {
     mail : string | undefined;
 
     validate() : boolean {
-        console.log(this);
         return !!(this.displayName && this.userPrincipalName && this.passwordProfile?.password &&
             this.mobilePhone && this.birthday && this.mailNickname && this.mail);
 

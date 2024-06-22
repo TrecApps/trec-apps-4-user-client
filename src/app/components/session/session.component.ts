@@ -38,11 +38,9 @@ export class SessionComponent {
   refreshSessions() {
     this.userService.getSessions((sessionList : SessionListV2) => {
       this.sessionList = sessionList;
-      console.log("Got Session!");
     },
       (currentSession: string) => {
         this.currentSession = currentSession;
-        console.log("Current Session is ", this.currentSession);
       });
   }
 
