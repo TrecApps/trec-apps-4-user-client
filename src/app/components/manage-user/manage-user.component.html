@@ -55,56 +55,71 @@
 
         <div class="sShadow">
             <h2>User Details</h2>
-
-            <label class="formEle">User ID: </label>
-            <input class="formEle" type="text" [(ngModel)]="userService.currentUser.id" readonly><br>
-
-            <label class="formEle">Username: </label>
-            <input class="formEle" type="text" [(ngModel)]="userService.currentUser.userProfile" readonly><br>
-
+            <div class="mb-3">
+                <label class="form-label">User ID: </label>
+                <input class="form-control" type="text" [(ngModel)]="userService.currentUser.id" readonly>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Username: </label>
+                <input class="form-control" type="text" [(ngModel)]="userService.currentUser.userProfile" readonly>
+            </div>
             <!-- <label>Country Code: +</label>
             <input type="number"  -->
-            <label class="formEle">Mobile Phone: (Right now, US +1 is assumed, as it is the only one currently supported)</label>
-            <input class="formEle" type="number" *ngIf="userService.currentUser.mobilePhone" [(ngModel)]="userService.currentUser.mobilePhone.number" > <br>
-            <button *ngIf="!userService?.currentUser?.phoneVerified" (click)="attemptPhoneVerification()">Verify Phone</button>
-            <br>
+            <div class="mb-3">
+                <label class="form-label">Mobile Phone: (Right now, US +1 is assumed, as it is the only one currently supported)</label>
+                <input class="form-control" type="number" *ngIf="userService.currentUser.mobilePhone" [(ngModel)]="userService.currentUser.mobilePhone.number" >
+                <button *ngIf="!userService?.currentUser?.phoneVerified" (click)="attemptPhoneVerification()" class="btn btn-info">Verify Phone</button>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email: </label>
+                <input class="form-control" type="email" [(ngModel)]="userService.currentUser.email"> 
+                <button *ngIf="!userService.currentUser.emailVerified" (click)="attemptEmailVerification()" class="btn btn-info">Verify Email</button>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Birthday:</label>
+                <input class="form-control" type="date" [(ngModel)]="userService.currentUser.birthday" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Birthday Privacy: {{ currentBirthdayDetail }}</label>
+                <select class="form-select" [(ngModel)]="currentBirthdayDetail">
+                    <option *ngFor="let birthOpt of birthdayDetails" [value]="birthOpt.setting">{{birthOpt.details}}</option>
+                </select>
+            </div>
 
-            <label class="formEle">Email: </label>
-            <input class="formEle" type="email" [(ngModel)]="userService.currentUser.email"> 
-            <button *ngIf="!userService.currentUser.emailVerified" (click)="attemptEmailVerification()">Verify Email</button><br>
-  
+            <div class="mb-3">
+                <label class="form-label">Account Restrictions: </label>
+                <input class="form-control" type="text" [(ngModel)]="userService.currentUser.restrictions" readonly>
+            </div>
 
-            <label class="formEle">Birthday:</label>
-            <input class="formEle" type="date" [(ngModel)]="userService.currentUser.birthday" readonly><br>
-
-            <label class="formEle">Birthday Privacy: {{ currentBirthdayDetail }}</label>
-            <select class="formEle" [(ngModel)]="currentBirthdayDetail">
-                <option *ngFor="let birthOpt of birthdayDetails" [value]="birthOpt.setting">{{birthOpt.details}}</option>
-            </select><br>
-
-            <label class="formEle">Account Restrictions: </label>
-            <input class="formEle" type="text" [(ngModel)]="userService.currentUser.restrictions" readonly><br>
-
-            <label class="formEle">Credibility Rating: </label>
-            <input class="formEle" type="number" [(ngModel)]="userService.currentUser.credibilityRating" readonly><br>
+            <div class="mb-3">
+                <label class="form-label">Credibility Rating: </label>
+                <input class="form-control" type="number" [(ngModel)]="userService.currentUser.credibilityRating" readonly>
+            </div>
             <hr>
             
-
-            <button class="btn btn-submit fButton" (click)="updateUser()">Update Details</button>
-            <button class="btn btn-submit fButton">Go to Brand Menu</button><!--  -->
-            <hr>
+            <div class="mb-3">
+                <button class="btn btn-submit fButton" (click)="updateUser()">Update Details</button>
+                <button class="btn btn-submit fButton">Go to Brand Menu</button><!--  -->
+            </div>
 
             <button class="btn btn-submit fButton" (click)="setChangePassword(true)">Change Password Menu</button>
             <br>
 
-            <label *ngIf="changePassword" class="formEle">Current Password: </label>
-            <input *ngIf="changePassword" class="formEle" type="password" [(ngModel)]="oldPassword"><br>
+            <div *ngIf="changePassword" class="mb-3">
+                <label class="form-label">Current Password: </label>
+                <input class="form-control" type="password" [(ngModel)]="oldPassword"><br>
+            </div>
+            
+            <div *ngIf="changePassword" class="mb-3">
+                <label *ngIf="changePassword" class="form-label">New Password: </label>
+                <input *ngIf="changePassword" class="form-control" type="password" [(ngModel)]="newPassword1">
+            </div>
 
-            <label *ngIf="changePassword" class="formEle">New Password: </label>
-            <input *ngIf="changePassword" class="formEle" type="password" [(ngModel)]="newPassword1"><br>
-
-            <label *ngIf="changePassword" class="formEle">Re-enter New Password: </label>
-            <input *ngIf="changePassword" class="formEle" type="password" [(ngModel)]="newPassword2"><br>
+            <div *ngIf="changePassword" class="mb-3">
+                <label *ngIf="changePassword" class="form-label">Re-enter New Password: </label>
+                <input *ngIf="changePassword" class="form-control" type="password" [(ngModel)]="newPassword2">
+            </div>
             <hr>
 
             <button *ngIf="changePassword" class="btn btn-submit fButton" (click)="updatePassword()" >Update Password</button>
