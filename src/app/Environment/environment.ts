@@ -11,9 +11,6 @@ export const environment = {
   user_service_url: 'https://test.trecapps.com/User-api/',
   //user_admin_url: 'http://localhost:4200/admin/',
   user_subscription_url: 'http://localhost:4200/sub/',
-  user_tenant_url: '@trecappstest.onmicrosoft.com',
-  user_tenent_id: 'f39a0b26-67a9-4f7a-9020-dd9126eec668',
-  user_client_id: '43ac483f-360e-4686-8a43-2543f71b33ee',
   //image_service_url: "http://localhost:4200/Images-api/",
   image_service_url: "https://test.trecapps.com/Images-api/",
 

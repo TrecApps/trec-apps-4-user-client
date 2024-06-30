@@ -9,7 +9,7 @@
         <div *ngIf="sessionList && currentSession">
             <table class="table table-hover">
                 <tr>
-                    <th>Session Id</th>
+                    <th *ngIf="!displayService.isMobile">Session Id</th>
                     <th>Application</th>
                     <th>Device Info</th>
                     <th>Notes</th>
@@ -17,7 +17,7 @@
                 </tr>
                 <tr *ngFor="let session of sessionList.sessions"
                     style="background-color: white; margin: 10px 10px; border-radius: 5%;">
-                    <td>{{session.deviceId}}</td>
+                    <td *ngIf="!displayService.isMobile">{{session.deviceId}}</td>
 
                     <td>
                         <ul *ngIf="session.apps.length">
@@ -25,7 +25,9 @@
                         </ul>
                     </td>
                     <td>{{session.deviceInfo}}</td>
-                    <td>{{session.deviceId == currentSession ? "Current Session" : ""}} {{session.expirationStr ? session.expirationStr : "No Expiration"}}</td>
+                    <td>{{session.deviceId == currentSession ? "Current Session" : ""}} {{session.expirationStr ? session.expirationStr : "No Expiration"}}
+                        <span *ngIf="displayService.isMobile"><br> ID:{{session.deviceId}}</span>
+                    </td>
                     <td><button class="btn {{session.deviceId == currentSession ? 'btn-danger' : 'btn-warning'}}" (click)="deleteSession(session.deviceId ? session.deviceId : '')">Delete Session</button></td>
                 </tr>
             </table>

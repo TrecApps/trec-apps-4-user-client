@@ -4,7 +4,7 @@ import { SessionList, SessionListV2 } from '../../models/Sessions';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { NavComponent } from '../nav/nav.component';
-import { AuthService } from 'tc-ngx-general';
+import { AuthService, DisplayService } from 'tc-ngx-general';
 
 @Component({
   selector: 'app-session',
@@ -19,7 +19,10 @@ export class SessionComponent {
 
   currentSession: string | undefined;
 
-  constructor(private userService: UserService, private router: Router, private authService: AuthService) { 
+  displayService: DisplayService;
+
+  constructor(private userService: UserService, private router: Router, private authService: AuthService, ds: DisplayService) { 
+    this.displayService = ds;
     router.events.subscribe((event) => {
       if(event instanceof NavigationEnd){
         let endEvent : NavigationEnd = event;

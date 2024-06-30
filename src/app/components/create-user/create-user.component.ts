@@ -5,6 +5,7 @@ import { GlobalConstants } from '../../common/GlobalConstants';
 import { UserPost, PasswordProfile } from '../../models/User';
 import { UserService } from '../../services/user.service';
 import { FormsModule } from '@angular/forms';
+import { DisplayService } from 'tc-ngx-general';
 
 @Component({
   selector: 'app-create-user',
@@ -37,8 +38,10 @@ export class CreateUserComponent {
   gardiantTwo = 'linear-gradient(45deg, white 50%, gray 80%, black 20%)'
   showTerms = "none"
   displayingSubscribe: boolean = false
+  displayService: DisplayService;
 
-  constructor(private userService:UserService, private router: Router, private datePipe: DatePipe) { 
+  constructor(private userService:UserService, private router: Router, private datePipe: DatePipe, ds: DisplayService) {
+    this.displayService = ds; 
 
     this.birthday = undefined
     this.user = new UserPost();

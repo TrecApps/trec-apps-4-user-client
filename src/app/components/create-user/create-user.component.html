@@ -1,33 +1,35 @@
-<br>
 
-<div class="container" [style.background-color]=color1>
+<div class="container" [style.background-color]=color1 style="">
 
     <div width="100%" class="form" [ngStyle]="{'background': gardiantTwo }">
-<div class="terms fadeInTerms" id="termBox" [ngStyle]="{'display': showTerms}"> <div class="TermsForm" [style.background-color]=color2 [style.color]=color3>
-     <label>Do agree to terms of service? (or other message we want to put here)</label> <br>
-     <input type="checkbox" id="termBox" name="termBox" value="agreed">
-    </div>
-
-    <div class="TermsForm" id="newsLetterId" [style.background-color]=color3 [style.color]=color4 style="opacity: 0;"> 
-        <label> Would you like to subscribe to news letter for fast app and news updates?</label>
-        <input type="checkbox" id="subscribeBox" name="subscribe" value="agreed">
-    </div>
-
-</div>
-        <div id="messageJumbo" [ngStyle]="{'background': loginGradient }" class="jumbotron">
-            <h2 [style.color]=color5 style="float:left"> Create Trec Account</h2> 
-            <div id="logoContainer" class="containGlobal">
-                <img class="LoginImage fadeInRight" src="../../../assets/icons/outline.png">
-                <div class="clearfix"></div>
-                <img (click)="moveToLogin()" class="LoginImage-ref-2 fadeInLeftRef" id="Globe1" src="../../../assets/icons/world-1.png">
-                <img id="Globe2" class="LoginImage-ref fadeInRightRef" src="../../../assets/icons/glob-2.png">
-            </div>
+        <div *ngIf="!displayService.isMobile"  class="terms fadeInTerms" id="termBox" [ngStyle]="{'display': showTerms}"> <div class="TermsForm" [style.background-color]=color2 [style.color]=color3>
+            <label>Do agree to terms of service? (or other message we want to put here)</label> <br>
+            <input type="checkbox" id="termBox" name="termBox" value="agreed">
         </div>
 
-        <h4 *ngIf="updateFail" color="red">Failed To Update</h4>
-        <h4 *ngIf="needsFields" color="red">Required Fields still needed</h4>
-        <h4 *ngIf="!usernameFree" color="red">Username is taken</h4>
-        <div style="margin-left: 47.5%;display: grid;
+        <div *ngIf="!displayService.isMobile" class="TermsForm" id="newsLetterId" [style.background-color]=color3 [style.color]=color4 style="opacity: 0;"> 
+            <label> Would you like to subscribe to news letter for fast app and news updates?</label>
+            <input type="checkbox" id="subscribeBox" name="subscribe" value="agreed">
+        </div>
+
+    </div>
+    <div *ngIf="displayService.isMobile" style="width: 100%; background-color:khaki;">
+        <h4 style="margin-top: 20px;">Create TrecAccount</h4>
+    </div>
+    <div id="messageJumbo" [ngStyle]="{'background': loginGradient }" class="jumbotron">
+        <h2 [style.color]=color5 style="float:left"> Create Trec Account</h2> 
+        <div *ngIf="!displayService.isMobile" id="logoContainer" class="containGlobal">
+            <img class="LoginImage fadeInRight" src="../../../assets/icons/outline.png">
+            <div class="clearfix"></div>
+            <img (click)="moveToLogin()" class="LoginImage-ref-2 fadeInLeftRef" id="Globe1" src="../../../assets/icons/world-1.png">
+            <img id="Globe2" class="LoginImage-ref fadeInRightRef" src="../../../assets/icons/glob-2.png">
+        </div>
+    </div>
+
+    <h4 *ngIf="updateFail" color="red">Failed To Update</h4>
+    <h4 *ngIf="needsFields" color="red">Required Fields still needed</h4>
+    <h4 *ngIf="!usernameFree" color="red">Username is taken</h4>
+    <div style="margin-left: 5px;display: grid;
         flex-wrap: wrap;height: min-content;">
         <label class="RegForm">Username: </label>
         <input class="RegForm" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="text" [(ngModel)]="user.userPrincipalName">
@@ -56,12 +58,12 @@
         
         <br>
        
-        <div class="containGlobal">
-            
-            <br>     
-        <input id="registerButton" [style.background-color]=color3 [style.color]=color2  type="button" class="btn btn-submit" value="Submit" (click)="create()">
-        <br>
-        <input id="loginButton" [style.background-color]=color3 [style.color]=color2  type="button" class="btn btn-submit" value="Login" (click)="moveToLogin()">
+        <div class="containGlobal" style="width: 100%">
+
+            <button id="registerButton" [style.background-color]=color3 [style.color]=color2  class="btn btn-submit" (click)="create()">Submit</button>
+ 
+
+            <button id="loginButton" [style.background-color]=color3 [style.color]=color2  class="btn btn-submit" (click)="moveToLogin()">Login</button>
         </div>
     </div>
 
