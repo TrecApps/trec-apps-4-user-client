@@ -120,16 +120,15 @@ export class CreateUserComponent {
 
     this.user.mobilePhone = this.user.mobilePhone;
 
-    if(!this.user.validate()) {
+    let validated = this.user.validate();
+
+    if(validated.length){
       this.needsFields = true;
+      alert(validated)
     } else {
       this.needsFields = false;
 
-    
-      
-
       this.userService.createUser(this.user);
-      //this.moveToLogin();
     }
   }
 

@@ -14,10 +14,24 @@ export class UserPost {
     birthday: string | null | undefined;
     mail : string | undefined;
 
-    validate() : boolean {
-        return !!(this.displayName && this.userPrincipalName && this.passwordProfile?.password &&
-            this.mobilePhone && this.birthday && this.mailNickname && this.mail);
+    validate() : string {
 
+        let items = "";
+
+        if(!this.displayName) items = "Display Name";
+
+        if(!this.userPrincipalName) items += items.length ? ", Username": "Username";
+        if(!this.userPrincipalName) items += items.length ? ", Username": "Username";
+        if(!this.passwordProfile?.password) items += items.length ? ", Password": "Password";
+        if(!this.mobilePhone || !this.isMobileNumber(this.mobilePhone)) items += items.length ? ", Mobile Phone": "Mobile Phone";
+        if(!this.birthday) items += items.length ? ", Mobile Phone": "Mobile Phone";
+        if(!this.mail)items += items.length ? ", Email": "Email";
+
+        return items.length ? `Please fix the following: ${items}` : items;
+    }
+
+    isMobileNumber(num: string): boolean {
+        return num.trim().length == 10 && Number.isInteger(num);
     }
 }
 
