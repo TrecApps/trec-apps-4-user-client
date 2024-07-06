@@ -69,7 +69,8 @@
             <div class="mb-3">
                 <label class="form-label">Mobile Phone: (Right now, US +1 is assumed, as it is the only one currently supported)</label>
                 <input class="form-control" type="number" *ngIf="userService.currentUser.mobilePhone" [(ngModel)]="userService.currentUser.mobilePhone.number" >
-                <button *ngIf="!userService?.currentUser?.phoneVerified" (click)="attemptPhoneVerification()" class="btn btn-info">Verify Phone</button>
+                <!-- <button *ngIf="!userService?.currentUser?.phoneVerified" (click)="attemptPhoneVerification()" class="btn btn-info">Verify Phone</button> -->
+                 <p class="text-danger">Phone Verification is Currently disabled!</p>
             </div>
             <div class="mb-3">
                 <label class="form-label">Email: </label>
