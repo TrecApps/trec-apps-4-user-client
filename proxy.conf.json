@@ -1,9 +1,10 @@
 {
     "/User-api/**": {
-      "target": "https://test.trecapps.com",
-      "secure": true,
+      "target": "http://localhost:8080",
+      "secure": false,
       "logLevel": "debug",
-      "changeOrigin": true
+      "changeOrigin": true,
+      "pathRewrite": {"^/User-api" : ""}
     },
     "/admin/*" :{
       "target": "http://localhost:8081",
