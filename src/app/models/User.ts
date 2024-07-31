@@ -1,3 +1,4 @@
+import { TcUser } from "tc-ngx-general";
 
 
 export class PasswordProfile {
@@ -45,26 +46,26 @@ export class PhoneNumber {
     countryCode: number = 1;
 }
 
-export class TcUser {
-    id : string | undefined;
-    displayName : string | undefined;
-    userProfile : string | undefined;
-    mobilePhone : PhoneNumber | undefined = new PhoneNumber();
-    phoneVerified: boolean | undefined;
+// export class TcUser {
+//     id : string | undefined;
+//     displayName : string | undefined;
+//     userProfile : string | undefined;
+//     mobilePhone : PhoneNumber | undefined = new PhoneNumber();
+//     phoneVerified: boolean | undefined;
 
-    email : string | undefined;
-    emailVerified : boolean | undefined;
+//     email : string | undefined;
+//     emailVerified : boolean | undefined;
 
-    birthday: Date | undefined;
-    birthdaySetting: string | undefined;
+//     birthday: Date | undefined;
+//     birthdaySetting: string | undefined;
 
-    address: string[] | undefined;
-    restrictions: string | undefined;
+//     address: string[] | undefined;
+//     restrictions: string | undefined;
 
-    credibilityRating: number | undefined;
+//     credibilityRating: number | undefined;
 
-    profilePics: Object | undefined;
-}
+//     profilePics: Object | undefined;
+// }
 
 export function filterUser(user: TcUser): TcUser {
     let ret = new TcUser();
