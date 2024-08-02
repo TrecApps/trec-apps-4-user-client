@@ -1,1 +1,61 @@
-<p>mfa works!</p>
+<app-nav></app-nav>
+
+
+<div class="container scrollable-child uShadow" style="position: relative;">
+
+    <h1>Multi-Factor Authentication (MFA) Menu</h1>
+
+    <h2 *ngIf="mfaMechanisms.length">Available Options</h2>
+
+    <div class="mfa-available-option" *ngFor="let option of mfaMechanisms">
+        <h4>{{ option }}</h4>
+        <div *ngIf="option.source == 'Token'">
+            <button class="btn btn-primary" (click)="requestToken()">Request Token</button>
+        </div>
+
+        <div *ngIf="option.source == 'Phone'">
+            <button *ngIf="user.phoneVerified" class="btn btn-primary" (click)="enablePhoneMfa()">Enable Text MFA</button>
+            <p *ngIf="!user.phoneVerified" class="text-danger">Your phone needs to be Verified before it can be used for MFA</p>
+        </div>
+        <div *ngIf="option.source == 'Email'">
+            <button *ngIf="user.emailVerified" class="btn btn-primary" (click)="enableEmailMfa()">Enable Text MFA</button>
+            <p *ngIf="!user.emailVerified" class="text-danger">Your email needs to be Verified before it can be used for MFA</p>
+        </div>
+    </div>
+
+    <h2 *ngIf="user.mfaMechanisms.length">Active Options</h2>
+
+    <div class="mfa-available-option" *ngFor="let option of user.mfaMechanisms">
+        <h4>{{ option }}</h4>
+        <h5 *ngIf="option.source == 'Phone'">+{{ user.mobilePhone?.countryCode}} {{user.mobilePhone?.number}}</h5>
+        <h5 *ngIf="option.source == 'Email'">{{user.email}}</h5>
+    </div>
+
+    <div class="mfa-reg-holder" *ngIf="registrationData">
+        <div class="mfa-qr-holder">
+            <img [src]="registrationData.qrCode">
+
+            <br>
+            <hr>
+                <label>Backup token (if your camera doesn't work)</label>
+                <p>{{ registrationData.userCode }}</p>
+            <hr>
+        </div>
+        <button class="btn btn-submit" (click)="doneWithCode()">Done</button>
+    </div>
+
+    <div *ngIf="user.mfaMechanisms.length"> <!-- Only show if MFA is avaiable to the user -->
+        <div class="mfa-requirement" *ngFor="let req of mfaRequirements">
+            <h3>{{ req.data.app }}</h3>
+            <div style="flex-grow: 1;"></div>
+            <button *ngIf="req.saved" class="btn btn-primary" (click)="saveRequirement(req)">Save</button>
+            <input type="radio" class="form-check-input" [checked]="req.data.requireMfa" (click)="setRequire(req, true)">
+            <label class="form-check-label">Mfa Required</label>
+            <input type="radio" class="form-check-input" [checked]="!req.data.requireMfa" (click)="setRequire(req, false)">
+            <label class="form-check-label text-danger">Mfa NOT Required</label>
+        </div>
+    </div>
+    
+
+
+</div>

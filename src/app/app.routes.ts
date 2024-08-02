@@ -5,6 +5,7 @@ import { CreateUserComponent } from './components/create-user/create-user.compon
 import { ManageUserComponent } from './components/manage-user/manage-user.component';
 import { SessionComponent } from './components/session/session.component';
 import { SubscriptionComponent } from './components/subscription/subscription.component';
+import { MfaComponent } from './components/mfa/mfa.component';
 
 export const routes: Routes = [
     {path: 'logon', component: LoginComponent},
@@ -13,5 +14,6 @@ export const routes: Routes = [
     {path: 'brands', component: BrandsComponent},
     {path: 'subscriptions', component: SubscriptionComponent},
     {path: 'sessions', component: SessionComponent},
+    {path: 'mfa', component: MfaComponent},
     {path: '', redirectTo: 'logon', pathMatch: 'full'}
 ];
