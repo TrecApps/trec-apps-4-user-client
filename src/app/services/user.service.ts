@@ -131,13 +131,14 @@ export class UserService {
     }
    }
 
-  refreshUser(ref: BooleanRef, callable: Function): Observable<string[]> {
+  refreshUser(callable: Function): Observable<string[]> {
     let observe = {
       next: (response: TcUser) => { 
         console.info("Birthday Value: ", response.birthday);
         this.currentUser = response;
+        console.info("Current User Set!", this.currentUser);
         this.updateProfilePic();
-        ref.value = true;
+        
         callable();
         
         if( response.profilePics && "Main" in response.profilePics){

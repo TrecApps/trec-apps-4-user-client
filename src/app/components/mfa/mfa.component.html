@@ -8,27 +8,28 @@
     <h2 *ngIf="mfaMechanisms.length">Available Options</h2>
 
     <div class="mfa-available-option" *ngFor="let option of mfaMechanisms">
-        <h4>{{ option }}</h4>
+        <h4>{{ option.source }}</h4>
         <div *ngIf="option.source == 'Token'">
             <button class="btn btn-primary" (click)="requestToken()">Request Token</button>
         </div>
 
         <div *ngIf="option.source == 'Phone'">
             <button *ngIf="user.phoneVerified" class="btn btn-primary" (click)="enablePhoneMfa()">Enable Text MFA</button>
-            <p *ngIf="!user.phoneVerified" class="text-danger">Your phone needs to be Verified before it can be used for MFA</p>
+            <p *ngIf="!user.phoneVerified" class="red-text">Your phone needs to be Verified before it can be used for MFA</p>
         </div>
         <div *ngIf="option.source == 'Email'">
-            <button *ngIf="user.emailVerified" class="btn btn-primary" (click)="enableEmailMfa()">Enable Text MFA</button>
-            <p *ngIf="!user.emailVerified" class="text-danger">Your email needs to be Verified before it can be used for MFA</p>
+            <button *ngIf="user.emailVerified" class="btn btn-primary" (click)="enableEmailMfa()">Enable Email MFA</button>
+            <p *ngIf="!user.emailVerified" class="red-text">Your email needs to be Verified before it can be used for MFA</p>
         </div>
     </div>
 
     <h2 *ngIf="user.mfaMechanisms.length">Active Options</h2>
 
     <div class="mfa-available-option" *ngFor="let option of user.mfaMechanisms">
-        <h4>{{ option }}</h4>
-        <h5 *ngIf="option.source == 'Phone'">+{{ user.mobilePhone?.countryCode}} {{user.mobilePhone?.number}}</h5>
-        <h5 *ngIf="option.source == 'Email'">{{user.email}}</h5>
+        <h3>{{ option.source }}</h3>
+        <h4 *ngIf="option.source == 'Phone'">+{{ user.mobilePhone?.countryCode}} {{user.mobilePhone?.number}}</h4>
+        <h4 *ngIf="option.source == 'Email'">{{user.email}}</h4>
+        <button *ngIf="option.source == 'Token'" class="btn btn-primary" (click)="requestToken(false)">Request New Token</button>
     </div>
 
     <div class="mfa-reg-holder" *ngIf="registrationData">
@@ -41,6 +42,13 @@
                 <p>{{ registrationData.userCode }}</p>
             <hr>
         </div>
+
+        <input type="text" [(ngModel)]="mfaCode" class="form-control">
+        <div style="display: flex; flex-flow: row wrap;">
+            <button *ngIf="mfaCode.trim().length" class="btn btn-submit" (click)="testCode()">Test Code</button>
+            <button class="btn btn-danger" (click)="removeTokenCode()">Delete Token</button>
+        </div>
+
         <button class="btn btn-submit" (click)="doneWithCode()">Done</button>
     </div>
 
@@ -49,10 +57,11 @@
             <h3>{{ req.data.app }}</h3>
             <div style="flex-grow: 1;"></div>
             <button *ngIf="req.saved" class="btn btn-primary" (click)="saveRequirement(req)">Save</button>
-            <input type="radio" class="form-check-input" [checked]="req.data.requireMfa" (click)="setRequire(req, true)">
+            <input type="radio" class="form-check-input" [checked]="req.data.requireMfa" (click)="setRequire(req, true, $event)" [disabled]="req.data.app == 'Trec-Apps-User-Service'">
             <label class="form-check-label">Mfa Required</label>
-            <input type="radio" class="form-check-input" [checked]="!req.data.requireMfa" (click)="setRequire(req, false)">
-            <label class="form-check-label text-danger">Mfa NOT Required</label>
+            <span>|</span>
+            <input type="radio" class="form-check-input" [checked]="!req.data.requireMfa" (click)="setRequire(req, false, $event)" [disabled]="req.data.app == 'Trec-Apps-User-Service'">
+            <label class="form-check-label red-text">Mfa NOT Required</label>
         </div>
     </div>
     

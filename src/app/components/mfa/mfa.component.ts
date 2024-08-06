@@ -7,6 +7,7 @@ import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { MfaRegistrationData } from '../../models/Mfa';
 import { ResponseObj } from 'tc-ngx-general/lib/models/ResponseObj';
+import { FormsModule } from '@angular/forms';
 
 interface MfaReqExt {
   data: MfaReq;
@@ -16,7 +17,7 @@ interface MfaReqExt {
 @Component({
   selector: 'app-mfa',
   standalone: true,
-  imports: [NavComponent, CommonModule],
+  imports: [NavComponent, CommonModule, FormsModule],
   templateUrl: './mfa.component.html',
   styleUrl: './mfa.component.css'
 })
@@ -35,6 +36,8 @@ export class MfaComponent {
   mfaMechanisms: MfaMechanism[] = [];
 
   registrationData: MfaRegistrationData | undefined;
+
+  mfaCode: string = "";
 
 
   hasMechanism(mechList: MfaMechanism[], type: string) : boolean {
@@ -68,6 +71,8 @@ export class MfaComponent {
               this.mfaMechanisms.push({source: method})
             }
           }
+
+          this.prepareMfaRequirements();
         }
       }
     })
@@ -87,7 +92,7 @@ export class MfaComponent {
             }
           })
         }
-
+        this.tidyMfaReqs();
       }
     })
   }
@@ -104,6 +109,19 @@ export class MfaComponent {
         mfaReqExt.data.requireMfa = true; 
       }
     }
+  }
+
+  testCode(){
+    this.mfaService.sendMfaCode(this.mfaCode)
+  }
+
+  removeTokenCode(){
+    this.mfaService.removeToken().subscribe({
+      next: (ro: ResponseObj) => {
+        this.user.mfaMechanisms = this.user.mfaMechanisms.filter(m => m.source != "Token");
+        this.mfaMechanisms.push({source: "Token"});
+      }
+    })
   }
 
   saveRequirement(mfaReq: MfaReqExt) {
@@ -141,7 +159,11 @@ export class MfaComponent {
       }
     })
   }
-  requestToken() {
+  requestToken(autoDo: boolean = true) {
+
+    if(!autoDo && !confirm("Are you sure you wish to apply for a new token? Your current one will no longer work!"))
+      return;
+
     this.mfaService.registerToken().subscribe({
       next: (registrationData: MfaRegistrationData) => {
         this.registrationData = registrationData;
@@ -156,7 +178,15 @@ export class MfaComponent {
     this.registrationData = undefined;
   }
 
-  setRequire(_t65: MfaReqExt,arg1: boolean) {
+  setRequire(_t65: MfaReqExt,arg1: boolean, event: MouseEvent) {
+
+    if(_t65.data.app == "Trec-Apps-User-Service"){
+      alert("This app must require MFA");
+      if(!arg1)
+        (event.target as HTMLInputElement).checked = false;
+      return;
+    }
+
     _t65.data.requireMfa = arg1;
     _t65.saved = false;
   }

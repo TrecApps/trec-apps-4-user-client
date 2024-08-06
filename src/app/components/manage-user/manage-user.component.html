@@ -4,29 +4,29 @@
     <!-- <button class="btn btn-info" (click)="routeToSubscriptions()"  *ngIf="userService.verificationStatus == 1">Subscriptions</button>
     <button class="btn btn-info" (click)="routeToBrands()"  *ngIf="userService.verificationStatus == 1">Brands</button> -->
 
-    <div *ngIf="userActive.value" class="form">
+    <div *ngIf="userService.currentUser" class="form">
 
         <div class="sShadow" *ngIf="userService.currentUser.emailVerified">
             <div *ngIf="userService.verificationStatus == 1">
-            <div class="profileContainer">
-                <img class="profilePic" src="{{userService.profilePic}}">
+                <div class="profileContainer">
+                    <img class="profilePic" [src]="userService.profilePic">
+                </div>
+                <button class="btn btn-info" (click)="onShowGallery(true)">Update Profile Pic</button>
+
+                <!--Has the User been fully verified by TrecApps staff?-->
+                <h2 >UserVerified</h2>
+
             </div>
-            <button class="btn btn-info" (click)="onShowGallery(true)">Update Profile Pic</button>
 
-            <!--Has the User been fully verified by TrecApps staff?-->
-            <h2 >UserVerified</h2>
+            <div *ngIf="userService.verificationStatus != 1" style="padding: 5px;">
+                <h3>Verification Steps</h3>
 
-        </div>
-
-        <div *ngIf="userService.verificationStatus != 1" style="padding: 5px;">
-            <h3>Verification Steps</h3>
-
-            <p>In order to take full advantage of what TrecApps has to offer (Image posting, Social Media Profile Creation, etc.), you will need to be fully verified. 
-                Since this is a test site, verification requires contacting the owner of the site (Assuming you know him personally).</p>
+                <p>In order to take full advantage of what TrecApps has to offer (Image posting, Social Media Profile Creation, etc.), you will need to be fully verified. 
+                    Since this is a test site, verification requires contacting the owner of the site (Assuming you know him personally).</p>
             
-            <p>Your account id is "{{ userService.currentUser.id }}". Letting him know this can help him verify you.</p>
+                <p>Your account id is "{{ userService.currentUser.id }}". Letting him know this can help him verify you.</p>
 
-        </div>
+            </div>
             <!-- <button class="btn btn-submit" *ngIf="userService.verificationStatus == 0" (click)="requestVerification()">Request Verification</button>
             <div *ngIf="userService.verificationStatus == -1">
                 <h6>Select a Photo TrecApps Administrators can use to verify your Identity</h6>
@@ -79,7 +79,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Birthday:</label>
-                <input class="form-control" type="date" [(ngModenpm l)]="userService.currentUser.birthday" readonly>
+                <input class="form-control" type="date" [(ngModel)]="userService.currentUser.birthday" readonly>
             </div>
             <div class="mb-3">
                 <label class="form-label">Birthday Privacy: {{ currentBirthdayDetail }}</label>

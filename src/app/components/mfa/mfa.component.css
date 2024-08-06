@@ -1,0 +1,42 @@
+.mfa-available-option {
+    border: solid black 2px;
+    background-color: aqua;
+    padding: 10px;
+    margin: 10px;
+}
+
+.mfa-available-option:hover {
+    background-color: azure;
+}
+
+.mfa-reg-holder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mfa-qr-holder {
+    max-width: 340px;
+    padding: 10px;
+    border: double black;
+}
+
+.mfa-qr-holder img {
+    width: 100%;
+}
+
+.mfa-requirement {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    border: solid black 2px;
+    gap: 5px;
+}
+
+.red-text {
+    background-color: aliceblue;
+    width: fit-content;
+    --bs-text-opacity: 1;
+    color: rgba(var(--bs-danger-rgb),var(--bs-text-opacity)) !important;
+    padding: 10px;
+}

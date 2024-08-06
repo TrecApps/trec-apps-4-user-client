@@ -41,6 +41,18 @@ export class MfaService {
 
   }
 
+  sendMfaCode(mfaCode: string){
+    this.authService.sendMfaCodeMid(mfaCode, ()=> {
+      alert("Successfully Validated Code!");
+    })
+  }
+
+  removeToken() : Observable<ResponseObj>{
+    return this.client.delete<ResponseObj>(`${environment.user_service_url}/mfa/Token`, {
+      headers: this.authService.getHttpHeaders(false, false)
+    });
+  }
+
 
   getAppList(): Observable<string[]> {
     return this.client.get<string[]>(`${environment.user_service_url}/mfa/appList`, {

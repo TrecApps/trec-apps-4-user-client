@@ -27,7 +27,6 @@ class BirthdayDetails {
   styleUrl: './manage-user.component.css'
 })
 export class ManageUserComponent {
-  userActive: BooleanRef;
   userService: UserService;
 
   
@@ -66,7 +65,6 @@ export class ManageUserComponent {
     private authService: AuthService,
     private imageService: ImageService) { 
 
-   this.userActive = new BooleanRef(false);
    this.userService = userService;
 
    this.birthdayDetails = [];
@@ -126,7 +124,7 @@ export class ManageUserComponent {
  }
 
  refreshUser() {
-   this.userService.refreshUser(this.userActive, () => {
+   this.userService.refreshUser(() => {
      let currentBirthdaySetting = this.userService.currentUser.birthdaySetting;
 
      for(let birthdayDetail of this.birthdayDetails) {
