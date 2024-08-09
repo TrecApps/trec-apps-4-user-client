@@ -56,7 +56,7 @@
         <div class="mfa-requirement" *ngFor="let req of mfaRequirements">
             <h3>{{ req.data.app }}</h3>
             <div style="flex-grow: 1;"></div>
-            <button *ngIf="req.saved" class="btn btn-primary" (click)="saveRequirement(req)">Save</button>
+            <button *ngIf="!req.saved" class="btn btn-primary" (click)="saveRequirement(req)">Save</button>
             <input type="radio" class="form-check-input" [checked]="req.data.requireMfa" (click)="setRequire(req, true, $event)" [disabled]="req.data.app == 'Trec-Apps-User-Service'">
             <label class="form-check-label">Mfa Required</label>
             <span>|</span>

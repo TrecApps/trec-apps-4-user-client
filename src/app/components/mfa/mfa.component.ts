@@ -102,8 +102,9 @@ export class MfaComponent {
       let res = this.getAppReq(mfaReqExt.data.app)
       if(res){
         mfaReqExt.data = res;
-        mfaReqExt.saved = true;
       }
+      
+      mfaReqExt.saved = true;
 
       if(mfaReqExt.data.app == "Trec-Apps-User-Service"){
         mfaReqExt.data.requireMfa = true; 
