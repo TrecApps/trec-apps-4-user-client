@@ -61,11 +61,15 @@
        
         <div class="containGlobal" style="width: 100%">
 
-            <button id="registerButton" [style.background-color]=color3 [style.color]=color2  class="btn btn-submit" (click)="create()">Submit</button>
+            <button id="registerButton" [style.background-color]=color3 [style.color]=color2  class="btn btn-submit" (click)="create()">Create New Account</button>
  
 
-            <button id="loginButton" [style.background-color]=color3 [style.color]=color2  class="btn btn-submit" (click)="moveToLogin()">Login</button>
+            <button id="loginButton" [style.background-color]=color3 [style.color]=color2  class="btn btn-submit" (click)="moveToLogin()">To Login Page</button>
         </div>
+    </div>
+
+    <div class="screen-darkener"  *ngIf="showSpinner">
+        <mat-progress-spinner [mode]="'indeterminate'"></mat-progress-spinner>
     </div>
 
 </div>

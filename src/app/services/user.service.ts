@@ -194,9 +194,10 @@ export class UserService {
     .pipe(take(1)).subscribe(observe1);
   }
 
-  async createUser(userPost: UserPost) {
+  async createUser(userPost: UserPost, ender: Function) {
     let observe = {
       next: (response: LoginToken) => {
+
         this.authService.setAuthorization(response);
         this.router.navigate(['/user']);
        },
@@ -206,6 +207,8 @@ export class UserService {
           this.authService.clearAuth();
           this.router.navigate(['logon']);
         }
+      }, finally: ()=> {
+        ender();
       }
     };
 

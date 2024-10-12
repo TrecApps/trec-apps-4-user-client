@@ -6,11 +6,13 @@ import { UserPost, PasswordProfile } from '../../models/User';
 import { UserService } from '../../services/user.service';
 import { FormsModule } from '@angular/forms';
 import { DisplayService } from 'tc-ngx-general';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 @Component({
   selector: 'app-create-user',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatProgressSpinnerModule],
   providers: [DatePipe],
   templateUrl: './create-user.component.html',
   styleUrl: './create-user.component.css'
@@ -39,6 +41,8 @@ export class CreateUserComponent {
   showTerms = "none"
   displayingSubscribe: boolean = false
   displayService: DisplayService;
+
+  showSpinner: boolean = false;
 
   constructor(private userService:UserService, private router: Router, private datePipe: DatePipe, ds: DisplayService) {
     this.displayService = ds; 
@@ -127,8 +131,9 @@ export class CreateUserComponent {
       alert(validated)
     } else {
       this.needsFields = false;
+      this.showSpinner = true;
 
-      this.userService.createUser(this.user);
+      this.userService.createUser(this.user, ()=> {this.showSpinner = false;});
     }
   }
 
