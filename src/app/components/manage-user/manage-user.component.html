@@ -68,14 +68,14 @@
             <input type="number"  -->
             <div class="mb-3">
                 <label class="form-label">Mobile Phone: (Right now, US +1 is assumed, as it is the only one currently supported)</label>
-                <input class="form-control" type="number" *ngIf="userService.currentUser.mobilePhone" [(ngModel)]="userService.currentUser.mobilePhone.number" >
+                <input class="form-control" type="number" *ngIf="userService.currentUser.proposedNumber" [(ngModel)]="userService.currentUser.proposedNumber.number" >
                 <!-- <button *ngIf="!userService?.currentUser?.phoneVerified" (click)="attemptPhoneVerification()" class="btn btn-info">Verify Phone</button> -->
                  <p class="text-danger">Phone Verification is Currently disabled!</p>
             </div>
             <div class="mb-3">
                 <label class="form-label">Email: </label>
-                <input class="form-control" type="email" [(ngModel)]="userService.currentUser.email"> 
-                <button *ngIf="!userService.currentUser.emailVerified" (click)="attemptEmailVerification()" class="btn btn-info">Verify Email</button>
+                <input class="form-control" type="email" [(ngModel)]="userService.currentUser.proposedEmail"> 
+                <button *ngIf="!userService.currentUser.isEmailVerified()" (click)="attemptEmailVerification()" class="btn btn-info">Verify Email</button>
             </div>
             <div class="mb-3">
                 <label class="form-label">Birthday:</label>
