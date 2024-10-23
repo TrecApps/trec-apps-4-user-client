@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="div-row">
+        <button class="btn btn-primary" *ngIf="!showSearchBar" (click)="showSearchBar = true">Search Address</button>
+        <input type="text" *ngIf="showSearchBar" [(ngModel)]="searchAddressText" (input)="attemptSearch()">
+    </div>
+    <div class="div-row" style="height: 30px; position: relative;">
+
+        <div *ngIf="addressResults.length" class="address-result-list">
+            <h3 >Add Address?</h3>
+
+            <div class="address-result" *ngFor="let a of addressResults">
+                <h6>Country: {{ a.country }}</h6>
+                <p>{{ a.address1 }}</p>
+                <p *ngIf="a.address2">{{ a.address2 }}</p>
+                <p>{{a.township}}, {{ a.region }} {{ a.postCode }}</p>
+            </div>
+        </div>
+        
+
+    </div>
+</div>
