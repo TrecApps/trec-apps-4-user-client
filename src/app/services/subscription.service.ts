@@ -1,10 +1,18 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription, take } from 'rxjs';
+import { Observable, Subscription, take } from 'rxjs';
 import { AuthService } from 'tc-ngx-general';
 import { environment } from '../Environment/environment';
-import { UserSubscriptionList } from '../models/Subscription';
+import { UserSubscription, UserSubscriptionList } from '../models/Subscription';
+import { SubscriptionPost, TcSubscription } from '../models/Payments';
+import { ResponseObj } from 'tc-ngx-general/lib/models/ResponseObj';
+
+export class SubscriptionsSearchObject {
+  category: string | undefined;
+  page: number | undefined;
+  size: number | undefined;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -13,48 +21,47 @@ export class SubscriptionService {
 
   constructor(private httpClient: HttpClient, private authService: AuthService, private router: Router) { }
 
-  retrieveSubscriptions(list: Subscription[]){
-    // this.httpClient.get<Subscription[]>(`${environment.user_subscription_url}Subscriptions/List`, {headers: this.authService.getHttpHeaders(true, false)}).
-    // subscribe((sub:Subscription[]) => {
-    //   for(let s of sub){
-    //     list.push(s);
-    //   }
-    // });
+  getActiveSubscriptions(searchObj: SubscriptionsSearchObject): Observable<UserSubscription[]> {
+    let params = new HttpParams();
+    if(searchObj.category) params = params.append("category", searchObj.category);
+    if(searchObj.page)params = params.append("page", searchObj.page);
+    if(searchObj.size)params = params.append("size", searchObj.size);
+
+    return this.httpClient.get<UserSubscription[]>(`${environment.user_subscription_url}/Subscriptions/Active`, {
+      headers: this.authService.getHttpHeaders(false, false),
+      params
+    })
   }
 
-  retrieveUserSubscriptions(callable:Function, isBilled: Boolean = false) {
-    let observe = {
-      next: (sub:UserSubscriptionList) => {
-        callable(sub);
-      }, 
-      error: (error: Response | any) => { 
-        alert((error instanceof Response) ? error.text : (error.message ? error.message : error.toString()));
-        if(error?.status == 401 || error?.status == 403){
-          this.authService.clearAuth();
-          this.router.navigate(['logon']);
-        }
-      }
-    }
+  getAvailableSubscriptions(searchObj: SubscriptionsSearchObject): Observable<TcSubscription[]>{
+    let params = new HttpParams();
+    if(searchObj.category) params = params.append("category", searchObj.category);
+    if(searchObj.page)params = params.append("page", searchObj.page);
+    if(searchObj.size)params = params.append("size", searchObj.size);
 
-    // this.httpClient.get<UserSubscriptionList>(`${environment.user_subscription_url}Subscriptions/${isBilled ? 'Billed': 'Current'}`,
-    //   {headers: this.authService.getHttpHeaders(true, false)}).pipe(take(1)).subscribe(observe);
+    return this.httpClient.get<TcSubscription[]>(`${environment.user_subscription_url}/Subscriptions/Available`, {
+      headers: this.authService.getHttpHeaders(false, false),
+      params
+    })
   }
 
-  updateUserSubscriptions(data: UserSubscriptionList) {
-    let observe = {
-      next: (str: string) => {
-        alert(str);
-      },
-      error: (error: Response | any) => { 
-        alert((error instanceof Response) ? error.text : (error.message ? error.message : error.toString()));
-        if(error?.status == 401 || error ?.status == 403) {
-          this.authService.clearAuth();
-          this.router.navigate(['logon']);
-        }
-      }
-    }
+  addSubscription(postSub: SubscriptionPost): Observable<ResponseObj> {
+    return this.httpClient.post<ResponseObj>(`${environment.user_subscription_url}/Subscriptions`, postSub, {
+      headers: this.authService.getHttpHeaders(true, true)
+    })
+  }
 
-    // this.httpClient.post<string>(`${environment.user_subscription_url}Subscriptions/Insert`, data,
-    //   {headers: this.authService.getHttpHeaders(true, true)}).pipe(take(1)).subscribe(observe);
+  updateSubscription(postSub: SubscriptionPost): Observable<ResponseObj> {
+    return this.httpClient.put<ResponseObj>(`${environment.user_subscription_url}/Subscriptions`, postSub, {
+      headers: this.authService.getHttpHeaders(true, true)
+    })
+  }
+
+
+  stopSubscription(id: string): Observable<ResponseObj> {
+    return this.httpClient.delete<ResponseObj>(`${environment.user_subscription_url}/Subscriptions`, {
+      headers: this.authService.getHttpHeaders(false, false),
+      params: new HttpParams().append("id", id)
+  });
   }
 }
