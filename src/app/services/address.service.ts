@@ -27,7 +27,7 @@ export class AddressService {
 
   postAddress(address: Address): Observable<ResponseObj> {
     return this.client.post<ResponseObj>(`${environment.user_subscription_url}/Address`, address, {
-      headers: this.authService.getHttpHeaders(false, false)
+      headers: this.authService.getHttpHeaders(true, true)
     });
   }
 
