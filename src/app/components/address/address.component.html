@@ -18,4 +18,31 @@
         
 
     </div>
+
+    <div *ngIf="addressList">
+
+        <div *ngFor="let a of addressList.addressList; let i = index" class="address-element">
+
+            <div class="div-row row-text-holder">
+                <p *ngIf="addressList.billingAddress == i">Billing Address</p>
+                <p *ngIf="addressList.mailingAddress == i">mailing Address</p>
+
+            </div>
+            <hr>
+
+            <h6>Country: {{ a.country }}</h6>
+            <p>{{ a.address1 }}</p>
+            <p *ngIf="a.address2">{{ a.address2 }}</p>
+            <p>{{a.township}}, {{ a.region }} {{ a.postCode }}</p>
+
+            <div class="div-row">
+                <button *ngIf="addressList.billingAddress != i" class="btn btn-info" (click)="updateAddress(i, false)">Set as Billing Address</button>
+                <button *ngIf="addressList.mailingAddress != i" class="btn btn-info" (click)="updateAddress(i, true)">Set as Mailing Address</button>
+                <button *ngIf="addressList.billingAddress != i" class="btn btn-danger" (click)="removeAddress(i)">Remove Address</button>
+            </div>
+        </div>
+
+
+    </div>
+    
 </div>
