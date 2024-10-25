@@ -1,7 +1,9 @@
+<app-nav></app-nav>
+
 <div class="container">
     <div class="div-row">
         <button class="btn btn-primary" *ngIf="!showSearchBar" (click)="showSearchBar = true">Search Address</button>
-        <input type="text" *ngIf="showSearchBar" [(ngModel)]="searchAddressText" (input)="attemptSearch()">
+        <input type="text" *ngIf="showSearchBar" [(ngModel)]="searchAddressText" class="form-control" placeholder="search address" (input)="attemptSearch()">
     </div>
     <div class="div-row" style="height: 30px; position: relative;">
 
@@ -9,7 +11,7 @@
             <h3 >Add Address?</h3>
 
             <div class="address-result" *ngFor="let a of addressResults">
-                <h6>Country: {{ a.country }}</h6>
+                <h4><u>Country: {{ a.country }}</u></h4>
                 <p>{{ a.address1 }}</p>
                 <p *ngIf="a.address2">{{ a.address2 }}</p>
                 <p>{{a.township}}, {{ a.region }} {{ a.postCode }}</p>
@@ -24,11 +26,10 @@
         <div *ngFor="let a of addressList.addressList; let i = index" class="address-element">
 
             <div class="div-row row-text-holder">
-                <p *ngIf="addressList.billingAddress == i">Billing Address</p>
-                <p *ngIf="addressList.mailingAddress == i">mailing Address</p>
+                <p *ngIf="addressList.billingAddress == i" class="tc-text-white">Billing Address</p>
+                <p *ngIf="addressList.mailingAddress == i" class="tc-text-white">mailing Address</p>
 
             </div>
-            <hr>
 
             <h6>Country: {{ a.country }}</h6>
             <p>{{ a.address1 }}</p>

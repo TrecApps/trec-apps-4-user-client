@@ -4,6 +4,9 @@ export enum BankAccountType {
 }
 
 export class UsBankInfo {
+
+    infoType: string = "UsBankAccount";
+
     isIndividual: boolean = true;
     accountType:BankAccountType = BankAccountType.CHECKING;
 
@@ -21,6 +24,9 @@ export class UsBankInfo {
 
 
 export class CardInfoSubmission {
+    infoType: string = "Card";
+
+
     expMonth: number = 0;
     expYear: number = 0;
 

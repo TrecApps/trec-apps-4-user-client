@@ -8,14 +8,15 @@ export const environment = {
   //user_service_url: 'https://trecappsusertest.azurewebsites.net/',
   
   
-  user_admin_url: 'https://trec-apps-test-admin.azurewebsites.net/',
-  user_service_url: 'https://test.trecapps.com/User-api/',
-  user_subscription_url: 'http://localhost:4200/sub/',
-  image_service_url: "https://test.trecapps.com/Images-api/",
+  // user_admin_url: 'https://trec-apps-test-admin.azurewebsites.net/',
+  // user_service_url: 'https://test.trecapps.com/User-api/',
+  // user_subscription_url: 'http://localhost:4200/sub/',
+  // image_service_url: "https://test.trecapps.com/Images-api/",
 
-  // user_service_url: 'http://localhost:4200/User-api/',
-  // user_admin_url: 'http://localhost:4200/admin/',
-  // image_service_url: "http://localhost:4200/Images-api/",
+  user_subscription_url: 'http://localhost:4200/sub/',
+  user_service_url: 'http://localhost:4200/User-api/',
+  user_admin_url: 'http://localhost:4200/admin/',
+  image_service_url: "http://localhost:4200/Images-api/",
   app_name: "Trec-Apps-User-Service"
 };
 

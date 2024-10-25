@@ -5,11 +5,12 @@ import { AddressService } from '../../services/address.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ResponseObj } from 'tc-ngx-general/lib/models/ResponseObj';
+import { NavComponent } from '../nav/nav.component';
 
 @Component({
   selector: 'app-address',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NavComponent],
   templateUrl: './address.component.html',
   styleUrl: './address.component.css'
 })
@@ -24,15 +25,15 @@ export class AddressComponent {
 
   constructor(private addressService: AddressService ,authService: AuthService, router:Router) {
 
-    let tempAddress = new Address();
-    tempAddress.address1 = "1700 W 76th St.";
-    tempAddress.address2 = "Apt 1B";
-    tempAddress.country = "US";
-    tempAddress.postCode = "55423";
-    tempAddress.region = "MN";
-    tempAddress.township = "Richfield";
+    // let tempAddress = new Address();
+    // tempAddress.address1 = "1700 W 76th St.";
+    // tempAddress.address2 = "Apt 1B";
+    // tempAddress.country = "US";
+    // tempAddress.postCode = "55423";
+    // tempAddress.region = "MN";
+    // tempAddress.township = "Richfield";
 
-    this.addressResults.push(tempAddress);
+    // this.addressResults.push(tempAddress);
 
     this.showSearchBar = false;
 
@@ -43,6 +44,11 @@ export class AddressComponent {
         if(endEvent.url == "/address") {
           if(authService.tcUser){
             this.addressList = authService.tcUser.addressList
+
+            if (!this.addressList)
+            {
+              this.addressList = new AddressList();
+            }
 
             let tempAddress = new Address();
             tempAddress.address1 = "2223 Tyrrhenian Dr.";
@@ -73,6 +79,7 @@ export class AddressComponent {
     this.addressService.postAddress(address).subscribe({
       next: (ro: ResponseObj) => {
         this.addressList?.addressList.push(address);
+        this.showSearchBar = false;
       },
       error: (ro: ResponseObj) => alert(ro.message)
     })

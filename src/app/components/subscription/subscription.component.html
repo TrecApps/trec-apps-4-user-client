@@ -1,1 +1,87 @@
-<p>subscription works!</p>
+<app-nav></app-nav>
+
+<div class="container">
+    
+    <h2 *ngIf="addressList.billingAddress < 0" (click)="showPaymentMethods = !showPaymentMethods">
+        <img [@rotate]="showPaymentMethods ? 'expanded' : 'collapse'" id="exp1" class="expand_icon expand_i_reg" src="assets/Less_than.png">
+        Payment Methods*
+    </h2>
+
+    <div>
+        <p>* Payment Methods are managed by Stripe, Inc. TrecApps is not storing this information on our systems.</p>
+        <h4 class="text-danger" style="background-color: yellow;">Note: This is a test Envrionment. Fake numbers are highly recommended</h4>
+        <div *if="addressList.billingAddress >= 0" class="div-row">
+            <button (click)="prepCardAccount()" class="btn btn-primary" [disabled]="newCard">New Card</button>
+            <button (click)="prepUsBankAccount()" class="btn btn-primary" [disabled]="newUsAccount">New Us Bank Account</button>
+        </div>
+    
+        <h4 style="background-color: yellow;" *ngIf="addressList.billingAddress < 0">You need to <a routerLink="/address">set a billing address</a> before adding a payment method.</h4>
+    
+        <div [@translate]="showPaymentMethods ? 'expanded': 'collapse'">
+            <div *ngFor="let paymentMethod of paymentMethods">
+                <div class="div-row">
+                    <button (click)="removePaymentMethod(paymentMethod.getId())" class="btn btn-danger">Remove Payment Method</button>
+                    <button (click)="setDefault(paymentMethod.getId())" class="btn btn-primary">Set as Default Method</button>
+                </div>
+    
+                <div *ngIf="paymentMethod.card">
+                    <p *ngIf="paymentMethod.card.name.trim().length"><b>Name: </b>{{ paymentMethod.card.name }}</p>
+                    <p>Number: xxxx-xxxx-xxxx-{{paymentMethod.card.number}}</p>
+                    <p>Exp: {{paymentMethod.card.expMonth}}/{{paymentMethod.card.expYear}}</p>
+                </div>
+
+                <div *ngIf="paymentMethod.usBank">
+                    <p *ngIf="paymentMethod.usBank.name.trim().length"><b>Name: </b>{{ paymentMethod.usBank.name }}</p>
+                    <p><b>Routing Number: </b>{{ paymentMethod.usBank.routingNumber }}</p>
+                    <p><b>Account Number: </b>{{ paymentMethod.usBank.accountNumber }}</p>
+                    <p><b>Type: </b>{{ paymentMethod.usBank.accountType.toString() == "CHECKING" ? 'Checking' : 'Savings' }} | 
+                        {{paymentMethod.usBank.isIndividual ? 'Individial' : 'Business' }}</p>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+
+    <div class="subscription-parent">
+        <div>
+            <h2 *ngIf="addressList.billingAddress < 0" (click)="showActiveSubscriptions = !showActiveSubscriptions">
+                <img [@rotate]="showActiveSubscriptions ? 'expanded' : 'collapse'" id="exp1" class="expand_icon expand_i_reg" src="assets/Less_than.png">
+                Your Subscriptions
+            </h2>
+
+            <div [@translate]="showActiveSubscriptions ? 'expanded': 'collapse'">
+                <div *ngFor="let us of subList">
+                    <div class="div-row">
+                        
+                    </div>
+                    <p><b>Name: </b>{{us.subscription}}</p>
+                    <p><b>Level: </b>{{ us.level}}</p>
+                    <p><b>Price: </b> {{ us.price }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h2 *ngIf="addressList.billingAddress < 0" (click)="showAvailableSubscriptions = !showAvailableSubscriptions">
+                <img [@rotate]="showAvailableSubscriptions ? 'expanded' : 'collapse'" id="exp1" class="expand_icon expand_i_reg" src="assets/Less_than.png">
+                Available Subscriptions
+            </h2>
+
+            <div [@translate]="showAvailableSubscriptions ? 'expanded': 'collapse'">
+
+                <div *ngFor="let activeSub of availableList">
+                    <p><b>Name: </b>{{ activeSub.name }}</p>
+                    <p><b>Description: </b>{{ activeSub.desc }}</p>
+                    <p><b>Category: </b>{{ activeSub.category }}</p>
+                    <div *ngFor="let level of activeSub.subscriptionLevels">
+                        <p><b>Level: </b>{{level.level}}</p>
+                        <p><b>Level Description: </b> {{ level.description }}</p>
+                        <p><b>Price: </b> {{ level.currentPrice }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

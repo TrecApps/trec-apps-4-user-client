@@ -2,6 +2,7 @@
 export class UserSubscription{
     subscription: string = "";
     level: number = 0;
+    price: number = 0.0;
 }
 
 export class UserSubscriptionList {

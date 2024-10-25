@@ -122,6 +122,21 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background: white;
 }
 
+img.expand_icon {
+    border-radius: 50%;
+    transform:rotate(180deg);
+}
+
+img.expand_i_small {
+    width: 25px;
+    height: 25px;
+}
+
+img.expand_i_reg {
+    width: 30px;
+    height: 30px;
+}
+
 
 /* Layout */
 

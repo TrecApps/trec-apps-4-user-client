@@ -1,15 +1,45 @@
 .address-result {
-
+    border: beige 2px solid;
+    padding: 5px;
 }
 
 .address-result:hover {
+    background-color: beige;
+}
 
+.address-result-list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: aquamarine;
+  padding: 5px;
+}
+
+.div-row {
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+
+    row-gap: 5px;
+} 
+
+.row-text-holder {
+    border-bottom: solid black 1px;
+}
+
+.tc-text-white {
+    --bs-text-opacity: 1;
+  color: rgba(var(--bs-white-rgb),var(--bs-text-opacity)) !important;
+  background-color: black;
 }
 
 .address-element {
-
+    border: solid 2px chartreuse;
+    padding: 5px;
+    background-color: darkturquoise;
 }
 
-.row-text-holder {
-
+.address-element:hover {
+    background-color: aquamarine;
 }
