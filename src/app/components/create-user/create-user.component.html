@@ -30,38 +30,85 @@
         <h4 *ngIf="updateFail" color="red">Failed To Update</h4>
         <h4 *ngIf="needsFields" color="red">Required Fields still needed</h4>
         <h4 *ngIf="!usernameFree" color="red">Username is taken</h4>
-        <div style="margin-left: 5px;display: grid;
+        <form [formGroup]="createForm" style="margin-left: 5px;display: grid;
         flex-wrap: wrap;height: min-content;">
-            <label class="RegForm">Username: </label>
-            <input class="RegForm" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="text" [(ngModel)]="user.userPrincipalName">
-        
-            <label class="RegForm">Display Name (your full name): </label>
-            <input class="RegForm" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="text" [(ngModel)]="user.displayName">
-            <p>Please use your real name here! You can later Create Brand Accounts to use with most of our services!</p>
-            <label class="RegForm">Password: </label>
-            <input class="RegForm" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="password" [(ngModel)]="firstPassword">
-            <label class="RegForm">Re-Enter Password: </label>
-            <input class="RegForm" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="password" [(ngModel)]="secondPassword">
+            <div class="form-group">
+                <label class="RegForm">Username: </label>
+                <input class="form-control" formControlName="username" (mouseenter)="enterInput()" type="text" [(ngModel)]="user.userPrincipalName">
+                <div *ngIf="createForm.get('username')?.touched">
+                    <p class="text-danger" *ngIf="createForm.get('username')?.hasError('required')">Please enter a username</p>
+                    <p class="text-danger" *ngIf="createForm.get('username')?.hasError('minlength') || createForm.get('username')?.hasError('maxlength')">Your username need to be between 6 and 20 characters long.</p>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="RegForm">Display Name (your full name): </label>
+                <input class="form-control" formControlName="displayName" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="text" [(ngModel)]="user.displayName">
+                <p>Please use your real name here! You can later Create Brand Accounts to use with most of our services!</p>
+                <div *ngIf="createForm.get('displayName')?.touched">
+                    <p class="text-danger" *ngIf="createForm.get('displayName')?.hasError('required')">Please enter a Dispay Name</p>
+                </div>
+            </div>
 
-            <h4 *ngIf="secondPassword != firstPassword" class="RegForm" color="red">Passwords do NOT match</h4>
+            <div class="form-group">
+                <label class="RegForm">Password: </label>
+                <input class="form-control" formControlName="password" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="password" [(ngModel)]="firstPassword">
+                <label class="RegForm">Re-Enter Password: </label>
+                <input class="form-control" formControlName="password2" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="password" [(ngModel)]="secondPassword">
+    
+                <p *ngIf="createForm.get('password')?.touched && createForm.get('password2')?.touched && secondPassword != firstPassword" class="text-danger" color="red">Passwords do NOT match</p>
+            
+                <div *ngIf="createForm.get('password')?.touched">
+                    <p class="text-danger" *ngIf="createForm.get('password')?.hasError('required')">Please enter a password</p>
+                    <p class="text-danger" *ngIf="createForm.get('password')?.hasError('minLength')">Your password needs to be 8 chracters long</p>
+                </div>
+            </div>
+            
 
-        <!-- Placeholder for when Country Codes are supported -->
-            <p>Right now, only US numbers are supported</p>
-            <!-- <label class="RegForm">Country Code: +</label>
-            <input class="RegForm" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="number" [(ngModel)]="countryCode" max="999" min="0" [defaultValue]="1"> -->
-            <label class="RegForm">Phone Number: </label>
-            <input class="RegForm" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="number" [(ngModel)]="user.mobilePhone" max="9999999999">
-            <label class="RegForm">Birthday (Hidden from other users by Default): </label>
-            <input class="RegForm" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="date" [(ngModel)]="birthday">
-            <label class="RegForm">External Email: </label>
-            <input class="RegForm" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="email" [(ngModel)]="user.mail">
-        </div>
+            <div class="form-group">
+               <!-- Placeholder for when Country Codes are supported -->
+                <p>Right now, only US numbers are supported</p>
+                <!-- <label class="RegForm">Country Code: +</label>
+                <input class="RegForm" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="number" [(ngModel)]="countryCode" max="999" min="0" [defaultValue]="1"> -->
+                <label class="RegForm">Phone Number: </label>
+                <input class="form-control" formControlName="phoneNumber" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="number" [(ngModel)]="user.mobilePhone" max="9999999999">
+                <div *ngIf="createForm.get('phoneNumber')?.touched">
+                    <p class="text-danger" *ngIf="createForm.get('phoneNumber')?.hasError('required')">Please enter a phone number</p>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="RegForm">Birthday (Hidden from other users by Default): </label>
+                <input class="form-control" formControlName="birthday" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="date" [(ngModel)]="birthday">
+            
+                <div *ngIf="createForm.get('birthday')?.touched">
+                    <p class="text-danger" *ngIf="createForm.get('birthday')?.hasError('required')">Please enter your birthday</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="RegForm">External Email: </label>
+                <input class="form-control" formControlName="email" (mouseenter)="enterInput()" (mouseout)="checkFormsCompletion()" type="email" [(ngModel)]="user.mail"> 
+                <div *ngIf="createForm.get('email')?.touched">
+                    <p class="text-danger" *ngIf="createForm.get('email')?.hasError('required')">Please enter an email address</p>
+                    <p class="text-danger" *ngIf="createForm.get('email')?.hasError('email')">This field needs to contain an email</p>
+                </div>
+            </div>
+
+    </form>
         
         <br>
        
         <div class="containGlobal" style="width: 100%">
 
-            <button id="registerButton" [style.background-color]=color3 [style.color]=color2  class="btn btn-submit" (click)="create()">Create New Account</button>
+            <button 
+                id="registerButton" 
+                [style.background-color]=color3 
+                [style.color]=color2  
+                class="btn btn-submit" 
+                (click)="create()"
+                [disabled]="hasErrors()"
+            >Create New Account</button>
  
 
             <button id="loginButton" [style.background-color]=color3 [style.color]=color2  class="btn btn-submit" (click)="moveToLogin()">To Login Page</button>
