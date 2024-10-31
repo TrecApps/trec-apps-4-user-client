@@ -32,7 +32,8 @@ export class UserPost {
     }
 
     isMobileNumber(num: string): boolean {
-        return num.trim().length == 10 && Number.isInteger(num);
+        let strnum = num + "";
+        return strnum.trim().length == 10 && Number.isInteger(num);
     }
 }
 

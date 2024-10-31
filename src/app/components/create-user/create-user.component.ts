@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { GlobalConstants } from '../../common/GlobalConstants';
 import { UserPost, PasswordProfile } from '../../models/User';
 import { UserService } from '../../services/user.service';
-import { FormsModule } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DisplayService } from 'tc-ngx-general';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -12,7 +12,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-create-user',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatProgressSpinnerModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, MatProgressSpinnerModule],
   providers: [DatePipe],
   templateUrl: './create-user.component.html',
   styleUrl: './create-user.component.css'
@@ -44,7 +44,9 @@ export class CreateUserComponent {
 
   showSpinner: boolean = false;
 
-  constructor(private userService:UserService, private router: Router, private datePipe: DatePipe, ds: DisplayService) {
+  createForm: FormGroup;
+
+  constructor(private userService:UserService, private router: Router, private datePipe: DatePipe, private fb: FormBuilder, ds: DisplayService) {
     this.displayService = ds; 
 
     this.birthday = undefined
@@ -55,6 +57,17 @@ export class CreateUserComponent {
     this.updateFail = this.needsFields = false;
     this.firstPassword = "";
     this.secondPassword = "";
+
+
+    this.createForm = this.fb.group({
+      username: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
+      displayName: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      password2: ['', [Validators.required]],
+      phoneNumber: ['', [Validators.required]],
+      birthday: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]]
+    })
   }
 
   ngOnInit(): void {
@@ -75,21 +88,33 @@ export class CreateUserComponent {
   }
 
   checkFormsCompletion() {
-    if(this.user.userPrincipalName != undefined && this.user.displayName != undefined && this.firstPassword != "" && this.secondPassword != "" && this.user.mobilePhone != undefined && this.birthday != undefined && this.user.mail != undefined ) {
-      let termBox = document.getElementById("termBox")
-      if(termBox) {
-        termBox.style.transition = "height 0.75s ease-in"
-        termBox.style.height = "40%"
-        let newsLetterEl = document.getElementById("newsLetterId")
-        if(newsLetterEl) {
-          if(!this.displayingSubscribe ) {
-            this.unfade(newsLetterEl)
-            this.displayingSubscribe = true 
-          }
-        }
+    return;
+    // if(this.user.userPrincipalName != undefined && this.user.displayName != undefined && this.firstPassword != "" && this.secondPassword != "" && this.user.mobilePhone != undefined && this.birthday != undefined && this.user.mail != undefined ) {
+    //   let termBox = document.getElementById("termBox")
+    //   if(termBox) {
+    //     termBox.style.transition = "height 0.75s ease-in"
+    //     termBox.style.height = "40%"
+    //     let newsLetterEl = document.getElementById("newsLetterId")
+    //     if(newsLetterEl) {
+    //       if(!this.displayingSubscribe ) {
+    //         this.unfade(newsLetterEl)
+    //         this.displayingSubscribe = true 
+    //       }
+    //     }
+    //   }
+    // }
+
+  }
+
+  hasErrors(): boolean {
+    if(this.firstPassword != this.secondPassword) return true;
+    for(let key in this.createForm.controls) {
+      let control = this.createForm.controls[key] as AbstractControl<any, any>;
+      if(control.untouched || control.errors){ 
+        return true;
       }
     }
-
+    return false;
   }
   
    unfade(element:any) {
@@ -106,14 +131,7 @@ export class CreateUserComponent {
 }
 
   create() {
-    if(this.firstPassword != this.secondPassword){
-      return;
-    }
-
-
-    if(!this.usernameFree){
-      return;
-    }
+    if(this.hasErrors()) return;
     
     this.user.passwordProfile = new PasswordProfile();
     this.user.passwordProfile.password = this.firstPassword;
@@ -121,8 +139,6 @@ export class CreateUserComponent {
     this.user.birthday = this.datePipe.transform(this.birthday, "yyyy-MM-ddThh:mm:ss") + '+01:00';
 
     this.user.mailNickname = this.user.userPrincipalName;
-
-    this.user.mobilePhone = this.user.mobilePhone;
 
     let validated = this.user.validate();
 

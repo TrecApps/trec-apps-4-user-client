@@ -131,11 +131,42 @@ export class UserService {
     }
    }
 
+   copyUser(newUser: TcUser): TcUser {
+    let retUser = new TcUser();
+    retUser.address = newUser.address;
+    retUser.addressList = newUser.addressList;
+    retUser.authRoles = newUser.authRoles;
+    retUser.birthday = newUser.birthday;
+    retUser.birthdaySetting = newUser.birthdaySetting;
+    retUser.credibilityRating = newUser.credibilityRating;
+    retUser.customerId = newUser.customerId;
+    retUser.displayName = newUser.displayName;
+    retUser.email = newUser.email;
+    retUser.emailVerified = newUser.emailVerified;
+    retUser.id = newUser.id;
+    retUser.mfaMechanisms = newUser.mfaMechanisms;
+    retUser.mfaRequirements = newUser.mfaRequirements;
+    retUser.mobilePhone = newUser.mobilePhone;
+    retUser.pastEmails = newUser.pastEmails;
+    retUser.phoneVerified = newUser.phoneVerified;
+    retUser.profilePics = newUser.profilePics;
+    retUser.proposedEmail = newUser.proposedEmail;
+    
+    retUser.proposedNumber = newUser.proposedNumber;
+    retUser.restrictions = newUser.restrictions;
+    retUser.subscriptionId = newUser.subscriptionId;
+    retUser.userProfile = newUser.userProfile;
+    retUser.verifiedEmail = newUser.verifiedEmail;
+    retUser.verifiedNumber = newUser.verifiedNumber;
+
+    return retUser;
+   }
+
   refreshUser(callable: Function): Observable<string[]> {
     let observe = {
       next: (response: TcUser) => { 
         console.info("Birthday Value: ", response.birthday);
-        this.currentUser = response;
+        this.currentUser = this.copyUser(response);
         console.info("Current User Set!", this.currentUser);
         this.updateProfilePic();
         
