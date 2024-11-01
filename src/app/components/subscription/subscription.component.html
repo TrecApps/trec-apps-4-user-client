@@ -52,11 +52,28 @@
             <div [@translate]="showActiveSubscriptions ? 'expanded': 'collapse'">
                 <div *ngFor="let us of subList">
                     <div class="div-row">
-                        
+                        <button class="btn btn-danger" (click)="removeSubscription(us.id)">Cancel</button>
+                        <select *ngIf="us.subscriptionDetails?.subscriptionLevels?.length">
+                            <option *ngFor="let optLevel of us.subscriptionDetails?.subscriptionLevels" [value]="optLevel.level">{{ "Level " + optLevel.level }}</option>
+                        </select>
+                        <button class="btn btn-primary" (click)="updateSubscription(us)" *ngIf="us.level != us.subscriptionDesiredLevel">Set to Level {{ us.subscriptionDesiredLevel }}</button>
                     </div>
-                    <p><b>Name: </b>{{us.subscription}}</p>
+                    <p *ngIf="us.subscriptionDetails"><b>Name: </b>{{us.subscriptionDetails.name}}</p>
                     <p><b>Level: </b>{{ us.level}}</p>
                     <p><b>Price: </b> {{ us.price }}</p>
+
+                    <div [@translate]="us.showDetails ? 'expanded' : 'collapse'">
+                        <div *ngFor="let activeSub of availableList">
+                            <p><b>Name: </b>{{ activeSub.name }}</p>
+                            <p><b>Description: </b>{{ activeSub.desc }}</p>
+                            <p><b>Category: </b>{{ activeSub.category }}</p>
+                            <div *ngFor="let level of activeSub.subscriptionLevels">
+                                <p><b>Level: </b>{{level.level}}</p>
+                                <p><b>Level Description: </b> {{ level.description }}</p>
+                                <p><b>Price: </b> {{ level.currentPrice }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,7 +86,14 @@
 
             <div [@translate]="showAvailableSubscriptions ? 'expanded': 'collapse'">
 
+                
+
                 <div *ngFor="let activeSub of availableList">
+
+                    <div *ngIf="!hasSubscription(activeSub.id)" class="div-row">
+                        <button *ngFor="let level of activeSub.subscriptionLevels" class="btn btn-primary" (click)="beginSubscription(activeSub.id, level.level)">Subscribe at Level {{ level.level }}</button>
+                    </div>
+
                     <p><b>Name: </b>{{ activeSub.name }}</p>
                     <p><b>Description: </b>{{ activeSub.desc }}</p>
                     <p><b>Category: </b>{{ activeSub.category }}</p>

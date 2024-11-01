@@ -8,7 +8,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { PaymentMethod, PayMethodService } from '../../services/pay-method.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CardInfoSubmission, TcSubscription, UsBankInfo } from '../../models/Payments';
+import { CardInfoSubmission, SubscriptionPost, TcSubscription, UsBankInfo } from '../../models/Payments';
 import { AddressList, AuthService } from 'tc-ngx-general';
 import { ResponseObj } from 'tc-ngx-general/lib/models/ResponseObj';
 
@@ -164,87 +164,63 @@ export class SubscriptionComponent {
     
   }
 
-  // refreshUserSubScription(isBilled: Boolean) {
-  //   this.subscriptionService.getActiveSubscriptions((sub:UserSubscriptionList) => {
-  //     this.userList = sub;
-  //     this.subListChanged = false;
-  //   } );
-  // }
-
-  // refreshSubList() {
-  //   this.refreshUserSubScription(false);
-
-  //   this.subscriptionService.retrieveSubscriptions(this.subList);
-  // }
-
-  notIncluded(name: string) : Boolean{
-    if(!this.userList){
-      //this.refreshUserSubScription(false);
-      return true;
-    }
-    
-    for(let sub of this.userList.subscriptionList) {
-      if(sub.subscription == name) {
-        return false;
-      }
-    }
-
-    return true;
+  removeSubscription(id: string) {
+    this.subscriptionService.stopSubscription(id).subscribe({
+      next: (ro: ResponseObj) => {
+        this.subList = this.subList.filter((sub: UserSubscription)=> sub.id != id);
+      },
+      error: (ro: ResponseObj) => alert(ro.message)
+    })
   }
 
-  isIncluded(name: string, level: number) : Boolean {
-    if(!this.userList){
-      //this.refreshUserSubScription(false);
-      return false;
-    }
-    for(let sub of this.userList.subscriptionList) {
-      if(sub.subscription == name && sub.level == level) {
-        return true;
+  prepUpdate(us: UserSubscription, level: number) {
+    us.subscriptionDesiredLevel = level;
+  }
+
+  updateSubscription(us: UserSubscription) {
+    let subPost = new SubscriptionPost(us.id, us.subscriptionDesiredLevel);
+    this.subscriptionService.updateSubscription(subPost).subscribe({
+      next: (ro: ResponseObj) => {
+        us.level = us.subscriptionDesiredLevel
+        us.refreshPrice()
       }
+    })
+  }
+
+  hasSubscription(id: string): boolean {
+    for(let us of this.subList){
+      if(us.subscriptionId == id) return true;
     }
     return false;
   }
 
-  addBasicList(name: string) {
-    if(!this.userList)return;
+  beginSubscription(id: string, level: number) {
+    this.subscriptionService.addSubscription(new SubscriptionPost(id, level)).subscribe({
+      next: (ro: ResponseObj) => {
 
-    let userSub = new UserSubscription();
-    userSub.subscription = name;
+        for(let sub of this.availableList){
+          if(sub.id == id){
 
-    this.userList.subscriptionList.push(userSub);
-    this.subListChanged = true;
-  }
+            let us = new UserSubscription();
+            us.id = ro.id?.toString() || "";
+            us.initiated = new Date();
+            us.lastUpdate = us.initiated;
+            us.level = level;
+            us.subscriptionDetails = sub;
+            us.showDetails = true;
+            us.subscriptionId = sub.id;
+            us.refreshPrice();
+            us.subscriptionDesiredLevel = us.level;
 
-  addLevelList(name: string, level: number){
-    if(!this.userList)return;
+            this.subList.push(us);
 
-    for(let sub of this.userList.subscriptionList) {
-      if(sub.subscription == name) {
-        sub.level = level;
-        return;
+            return;
+          }
+        }
+
+
       }
-    }
-
-    let userSub = new UserSubscription();
-    userSub.level = level;
-    userSub.subscription = name;
-
-    this.userList.subscriptionList.push(userSub);
-    this.subListChanged = true;
-  }
-  removeSub(name: string){
-    if(!this.userList)return;
-
-    let newList :UserSubscription[] = [];
-
-    for(let sub of this.userList.subscriptionList) {
-      if(sub.subscription != name) {
-        newList.push(sub);
-      }
-    }
-
-    this.userList.subscriptionList = newList;
-    this.subListChanged = true;
+    })
   }
 
   // updateSub(){
