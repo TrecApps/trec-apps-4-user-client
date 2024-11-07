@@ -50,15 +50,15 @@ export class AddressComponent {
               this.addressList = new AddressList();
             }
 
-            let tempAddress = new Address();
-            tempAddress.address1 = "2223 Tyrrhenian Dr.";
-            tempAddress.country = "US";
-            tempAddress.postCode = "80504";
-            tempAddress.region = "CO";
-            tempAddress.township = "Longmont";
+            // let tempAddress = new Address();
+            // tempAddress.address1 = "2223 Tyrrhenian Dr.";
+            // tempAddress.country = "US";
+            // tempAddress.postCode = "80504";
+            // tempAddress.region = "CO";
+            // tempAddress.township = "Longmont";
 
-            this.addressList.addressList.push(tempAddress);
-            this.addressList.billingAddress = 0;
+            // this.addressList.addressList.push(tempAddress);
+            // this.addressList.billingAddress = 0;
           }
         }
       }
@@ -80,6 +80,7 @@ export class AddressComponent {
       next: (ro: ResponseObj) => {
         this.addressList?.addressList.push(address);
         this.showSearchBar = false;
+        this.addressResults = [];
       },
       error: (ro: ResponseObj) => alert(ro.message)
     })

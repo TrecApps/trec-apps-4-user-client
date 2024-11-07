@@ -24,5 +24,11 @@
       "secure": false,
       "logLevel": "debug",
       "changeOrigin": true
+    },
+    "/Subscription-be/**" : {
+      "target": "https://test.trecapps.com",
+      "secure": false,
+      "logLevel": "debug",
+      "changeOrigin": true
     }
   }
