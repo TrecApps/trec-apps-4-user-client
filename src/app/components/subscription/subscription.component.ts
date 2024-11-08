@@ -8,7 +8,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { PaymentMethod, PayMethodService } from '../../services/pay-method.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CardInfoSubmission, SubscriptionPost, TcSubscription, UsBankInfo } from '../../models/Payments';
+import { BankAccountType, CardInfoSubmission, SubscriptionPost, TcSubscription, UsBankInfo } from '../../models/Payments';
 import { AddressList, AuthService } from 'tc-ngx-general';
 import { ResponseObj } from 'tc-ngx-general/lib/models/ResponseObj';
 
@@ -69,6 +69,90 @@ export class SubscriptionComponent {
 
   newUsAccount: UsBankInfo | undefined;
   newCard: CardInfoSubmission | undefined;
+
+
+  // Mask Fields
+  routeNum = "";
+  accountNum1 = "";
+
+  checkingValue = BankAccountType.CHECKING;
+  savingsValue = BankAccountType.SAVINGS;
+
+  cardNumber = "";
+  cardNumberError = false;
+  cardCvc = "";
+  cardCvcError = false;
+
+  currentYear = new Date().getFullYear();
+
+
+  // Mask Field Methods
+
+  getMask(input: string) : string {
+    let ret = "";
+    for(let i = 0; i < input.length - 4; i++)
+        ret += "•"
+    for(let i = input.length - 4; i < input.length - 4; i++)
+      ret += input.charAt(i);
+    return ret;
+  }
+
+
+  switchRoutingNum(focusing: boolean){
+    if(!this.newUsAccount) return;
+    if(focusing){
+      this.routeNum = this.newUsAccount.routingNumber;
+    } else {
+      this.newUsAccount.routingNumber = this.routeNum;
+      this.routeNum = this.getMask(this.routeNum);
+    }
+  }
+
+  switchAccountNum(focusing: boolean){
+    if(!this.newUsAccount) return;
+    if(focusing){
+      this.accountNum1 = this.newUsAccount.routingNumber;
+    } else {
+      this.newUsAccount.accountNumber = this.accountNum1;
+      this.accountNum1 = this.getMask(this.accountNum1);
+    }
+  }
+  
+  switchCardNum(focusing: boolean) {
+    if(!this.newCard) return;
+    if(focusing){
+      this.cardNumber = this.newCard.number;
+    } else {
+
+      let numStr = this.cardNumber.trim().replace(" ", "");
+      this.cardNumberError = Number.isNaN(parseInt(numStr));
+      if(this.cardNumberError) return;
+
+      this.newCard.number = numStr;
+      this.cardNumber = this.getMask(this.cardNumber);
+    }
+  }
+
+  switchCvc(focusing: boolean) {
+    if(!this.newCard) return;
+    if(focusing){
+      this.cardCvc = this.newCard.cvc.toString();
+    } else {
+      let numStr = this.cardCvc.trim().replace(" ", "");
+      let num = parseInt(numStr);
+      this.cardCvcError = Number.isNaN(num);
+      if(this.cardCvcError) return;
+
+      this.newCard.cvc = num;
+      let temp = "";
+      for(let i = 0; i < this.cardCvc.length; i++)
+        temp += "•"
+      this.cardCvc = temp;
+    }
+  }
+
+
+
 
   backupPaymentMethod: PaymentMethod | undefined;
 
@@ -142,6 +226,49 @@ export class SubscriptionComponent {
     this.newUsAccount = undefined;
   }
 
+  postUsBank(){
+    if(!this.newUsAccount) return;
+    this.paymentService.postUsBank(this.newUsAccount).subscribe({
+      next:(value: ResponseObj) => {
+        alert("Successfully Added!");
+        if(this.newUsAccount){
+          this.newUsAccount.payId = value.id || "";
+          this.paymentMethods.push(new PaymentMethodHolder(this.newUsAccount))
+          this.newUsAccount = undefined;
+        }
+      },
+      error: (e: ResponseObj) => {
+        alert(e.message);
+      }
+    })
+  }
+
+  postCard(){
+    if(!this.newCard) return;
+    this.paymentService.postCard(this.newCard).subscribe({
+      next:(value: ResponseObj) => {
+        alert("Successfully Added!");
+        if(this.newCard){
+          this.newCard.payId = value.id || "";
+          this.paymentMethods.push(new PaymentMethodHolder(this.newCard))
+          this.newCard = undefined;
+        }
+      },
+      error: (e: ResponseObj) => {
+        alert(e.message);
+      }
+    })
+  }
+
+  cancelUsBankSubmission(){
+    this.backupPaymentMethod = this.newUsAccount;
+    this.newUsAccount = undefined;
+  }
+
+  cancelCardSubmission(){
+    this.backupPaymentMethod = this.newCard;
+    this.newCard = undefined;
+  }
 
   removePaymentMethod(paymentMethodId: string) {
     this.paymentService.removePaymentMethod(paymentMethodId).subscribe({

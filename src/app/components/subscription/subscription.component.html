@@ -107,5 +107,73 @@
         </div>
     </div>
 
+    <form class="over-form" *ngIf="newUsAccount">
+        <label>New US Bank Acccount</label>
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input class="form-control" type="text" [(ngModel)]="newUsAccount.name">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Routing Number</label>
+            <input class="form-control" type="text" [(ngModel)]="routeNum" (focus)="switchRoutingNum(true)" (blur)="switchRoutingNum(false)">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Account Number</label>
+            <input class="form-control" type="text" [(ngModel)]="accountNum1" (focus)="switchAccountNum(true)" (blur)="switchAccountNum(false)">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Individual vs Company</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="radioInd" [checked]="newUsAccount.isIndividual" (click)="newUsAccount.isIndividual = true">
+                <label class="form-check-label" for="radioInd">Individual</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="radioCom" [checked]="!newUsAccount.isIndividual" (click)="newUsAccount.isIndividual = false">
+                <label class="form-check-label" for="radioInd">Company</label>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Account Type</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="radioCheck" [checked]="newUsAccount.accountType == checkingValue" (click)="newUsAccount.accountType = checkingValue">
+                <label class="form-check-label" for="radioInd">Checking</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="radioCom" [checked]="newUsAccount.accountType == savingsValue" (click)="newUsAccount.accountType = savingsValue">
+                <label class="form-check-label" for="radioInd">Savings</label>
+            </div>
+        </div>
+        <div class="mb-3">
+            <button class="btn btn-primary" (click)="postUsBank()">Submit</button>
+            <button class="btn btn-danger" (click)="cancelUsBankSubmission()">Cancel</button>
+        </div>
+        
+    </form>
 
+    <form class="over-form" *ngIf="newCard">
+        <label>New Card</label>
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input class="form-control" type="text" [(ngModel)]="newCard.name">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Card Number</label>
+            <input class="form-control" type="text" [(ngModel)]="cardNumber" (focus)="switchCardNum(true)" (blur)="switchCardNum(false)">
+            <p *ngIf="cardNumberError" class="text-danger">Invalid number detected</p>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">CVC (typically a 3-4 digit number)</label>
+            <input class="form-control" type="text" [(ngModel)]="cardCvc" (focus)="switchCvc(true)" (blur)="switchCvc(false)">
+            <p *ngIf="cardCvc" class="text-danger">Invalid number detected</p>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Expiration Date</label>
+            <input class="form-control" type="number" min="1" max="12" placeholder="MM" [(ngModel)]="newCard.expMonth">
+            <input class="form-control" type="number" [min]="currentYear" [max]="currentYear + 10" placeholder="YYYY" [(ngModel)]="newCard.expYear">
+        </div>
+        <div class="mb-3">
+            <button class="btn btn-primary" (click)="postCard()">Submit</button>
+            <button class="btn btn-danger" (click)="cancelCardSubmission()">Cancel</button>
+        </div>
+    </form>
 </div>
