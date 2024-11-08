@@ -2,7 +2,7 @@
 
 <div class="container">
     
-    <h2 *ngIf="addressList.billingAddress < 0" (click)="showPaymentMethods = !showPaymentMethods">
+    <h2 *ngIf="addressList.billingAddress >= 0" (click)="showPaymentMethods = !showPaymentMethods">
         <img [@rotate]="showPaymentMethods ? 'expanded' : 'collapse'" id="exp1" class="expand_icon expand_i_reg" src="assets/Less_than.png">
         Payment Methods*
     </h2>
@@ -10,7 +10,7 @@
     <div>
         <p>* Payment Methods are managed by Stripe, Inc. TrecApps is not storing this information on our systems.</p>
         <h4 class="text-danger" style="background-color: yellow;">Note: This is a test Envrionment. Fake numbers are highly recommended</h4>
-        <div *if="addressList.billingAddress >= 0" class="div-row">
+        <div *ngIf="addressList.billingAddress >= 0" class="div-row">
             <button (click)="prepCardAccount()" class="btn btn-primary" [disabled]="newCard">New Card</button>
             <button (click)="prepUsBankAccount()" class="btn btn-primary" [disabled]="newUsAccount">New Us Bank Account</button>
         </div>

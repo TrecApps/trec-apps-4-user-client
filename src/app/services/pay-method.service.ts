@@ -28,7 +28,7 @@ export class PayMethodService {
   }
 
   getPaymentMethods() : Observable<PaymentMethod[]> {
-    return this.client.get<PaymentMethod[]>(`${environment.user_subscription_url}/paymentMethods/`, {
+    return this.client.get<PaymentMethod[]>(`${environment.user_subscription_url}/paymentMethods`, {
       headers: this.authService.getHttpHeaders(false, false)
     })
   }

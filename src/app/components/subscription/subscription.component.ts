@@ -87,6 +87,9 @@ export class SubscriptionComponent {
         if(endEvent.url == "/subscriptions"){
           if(this.authService.tcUser?.addressList){
             this.addressList = this.authService.tcUser.addressList;
+            console.log("address list is ", this.addressList)
+          } else {
+            console.log("address list not set")
           }
 
 
