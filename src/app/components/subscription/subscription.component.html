@@ -111,15 +111,15 @@
         <label>New US Bank Acccount</label>
         <div class="mb-3">
             <label class="form-label">Name</label>
-            <input class="form-control" type="text" [(ngModel)]="newUsAccount.name">
+            <input [ngModelOptions]="{standalone: true}" class="form-control" type="text" [(ngModel)]="newUsAccount.name">
         </div>
         <div class="mb-3">
             <label class="form-label">Routing Number</label>
-            <input class="form-control" type="text" [(ngModel)]="routeNum" (focus)="switchRoutingNum(true)" (blur)="switchRoutingNum(false)">
+            <input [ngModelOptions]="{standalone: true}" class="form-control" type="text" [(ngModel)]="routeNum" (focus)="switchRoutingNum(true)" (blur)="switchRoutingNum(false)">
         </div>
         <div class="mb-3">
             <label class="form-label">Account Number</label>
-            <input class="form-control" type="text" [(ngModel)]="accountNum1" (focus)="switchAccountNum(true)" (blur)="switchAccountNum(false)">
+            <input [ngModelOptions]="{standalone: true}" class="form-control" type="text" [(ngModel)]="accountNum1" (focus)="switchAccountNum(true)" (blur)="switchAccountNum(false)">
         </div>
         <div class="mb-3">
             <label class="form-label">Individual vs Company</label>
@@ -154,22 +154,22 @@
         <label>New Card</label>
         <div class="mb-3">
             <label class="form-label">Name</label>
-            <input class="form-control" type="text" [(ngModel)]="newCard.name">
+            <input [ngModelOptions]="{standalone: true}" class="form-control" type="text" [(ngModel)]="newCard.name">
         </div>
         <div class="mb-3">
             <label class="form-label">Card Number</label>
-            <input class="form-control" type="text" [(ngModel)]="cardNumber" (focus)="switchCardNum(true)" (blur)="switchCardNum(false)">
+            <input [ngModelOptions]="{standalone: true}" class="form-control" type="text" [(ngModel)]="cardNumber" (focus)="switchCardNum(true)" (blur)="switchCardNum(false)">
             <p *ngIf="cardNumberError" class="text-danger">Invalid number detected</p>
         </div>
         <div class="mb-3">
             <label class="form-label">CVC (typically a 3-4 digit number)</label>
-            <input class="form-control" type="text" [(ngModel)]="cardCvc" (focus)="switchCvc(true)" (blur)="switchCvc(false)">
-            <p *ngIf="cardCvc" class="text-danger">Invalid number detected</p>
+            <input [ngModelOptions]="{standalone: true}" class="form-control" type="text" [(ngModel)]="cardCvc" (focus)="switchCvc(true)" (blur)="switchCvc(false)">
+            <p *ngIf="cardCvcError" class="text-danger">Invalid number detected</p>
         </div>
         <div class="mb-3">
             <label class="form-label">Expiration Date</label>
-            <input class="form-control" type="number" min="1" max="12" placeholder="MM" [(ngModel)]="newCard.expMonth">
-            <input class="form-control" type="number" [min]="currentYear" [max]="currentYear + 10" placeholder="YYYY" [(ngModel)]="newCard.expYear">
+            <input [ngModelOptions]="{standalone: true}" class="form-control" type="number" min="1" max="12" placeholder="MM" [(ngModel)]="newCard.expMonth">
+            <input [ngModelOptions]="{standalone: true}" class="form-control" type="number" [min]="currentYear" [max]="currentYear + 10" placeholder="YYYY" [(ngModel)]="newCard.expYear">
         </div>
         <div class="mb-3">
             <button class="btn btn-primary" (click)="postCard()">Submit</button>

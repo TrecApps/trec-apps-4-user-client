@@ -92,7 +92,7 @@ export class SubscriptionComponent {
     let ret = "";
     for(let i = 0; i < input.length - 4; i++)
         ret += "•"
-    for(let i = input.length - 4; i < input.length - 4; i++)
+    for(let i = input.length - 4; i < input.length; i++)
       ret += input.charAt(i);
     return ret;
   }
@@ -111,7 +111,7 @@ export class SubscriptionComponent {
   switchAccountNum(focusing: boolean){
     if(!this.newUsAccount) return;
     if(focusing){
-      this.accountNum1 = this.newUsAccount.routingNumber;
+      this.accountNum1 = this.newUsAccount.accountNumber;
     } else {
       this.newUsAccount.accountNumber = this.accountNum1;
       this.accountNum1 = this.getMask(this.accountNum1);
