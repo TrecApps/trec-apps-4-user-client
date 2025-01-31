@@ -26,7 +26,7 @@ export class MfaComponent {
 
 
   mfaMethods: string[] = [
-    "Email","Phone","Token"
+    "Email","Phone"
   ];
 
   mfaRequirements: MfaReqExt[] = [];
@@ -113,16 +113,27 @@ export class MfaComponent {
   }
 
   testCode(){
-    this.mfaService.sendMfaCode(this.mfaCode)
-  }
-
-  removeTokenCode(){
-    this.mfaService.removeToken().subscribe({
-      next: (ro: ResponseObj) => {
-        this.user.mfaMechanisms = this.user.mfaMechanisms.filter(m => m.source != "Token");
-        this.mfaMechanisms.push({source: "Token"});
+    this.mfaService.sendMfaCode(this.mfaCode, ()=> {
+      if(this.prospectiveName){
+        this.user.mfaMechanisms.push({source: "Token", name: this.prospectiveName});
       }
     })
+  }
+
+  removeTokenCode(name: string){
+    this.mfaService.removeToken(name).subscribe({
+      next: (ro: ResponseObj) => {
+        this.user.mfaMechanisms = this.user.mfaMechanisms.filter(m => m.source != "Token" && m.name != name);
+      }
+    })
+  }
+
+  removeOtherMech(source: string, name: string | undefined) {
+    if(source == "Token" && name){
+      this.removeTokenCode(name);
+    } else {
+      alert("Not implemented for " + source);
+    }
   }
 
   saveRequirement(mfaReq: MfaReqExt) {
@@ -136,6 +147,15 @@ export class MfaComponent {
         mfaReq.saved = true;
       }
     })
+  }
+
+  hasName(name: string): boolean {
+    // If it is an empty string, the backend will assign a name automatically
+    if(name.trim().length == 0) return false;
+    for(let mech of this.user.mfaMechanisms){
+      if(name == mech.name) return true;
+    }
+    return false;
   }
 
 
@@ -160,14 +180,23 @@ export class MfaComponent {
       }
     })
   }
+
+  prospectiveName: string | undefined;
+
   requestToken(autoDo: boolean = true) {
 
-    if(!autoDo && !confirm("Are you sure you wish to apply for a new token? Your current one will no longer work!"))
-      return;
+    let name: string = prompt("Token Name (make sure you're not already using it)", "") || "";
 
-    this.mfaService.registerToken().subscribe({
+    if(this.hasName(name)){
+      alert(`You are already using '${name}'`);
+      return;
+    }
+      
+
+    this.mfaService.registerToken(name).subscribe({
       next: (registrationData: MfaRegistrationData) => {
         this.registrationData = registrationData;
+        this.prospectiveName = name;
       }, 
       error: () => {
         alert("Could not register Token");

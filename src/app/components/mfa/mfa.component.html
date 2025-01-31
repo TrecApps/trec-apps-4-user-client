@@ -9,9 +9,7 @@
 
     <div class="mfa-available-option" *ngFor="let option of mfaMechanisms">
         <h4>{{ option.source }}</h4>
-        <div *ngIf="option.source == 'Token'">
-            <button class="btn btn-primary" (click)="requestToken()">Request Token</button>
-        </div>
+        
 
         <div *ngIf="option.source == 'Phone'">
             <button *ngIf="user.phoneVerified" class="btn btn-primary" (click)="enablePhoneMfa()">Enable Text MFA</button>
@@ -23,13 +21,21 @@
         </div>
     </div>
 
+    <div class="mfa-available-option">
+        <h4>Token (Authenticator app)</h4>
+        <div>
+            <button class="btn btn-primary" (click)="requestToken()">Request Token</button>
+        </div>
+    </div>
+
     <h2 *ngIf="user.mfaMechanisms.length">Active Options</h2>
 
     <div class="mfa-available-option" *ngFor="let option of user.mfaMechanisms">
         <h3>{{ option.source }}</h3>
         <h4 *ngIf="option.source == 'Phone'">+{{ user.mobilePhone?.countryCode}} {{user.mobilePhone?.number}}</h4>
         <h4 *ngIf="option.source == 'Email'">{{user.email}}</h4>
-        <button *ngIf="option.source == 'Token'" class="btn btn-primary" (click)="requestToken(false)">Request New Token</button>
+        <h4 *ngIf="option.source == 'Token' && option.name">Token: {{option.name}}</h4>
+        <button class="btn btn-danger" (click)="removeOtherMech(option.source, option.name)">Deactivate Mechanism</button>
     </div>
 
     <div class="mfa-reg-holder" *ngIf="registrationData">
@@ -46,7 +52,7 @@
         <input type="text" [(ngModel)]="mfaCode" class="form-control">
         <div style="display: flex; flex-flow: row wrap;">
             <button *ngIf="mfaCode.trim().length" class="btn btn-submit" (click)="testCode()">Test Code</button>
-            <button class="btn btn-danger" (click)="removeTokenCode()">Delete Token</button>
+            <button *ngIf="prospectiveName" class="btn btn-danger" (click)="removeTokenCode(prospectiveName)">Delete Token</button>
         </div>
 
         <button class="btn btn-submit" (click)="doneWithCode()">Done</button>

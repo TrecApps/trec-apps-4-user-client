@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'tc-ngx-general';
 import { TcUser, MfaReq } from 'tc-ngx-general';
@@ -33,23 +33,27 @@ export class MfaService {
     })
   }
 
-  registerToken(): Observable<MfaRegistrationData> {
+  registerToken(name: string): Observable<MfaRegistrationData> {
     
     return this.client.get<MfaRegistrationData>(`${environment.user_service_url}/mfa/register`, {
-      headers: this.authService.getHttpHeaders(false, false)
+      headers: this.authService.getHttpHeaders(false, false),
+      params: new HttpParams().append("name", name)
     })
 
   }
 
-  sendMfaCode(mfaCode: string){
+  sendMfaCode(mfaCode: string, onSuccess: Function){
     this.authService.sendMfaCodeMid(mfaCode, ()=> {
       alert("Successfully Validated Code!");
+      onSuccess();
     })
   }
 
-  removeToken() : Observable<ResponseObj>{
+  removeToken(name:string) : Observable<ResponseObj>{
+    
     return this.client.delete<ResponseObj>(`${environment.user_service_url}/mfa/Token`, {
-      headers: this.authService.getHttpHeaders(false, false)
+      headers: this.authService.getHttpHeaders(false, false),
+      params: new HttpParams().append("name", name)
     });
   }
 

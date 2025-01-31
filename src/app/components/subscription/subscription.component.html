@@ -115,10 +115,12 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Routing Number</label>
+            <h4 class="text-warning" style="background-color: aliceblue;">For Testing, use '110000000'</h4>
             <input [ngModelOptions]="{standalone: true}" class="form-control" type="text" [(ngModel)]="routeNum" (focus)="switchRoutingNum(true)" (blur)="switchRoutingNum(false)">
         </div>
         <div class="mb-3">
             <label class="form-label">Account Number</label>
+            <h4 class="text-warning" style="background-color: aliceblue;">For Testing, use '000123456789'</h4>
             <input [ngModelOptions]="{standalone: true}" class="form-control" type="text" [(ngModel)]="accountNum1" (focus)="switchAccountNum(true)" (blur)="switchAccountNum(false)">
         </div>
         <div class="mb-3">
@@ -151,6 +153,7 @@
     </form>
 
     <form class="over-form" *ngIf="newCard">
+        <h4 class="text-danger" style="background-color: yellow;">Note: Right now, submitting this will fail!</h4>
         <label>New Card</label>
         <div class="mb-3">
             <label class="form-label">Name</label>

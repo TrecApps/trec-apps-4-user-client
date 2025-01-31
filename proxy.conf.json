@@ -26,9 +26,10 @@
       "changeOrigin": true
     },
     "/Subscription-be/**" : {
-      "target": "https://test.trecapps.com",
+      "target": "http://localhost:8091",
       "secure": false,
       "logLevel": "debug",
-      "changeOrigin": true
+      "changeOrigin": true,
+      "pathRewrite": {"^/Subscription-be" : ""}
     }
   }
