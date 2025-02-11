@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { NavComponent } from "../nav/nav.component";
 import { MfaService } from '../../services/mfa.service';
 import { NavigationEnd, Router } from '@angular/router';
-import { MfaMechanism, MfaReq, TcUser } from 'tc-ngx-general';
+import { MfaMechanism, MfaReq, TcUser } from '@tc/tc-ngx-general';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { MfaRegistrationData } from '../../models/Mfa';
-import { ResponseObj } from 'tc-ngx-general/lib/models/ResponseObj';
+import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
 import { FormsModule } from '@angular/forms';
 
 interface MfaReqExt {
