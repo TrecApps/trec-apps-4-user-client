@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CardInfoSubmission, UsBankInfo } from '../models/Payments';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { AuthService } from 'tc-ngx-general';
+import { AuthService } from '@tc/tc-ngx-general';
 import { Observable } from 'rxjs';
-import { ResponseObj } from 'tc-ngx-general/lib/models/ResponseObj';
+import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
 import { environment } from '../Environment/environment';
 
 export type PaymentMethod = UsBankInfo | CardInfoSubmission; 

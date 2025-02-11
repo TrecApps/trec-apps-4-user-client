@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
-import {BackendService, AuthService, DisplayService} from 'tc-ngx-general';
+import {BackendService, AuthService, DisplayService} from '@tc/tc-ngx-general';
 
 import { environment } from './Environment/environment';
 import { GlobalConstants } from './common/GlobalConstants';

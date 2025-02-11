@@ -5,7 +5,7 @@ import { GlobalConstants } from '../../common/GlobalConstants';
 import { UserPost, PasswordProfile } from '../../models/User';
 import { UserService } from '../../services/user.service';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DisplayService } from 'tc-ngx-general';
+import { DisplayService } from '@tc/tc-ngx-general';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 

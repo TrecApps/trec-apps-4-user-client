@@ -2,11 +2,11 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription, take } from 'rxjs';
-import { AuthService } from 'tc-ngx-general';
+import { AuthService } from '@tc/tc-ngx-general';
 import { environment } from '../Environment/environment';
 import { UserSubscription, UserSubscriptionList } from '../models/Subscription';
 import { SubscriptionPost, TcSubscription } from '../models/Payments';
-import { ResponseObj } from 'tc-ngx-general/lib/models/ResponseObj';
+import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
 
 export class SubscriptionsSearchObject {
   category: string | undefined;

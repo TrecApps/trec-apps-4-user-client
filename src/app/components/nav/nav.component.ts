@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'tc-ngx-general';
+import { AuthService } from '@tc/tc-ngx-general';
 
 @Component({
   selector: 'app-nav',

@@ -1,4 +1,4 @@
-import { TcUser } from "tc-ngx-general";
+import { TcUser } from "@tc/tc-ngx-general";
 
 
 export class PasswordProfile {

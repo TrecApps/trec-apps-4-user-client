@@ -2,14 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { take, Observable } from 'rxjs';
-import { AuthService } from 'tc-ngx-general';
-import { LoginToken, PasswordChange } from 'tc-ngx-general/lib/models/Login';
+import { AuthService } from '@tc/tc-ngx-general';
+import { LoginToken, PasswordChange } from '@tc/tc-ngx-general/lib/models/Login';
 import { filterUser } from '../models/User';
 import { environment } from '../Environment/environment';
 import { SessionListV2 } from '../models/Sessions';
 import { UserPost } from '../models/User';
 import { BooleanRef } from '../models/Holders';
-import { TcUser } from 'tc-ngx-general';
+import { TcUser } from '@tc/tc-ngx-general';
 
 @Injectable({
   providedIn: 'root'

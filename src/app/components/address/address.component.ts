@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Address, AddressList, AuthService } from 'tc-ngx-general';
+import { Address, AddressList, AuthService } from '@tc/tc-ngx-general';
 import { AddressService } from '../../services/address.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ResponseObj } from 'tc-ngx-general/lib/models/ResponseObj';
+import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
 import { NavComponent } from '../nav/nav.component';
 
 @Component({

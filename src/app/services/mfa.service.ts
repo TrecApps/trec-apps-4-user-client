@@ -1,11 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from 'tc-ngx-general';
-import { TcUser, MfaReq } from 'tc-ngx-general';
+import { AuthService } from '@tc/tc-ngx-general';
+import { TcUser, MfaReq } from '@tc/tc-ngx-general';
 import { environment } from '../Environment/environment';
 import { Observable } from 'rxjs';
 import { MfaRegistrationData } from '../models/Mfa';
-import { ResponseObj } from 'tc-ngx-general/lib/models/ResponseObj';
+import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
 
 @Injectable({
   providedIn: 'root'
@@ -42,8 +42,8 @@ export class MfaService {
 
   }
 
-  sendMfaCode(mfaCode: string, onSuccess: Function){
-    this.authService.sendMfaCodeMid(mfaCode, ()=> {
+  sendMfaCode(mfaCode: string, mfaName:string, onSuccess: Function){
+    this.authService.sendMfaCodeMid(mfaCode, mfaName,()=> {
       alert("Successfully Validated Code!");
       onSuccess();
     })

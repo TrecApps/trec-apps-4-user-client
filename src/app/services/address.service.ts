@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Address, AuthService } from 'tc-ngx-general';
+import { Address, AuthService } from '@tc/tc-ngx-general';
 import { environment } from '../Environment/environment';
-import { ResponseObj } from 'tc-ngx-general/lib/models/ResponseObj';
+import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
 
 @Injectable({
   providedIn: 'root'

@@ -4,7 +4,7 @@ import { SessionList, SessionListV2 } from '../../models/Sessions';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { NavComponent } from '../nav/nav.component';
-import { AuthService, DisplayService } from 'tc-ngx-general';
+import { AuthService, DisplayService } from '@tc/tc-ngx-general';
 
 @Component({
   selector: 'app-session',

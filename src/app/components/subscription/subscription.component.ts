@@ -9,8 +9,8 @@ import { PaymentMethod, PayMethodService } from '../../services/pay-method.servi
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BankAccountType, CardInfoSubmission, SubscriptionPost, TcSubscription, UsBankInfo } from '../../models/Payments';
-import { AddressList, AuthService } from 'tc-ngx-general';
-import { ResponseObj } from 'tc-ngx-general/lib/models/ResponseObj';
+import { AddressList, AuthService } from '@tc/tc-ngx-general';
+import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
 
 
 class PaymentMethodHolder {
@@ -232,7 +232,7 @@ export class SubscriptionComponent {
       next:(value: ResponseObj) => {
         alert("Successfully Added!");
         if(this.newUsAccount){
-          this.newUsAccount.payId = value.id || "";
+          this.newUsAccount.payId = value.id?.toString() || "";
           this.paymentMethods.push(new PaymentMethodHolder(this.newUsAccount))
           this.newUsAccount = undefined;
         }
@@ -249,7 +249,7 @@ export class SubscriptionComponent {
       next:(value: ResponseObj) => {
         alert("Successfully Added!");
         if(this.newCard){
-          this.newCard.payId = value.id || "";
+          this.newCard.payId = value.id?.toString() || "";
           this.paymentMethods.push(new PaymentMethodHolder(this.newCard))
           this.newCard = undefined;
         }

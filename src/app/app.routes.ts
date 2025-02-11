@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from 'tc-ngx-general';
+import { LoginComponent } from '@tc/tc-ngx-general';
 import { BrandsComponent } from './components/brands/brands.component';
 import { CreateUserComponent } from './components/create-user/create-user.component';
 import { ManageUserComponent } from './components/manage-user/manage-user.component';

@@ -113,8 +113,9 @@ export class MfaComponent {
   }
 
   testCode(){
-    this.mfaService.sendMfaCode(this.mfaCode, ()=> {
+    this.mfaService.sendMfaCode(this.mfaCode, this.prospectiveName || "",()=> {
       if(this.prospectiveName){
+        console.log("Prospective Name:", this.prospectiveName);
         this.user.mfaMechanisms.push({source: "Token", name: this.prospectiveName});
       }
     })
@@ -191,12 +192,15 @@ export class MfaComponent {
       alert(`You are already using '${name}'`);
       return;
     }
+
+    console.log(`Preparing name ${name}`);
       
 
     this.mfaService.registerToken(name).subscribe({
       next: (registrationData: MfaRegistrationData) => {
         this.registrationData = registrationData;
         this.prospectiveName = name;
+        console.log(`Prospective Name set to ${this.prospectiveName}`);
       }, 
       error: () => {
         alert("Could not register Token");

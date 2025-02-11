@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { AuthService, ImageGalleryComponent, ImageInsert, ImageService } from 'tc-ngx-general';
+import { AuthService, ImageGalleryComponent, ImageInsert, ImageService } from '@tc/tc-ngx-general';
 import { BooleanRef } from '../../models/Holders';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
