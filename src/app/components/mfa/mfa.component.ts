@@ -68,7 +68,7 @@ export class MfaComponent {
           this.mfaMechanisms = [];
           for(let method of this.mfaMethods){
             if(!this.hasMechanism(this.user.mfaMechanisms, method)) {
-              this.mfaMechanisms.push({source: method})
+              this.mfaMechanisms.push({source: method, name: undefined})
             }
           }
 
@@ -163,7 +163,7 @@ export class MfaComponent {
   enableEmailMfa() {
     this.mfaService.enableContactForMfa(this.user, true, (worked: boolean) => {
       if(worked){
-        this.user.mfaMechanisms.push({source: "Email"});
+        this.user.mfaMechanisms.push({source: "Email", name: undefined});
         this.mfaMechanisms = this.mfaMechanisms.filter(v => v.source != "Email");
       } else {
         alert("Faied to Enable Email MFA");
@@ -173,7 +173,7 @@ export class MfaComponent {
   enablePhoneMfa() {
     this.mfaService.enableContactForMfa(this.user, false, (worked: boolean) => {
       if(worked){
-        this.user.mfaMechanisms.push({source: "Phone"});
+        this.user.mfaMechanisms.push({source: "Phone", name: undefined});
         this.mfaMechanisms = this.mfaMechanisms.filter(v => v.source != "Phone");
       } else {
         alert("Faied to Enable Phone MFA");
