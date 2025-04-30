@@ -1,1 +1,87 @@
-<p>login works!</p>
+<br>
+<div class="container" id="loginContainer" [style.background-color]=color1>
+    <div id="messageJumbo" class="fadeInGradient" [class.jumbotron]="!displayService.isMobile" [style.background]="loginGradient">
+        <h3 *ngIf="displayService.isMobile" [style.color]=color5>TrecAccount Login...</h3>
+        <div *ngIf="!displayService.isMobile">
+            <h1 [style.color]=color5>TrecAccount Login</h1>
+            <div id="logoContainer" class="containGlobal">
+                <img class="LoginImage fadeInRight" src="assets/icons/outline.png">
+                <div class="clearfix"></div>
+                <img class="LoginImage-ref-2 fadeInLeftRef" id="Globe1" src="assets/icons/glob-2.png">
+                <img id="Globe2" class="LoginImage-ref fadeInRightRef" src="assets/icons/world-1.png">
+            </div>
+        </div>
+    </div>
+    
+    <div width="100%" class="form" *ngIf="!useMfaPage">
+        <h4 *ngIf="loginFail" color="red">Failed To Login</h4>
+        <div> 
+        <label id="usernameLabel" [style.color]=color3>Username</label>
+        <input type="text" class="form-control" name="username" [(ngModel)]="login.username"> <br>
+        <label id="passwordLabel" [style.color]=color3 >Password:</label>
+        <input class="form-control" type="password" name="password" [(ngModel)]="login.password"><br>
+        <label class="form-check-label" for="noExpire" id="noExpireLabel" [style.color]="color3">Stay Logged In (Not recommended on Pubic Devices)</label><br>
+        <input class="form-check-input" type="checkbox" id="noExpire" [(ngModel)]="login.stayLoggedIn" style="margin-left: 0;">
+        </div>
+
+        <div id="buttonContainer"> 
+        <input type="submit" class="btn btn-submit" id="loginButton" [style.background-color]=color3 [style.color]=color2 value="Submit" (click)="logon()">
+        <br>
+        <a
+            *ngIf="!backendService.isUserService"
+            id="registerLink"
+            href="https://test.trecapps.com/users/create"
+            target="_blank"
+            class="btn btn-submit"
+            [style.background-color]=color3 
+            [style.color]=color2 >
+            Create New Trec-Account
+        </a>
+        <a
+            *ngIf="backendService.isUserService"
+            id="registerLink"
+            (click)="naveToCreateUser()"
+            class="btn btn-submit"
+            [style.background-color]=color3 
+            [style.color]=color2>
+            Create New Trec-Account
+        </a>
+        </div>
+    </div>
+
+    <div width="100%" class="form" *ngIf="useMfaPage && authService.tcUser">
+        <div *ngIf="!mfaSelection" style="display: flex; flex-direction: column;">
+            <button class="mfa-selection-button" 
+                [ngClass]="{'mfa-unselection': mfaSelection !== '' && mfaSelection != m.source}" 
+                *ngFor="let m of authService.tcUser?.mfaMechanisms"
+                (click)="prepMfaValidation(m.source, m.name)">
+                    {{ m.source + (m.name ? (": "  + m.name) : "") }}
+            </button>
+        </div>
+        <div *ngIf="mfaSelection">
+            <label id="code-label" [style.color]=color3 >Code from {{ mfaSelection }}</label>
+            <input type="text" class="form-control" name="username" [(ngModel)]="mfaCode"> <br>
+            <a
+            id="registerLink"
+            (click)="mfaSelection = ''"
+            class="btn btn-submit"
+            [style.background-color]=color3 
+            [style.color]=color2>
+            Back
+        </a>
+            <a
+            id="registerLink"
+            (click)="sendMfaCode()"
+            class="btn btn-submit"
+            [style.background-color]=color3 
+            [style.color]=color2>
+            Validate Login
+        </a>
+        </div>
+
+    </div>
+
+    <div class="screen-darkener"  *ngIf="showSpinner">
+        <mat-progress-spinner [mode]="'indeterminate'"></mat-progress-spinner>
+    </div>
+</div>

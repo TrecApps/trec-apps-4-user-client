@@ -299,7 +299,19 @@ export class AuthService {
     this.loginToken = undefined;
   }
 
-  sendMfaCode(mfaCode: string, mfaSelection: string, mfaName: string, callable: LoginResultHandler){
+  prepareMfaValidation(mfaS:string, onResult: TwoStringHandler,mfaN: string | undefined){
+    this.httpClient.get(this.getUrl(`mfa/select/${mfaS}`), {headers:this.getHttpHeaders2(HttpContentType.NONE)})
+    .subscribe({
+      next: () => {
+        onResult(mfaS, mfaN);
+      },
+      error: () => {
+
+      }
+    })
+  }
+
+  sendMfaCode(mfaCode: string, mfaSelection: string, mfaName: string | undefined, callable: LoginResultHandler){
     this.httpClient.post(this.getUrl(`mfa`), {
       code: mfaCode, type: mfaSelection, name: mfaName
     }, {
