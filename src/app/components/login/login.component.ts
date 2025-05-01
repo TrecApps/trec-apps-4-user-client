@@ -10,11 +10,11 @@ import { GlobalConstants } from '../../common/GlobalConstants';
 import { Login, LoginToken } from '@tc/tc-ngx-general/lib/models/Login';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, FormsModule, MatProgressSpinnerModule],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+    selector: 'app-login',
+    imports: [CommonModule, FormsModule, MatProgressSpinnerModule],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.css',
+    standalone: true
 })
 export class LoginComponent {
   color1 ="white"

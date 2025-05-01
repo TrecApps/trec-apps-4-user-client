@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { AuthService } from '@tc/tc-ngx-general';
 
 @Component({
-  selector: 'app-nav',
-  standalone: true,
-  imports: [],
-  templateUrl: './nav.component.html',
-  styleUrl: './nav.component.css'
+    selector: 'app-nav',
+    imports: [],
+    templateUrl: './nav.component.html',
+    styleUrl: './nav.component.css',
+    standalone: true
 })
 export class NavComponent {
 

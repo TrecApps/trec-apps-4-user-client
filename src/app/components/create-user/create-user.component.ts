@@ -10,12 +10,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @Component({
-  selector: 'app-create-user',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, MatProgressSpinnerModule],
-  providers: [DatePipe],
-  templateUrl: './create-user.component.html',
-  styleUrl: './create-user.component.css'
+    selector: 'app-create-user',
+    imports: [CommonModule, ReactiveFormsModule, FormsModule, MatProgressSpinnerModule],
+    providers: [DatePipe],
+    templateUrl: './create-user.component.html',
+    styleUrl: './create-user.component.css',
+    standalone: true
 })
 export class CreateUserComponent {
 

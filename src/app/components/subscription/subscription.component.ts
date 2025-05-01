@@ -34,25 +34,25 @@ class PaymentMethodHolder {
 }
 
 @Component({
-  selector: 'app-subscription',
-  standalone: true,
-  imports: [NavComponent, CommonModule, FormsModule],
-  templateUrl: './subscription.component.html',
-  styleUrl: './subscription.component.css',
-  animations: [
-    trigger('translate', [
-      state('collapse', style({ height: '0px', overflow: 'hidden'})),
-      state('expanded', style({ height: '*', overflow: 'hidden'})),
-      transition('collapse => expanded', [ animate('0.33s')]),
-      transition('expanded => collapse', [animate('0.33s')])
-    ]),
-    trigger('rotate', [
-      state('collapse', style({ transform: 'rotate(180deg)'})),
-      state('expanded', style({ transform: 'rotate(270deg)'})),
-      transition('collapse => expanded', [ animate('0.33s')]),
-      transition('expanded => collapse', [animate('0.33s')])
-    ])
-  ]
+    selector: 'app-subscription',
+    imports: [NavComponent, CommonModule, FormsModule],
+    templateUrl: './subscription.component.html',
+    styleUrl: './subscription.component.css',
+    standalone: true,
+    animations: [
+        trigger('translate', [
+            state('collapse', style({ height: '0px', overflow: 'hidden' })),
+            state('expanded', style({ height: '*', overflow: 'hidden' })),
+            transition('collapse => expanded', [animate('0.33s')]),
+            transition('expanded => collapse', [animate('0.33s')])
+        ]),
+        trigger('rotate', [
+            state('collapse', style({ transform: 'rotate(180deg)' })),
+            state('expanded', style({ transform: 'rotate(270deg)' })),
+            transition('collapse => expanded', [animate('0.33s')]),
+            transition('expanded => collapse', [animate('0.33s')])
+        ])
+    ]
 })
 export class SubscriptionComponent {
 

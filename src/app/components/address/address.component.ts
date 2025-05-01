@@ -8,11 +8,11 @@ import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
 import { NavComponent } from '../nav/nav.component';
 
 @Component({
-  selector: 'app-address',
-  standalone: true,
-  imports: [CommonModule, FormsModule, NavComponent],
-  templateUrl: './address.component.html',
-  styleUrl: './address.component.css'
+    selector: 'app-address',
+    imports: [CommonModule, FormsModule, NavComponent],
+    templateUrl: './address.component.html',
+    styleUrl: './address.component.css',
+    standalone: true
 })
 export class AddressComponent {
 

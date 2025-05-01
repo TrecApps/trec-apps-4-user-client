@@ -15,11 +15,11 @@ interface MfaReqExt {
 }
 
 @Component({
-  selector: 'app-mfa',
-  standalone: true,
-  imports: [NavComponent, CommonModule, FormsModule],
-  templateUrl: './mfa.component.html',
-  styleUrl: './mfa.component.css'
+    selector: 'app-mfa',
+    imports: [NavComponent, CommonModule, FormsModule],
+    templateUrl: './mfa.component.html',
+    styleUrl: './mfa.component.css',
+    standalone: true
 })
 export class MfaComponent {
 

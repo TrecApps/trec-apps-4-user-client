@@ -7,11 +7,11 @@ import { NavComponent } from '../nav/nav.component';
 import { AuthService, DisplayService } from '@tc/tc-ngx-general';
 
 @Component({
-  selector: 'app-session',
-  standalone: true,
-  imports: [CommonModule, NavComponent],
-  templateUrl: './session.component.html',
-  styleUrl: './session.component.css'
+    selector: 'app-session',
+    imports: [CommonModule, NavComponent],
+    templateUrl: './session.component.html',
+    styleUrl: './session.component.css',
+    standalone: true
 })
 export class SessionComponent {
 

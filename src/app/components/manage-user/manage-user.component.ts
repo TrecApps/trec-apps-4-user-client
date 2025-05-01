@@ -20,11 +20,11 @@ class BirthdayDetails {
 }
 
 @Component({
-  selector: 'app-manage-user',
-  standalone: true,
-  imports: [CommonModule, FormsModule, NavComponent, ImageGalleryComponent],
-  templateUrl: './manage-user.component.html',
-  styleUrl: './manage-user.component.css'
+    selector: 'app-manage-user',
+    imports: [CommonModule, FormsModule, NavComponent, ImageGalleryComponent],
+    templateUrl: './manage-user.component.html',
+    styleUrl: './manage-user.component.css',
+    standalone: true
 })
 export class ManageUserComponent {
   userService: UserService;

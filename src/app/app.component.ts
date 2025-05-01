@@ -9,11 +9,10 @@ import { environment } from './Environment/environment';
 import { GlobalConstants } from './common/GlobalConstants';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule, RouterOutlet, HttpClientModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+    selector: 'app-root',
+    imports: [CommonModule, RouterOutlet, HttpClientModule],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'user-client';
