@@ -10,7 +10,7 @@ import { GlobalConstants } from './common/GlobalConstants';
 
 @Component({
     selector: 'app-root',
-    imports: [CommonModule, RouterOutlet, HttpClientModule],
+    imports: [CommonModule, RouterOutlet],
     templateUrl: './app.component.html',
     styleUrl: './app.component.css'
 })
