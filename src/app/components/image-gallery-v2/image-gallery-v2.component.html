@@ -1,1 +1,54 @@
-<p>image-gallery-v2 works!</p>
+<lib-up-slider style="height: 100%; display:block" [useHeight]="'100%'" [isActive]="show" (onClose)="currentImage = undefined; onClose.emit()">
+
+    <div style="display: flex; flex-direction: column; height: calc(100vh - 37px);">
+        <div class="element-container" [ngClass]="'element-container-' + ss.style">
+            <h3>Albums</h3>
+            <div class="album-collection">
+                <div class="album-container" *ngFor="let album of albumList" (click)="onSelectAlbum(album)">
+                <img [src]="getAlbumImage(album)">
+                <span>{{ album }}</span>
+                <div *ngIf="album != filterBy" class="album-cover"></div>
+            </div>        
+            </div>
+
+        </div>
+
+
+        <div class="image-gallery-holder">
+            <div class="image-gallery" [@imageGalShow]="showImages ? 'expanded' : 'collapse'">
+                <div class="image-holder" *ngFor="let image of imageEntries|imageAlbumFilter:filterBy" (click)="currentImage = image">
+                    <img [src]="image.src">
+                    <p *ngIf="image.record.name">{{ image.record.name }}</p>
+                </div>
+            </div>
+        </div>        
+    </div>
+
+
+    <lib-up-slider [isActive]="currentImage !== undefined" (onClose)="currentImage = undefined">
+        <div class="current-image">
+            <div class="current-image-holder">
+                <img [src]="currentImage?.src">
+            </div>
+
+            <div class="current-image-dashboard form">
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <input class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" class="form-check-input">
+                    <label class="form-check-label">Use Crop</label>
+                    <p></p>
+                </div>
+                <div class="form-group">
+                    <p>Stats</p>
+                </div>
+            </div>
+
+        </div>
+    </lib-up-slider>
+
+
+
+</lib-up-slider>

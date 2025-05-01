@@ -18,6 +18,7 @@ export const environment = {
   user_service_url: 'http://localhost:4200/User-api/',
   user_admin_url: 'http://localhost:4200/admin/',
   image_service_url: "http://localhost:4200/Images-api/",
+  image_service_url_2: "http://localhost:4200/Images-api/",
   app_name: "Trec-Apps-User-Service"
 };
 
