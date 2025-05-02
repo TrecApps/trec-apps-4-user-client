@@ -29,6 +29,18 @@
         <div class="current-image">
             <div class="current-image-holder">
                 <img [src]="currentImage?.src">
+
+                <div *ngIf="isCropping" class="crop-shades" style="top: 0; width: 100%" [ngStyle]="{'height.px': squarePosition.top}"></div>
+                <div *ngIf="isCropping" class="crop-shades" style="bottom: 0; width: 100%" [ngStyle]="{'top.px': squarePosition.top + squareSize}"></div>
+                <div *ngIf="isCropping" class="crop-shades" style="top: 0; left: 0; height: 100%" [ngStyle]="{'width.px': squarePosition.left}"></div>
+                <div *ngIf="isCropping" class="crop-shades" style="top: 0; right: 0; height: 100%" [ngStyle]="{'left.px': squarePosition.left + squareSize}"></div>
+                <div *ngIf="isCropping" class="crop-borders" 
+                    (mousemove)="onMoveCropBorders($event)"
+                    (mousedown)="onDragMouseDown($event)"
+                    [ngStyle]="{'left.px': squarePosition.left, 'top.px': squarePosition.top, 'width.px' : squareSize, 'height.px' : squareSize}">
+    
+                    <div class="crop-resizer" (mousedown)="onResizeStart($event)" (mousemove)="onResizeMove($event)"></div>
+                </div>
             </div>
 
             <div class="current-image-dashboard form">
@@ -37,8 +49,10 @@
                     <input class="form-control">
                 </div>
                 <div class="form-group">
-                    <input type="checkbox" class="form-check-input">
+                    <input type="checkbox" class="form-check-input"  [(ngModel)]="isCropping" (change)="onCropCheck()">
                     <label class="form-check-label">Use Crop</label>
+                    
+                    <button class="btn btn-submit btn-primary" *ngIf="cropChanged" (click)="onUpdateCrop()">Update Cropping</button>
                     <p></p>
                 </div>
                 <div class="form-group">

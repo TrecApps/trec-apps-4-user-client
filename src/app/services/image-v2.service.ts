@@ -75,10 +75,28 @@ export class ImageV2Service {
     })
   }
 
-  setAsProfile(id: string, app: string){
+  setAsProfile(id: string, app: string): Observable<ResponseObj>{
     return this.client.put<ResponseObj>(`${environment.image_service_url_2}/Image-API/${id}`, null, {
       headers: this.authService.getHttpHeaders2(HttpContentType.NONE),
       params: new HttpParams().append("app", app)
+    })
+  }
+
+  updateCrop(id: string, crop: string | undefined): Observable<ResponseObj> {
+    return this.client.patch<ResponseObj>(`${environment.image_service_url_2}/Image-API/${id}`, {
+      field: "crop", crop
+    }, {
+      headers: this.authService.getHttpHeaders2(HttpContentType.JSON),
+      params: new HttpParams().append("id", id)
+    })
+  }
+
+  updateAlbum(id: string, album: string): Observable<ResponseObj> {
+    return this.client.patch<ResponseObj>(`${environment.image_service_url_2}/Image-API/${id}`, {
+      field: "album", album
+    }, {
+      headers: this.authService.getHttpHeaders2(HttpContentType.JSON),
+      params: new HttpParams().append("id", id)
     })
   }
 
