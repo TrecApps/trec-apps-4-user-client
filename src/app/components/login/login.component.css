@@ -1,0 +1,401 @@
+
+
+
+.clearfix {
+    clear:both;
+    z-index: -1;
+}
+.containGlobal{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 70%;
+}
+img {
+    position: absolute; 
+    left:45%;
+}
+
+.LoginImage-ref-2 {
+    -webkit-animation-duration: 8s;
+            animation-duration: 8s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+    float:right;
+    margin-right: 20%;
+    width: 100px;
+    height: 100px;
+    z-index: 7;
+    opacity: 0.9;
+   
+}
+
+@-webkit-keyframes fadeInLeftRef {
+    0% {
+        opacity: .1;
+       width: 30px;
+       height: 30px;
+       margin-right: -60%;
+       -webkit-transform: translateX(20px);
+    }
+    10% {
+        opacity: .025;
+    }
+    20%{
+        opacity: .125;
+    }
+    30%{
+        opacity: .225;
+    }
+    45% {
+        opacity: .025;
+        transform: translateX(8px);
+    }
+    60% {
+        opacity: .125;
+        transform: translateX(6px);
+    }
+    90%{
+        opacity: .225;
+        transform: translateX(4px);
+       
+    }
+    100% {
+        opacity: .95;
+       margin-right: 60%;
+       width: 100px;
+       height: 100px;
+       
+       -webkit-transform: translateX(0);
+    }
+ }
+ 
+ @keyframes fadeInLeftRef {
+    0% {
+       opacity: .1;
+       margin-right: 20%;
+       width: 30px;
+      height: 30px;
+      margin-right: -60%;
+
+       transform: translateX(20px);
+    }
+    10% {
+        opacity: .025;
+    }
+    20%{
+        opacity: .125;
+    }
+    30%{
+        opacity: .225;
+    }
+    45% {
+        opacity: .025;
+        transform: translateX(8px);
+    }
+    60% {
+        opacity: .125;
+        transform: translateX(6px);
+    }
+    90%{
+        opacity: .225;
+        transform: translateX(4px);
+       
+    }
+    
+    100% {
+       opacity: .95;
+       margin-right: 60%;
+       width: 100px;
+       height: 100px;
+       transform: translateX(0);
+    }
+ }
+
+ .fadeInRightRef {
+    -webkit-animation-name: fadeInLeftRef;
+    animation-name: fadeInLeftRef;
+ }
+
+
+#Globe1 {
+    opacity: 1;
+    transition: opacity 1.5s ease-out;
+    -moz-transition: opacity 1.5s ease-out;
+    -webkit-transition: opacity 1.5s ease-out;
+    -o-transition: opacity 1.5s ease-out;
+}
+#Globe1:hover {
+    opacity: .25;
+}
+
+.LoginImage-ref {
+    -webkit-animation-duration: 8s;
+            animation-duration: 8s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+    float:right;
+    margin-right: 20%;
+    width: 100px;
+    height: 100px;
+    z-index: 3;
+}
+
+@-webkit-keyframes fadeInRightRef {
+    0% {
+       opacity: 0;
+       width: 30px;
+       height: 30px;
+       -webkit-transform: translateX(20px);
+    }
+    10% {
+        opacity: .025;
+    }
+    20%{
+        opacity: .125;
+    }
+    30%{
+        opacity: .225;
+    }
+    45% {
+        opacity: 1;
+        transform: translateX(8px);
+    }
+    100% {
+       opacity: .35;
+       margin-right: 60%;
+       width: 100px;
+       height: 100px;
+       -webkit-transform: translateX(0);
+    }
+ }
+ 
+ @keyframes fadeInRightRef {
+    0% {
+       opacity: 0;
+       margin-right: 20%;
+       width: 30px;
+      height: 30px;
+
+       transform: translateX(-20px);
+    }
+    10% {
+        opacity: .025;
+    }
+    20%{
+        opacity: .125;
+    }
+    30%{
+        opacity: .225;
+    }
+    45% {
+        opacity: 1;
+        transform: translateX(-8px);
+    }
+    100% {
+       opacity: .35;
+       margin-right: 60%;
+       width: 100px;
+       height: 100px;
+       transform: translateX(0);
+    }
+ }
+
+ .fadeInRightRef {
+    -webkit-animation-name: fadeInRightRef;
+    animation-name: fadeInRightRef;
+ }
+
+.LoginImage {
+    -webkit-animation-duration: 8s;
+            animation-duration: 8s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+    float:right;
+    margin-right: 20%;
+    width: 30px;
+    height: 30px;
+    z-index: 6;
+    
+}
+
+@-webkit-keyframes fadeInRight {
+    0% {
+       opacity: 0;
+       -webkit-transform: translateX(20px);
+    }
+    10% {
+        opacity: .025;
+    }
+    20%{
+        opacity: .125;
+    }
+    30%{
+        opacity: .225;
+    }
+    45% {
+        opacity: 0.5;
+        transform: translateX(8px);
+    }
+    100% {
+       opacity: .7;
+       -webkit-transform: translateX(0);
+    }
+ }
+ 
+ @keyframes fadeInRight {
+    0% {
+       opacity: 0;
+       margin-right: 20%;
+       width: 50px;
+      height: 20px;
+       transform: translateX(20px);
+    }
+    10% {
+        opacity: .025;
+    }
+    20%{
+        opacity: .125;
+    }
+    30%{
+        opacity: .225;
+    }
+    45% {
+        opacity: 0.5;
+        transform: translateX(8px);
+    }
+    100% {
+       opacity: .7;
+       margin-right: 50%;
+       width: 100px;
+      height: 100px;
+       transform: translateX(0);
+    }
+ }
+ 
+ .fadeInRight {
+    -webkit-animation-name: fadeInRight;
+    animation-name: fadeInRight;
+ }
+
+
+ @-webkit-keyframes fadeInGradient {
+    0% {
+       opacity: .25;
+       -webkit-transform: translateX(20px);
+    }
+    100% {
+       opacity: 1;
+       -webkit-transform: translateX(0);
+    }
+ }
+
+ @keyframes fadeInGradient {
+    0% {
+       opacity: .25;
+       transform: translateX(20px);
+    }
+    100% {
+       opacity: 1;
+       transform: translateX(0);
+    }
+ }
+
+ .fadeInGradient {
+    -webkit-animation-name: fadeInGradient;
+    animation-name: fadeInGradient;
+ }
+
+.jumbotron {
+    -webkit-animation-duration: 5s;
+            animation-duration: 5s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+}
+
+#usernameLabel {
+    font-weight: 700;
+}
+
+#passwordLabel {
+    font-weight: 700;
+}
+
+#messageJumbo {
+    box-shadow: 0 1px 1px rgba(0,0,0,0.12), 
+              0 2px 2px rgba(0,0,0,0.12), 
+              0 3px 4px rgba(0,0,0,0.12), 
+              0 4px 8px rgba(0,0,0,0.12),
+              0 5px 16px rgba(0,0,0,0.12);
+}
+
+#loginButton {
+margin: auto;
+width: 30%;
+padding: 5px;
+box-shadow: 0 1px 1px rgba(0,0,0,0.12), 
+              0 2px 2px rgba(0,0,0,0.12), 
+              0 4px 4px rgba(0,0,0,0.20);
+              font-weight: 700;
+}
+
+#registerLink {
+    display: block;
+    margin: auto;
+    margin-top: 5px;
+    width: 40%;
+    padding: 5px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.12), 
+              0 2px 2px rgba(0,0,0,0.12), 
+              0 4px 4px rgba(0,0,0,0.12), 
+              0 8px 8px rgba(0,0,0,0.12),
+              0 16px 16px rgba(0,0,0,0.12);
+              font-weight: 700;
+}
+
+
+#buttonContainer {
+    margin: auto;
+    display: grid;
+    padding: 10px;
+    
+}
+
+#loginContainer{
+    padding: 20px;
+    border-radius: 25px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.12), 
+              0 2px 2px rgba(0,0,0,0.12), 
+              0 4px 4px rgba(0,0,0,0.12), 
+              0 8px 8px rgba(0,0,0,0.12),
+              0 16px 16px rgba(0,0,0,0.12);
+}
+
+.screen-darkener {
+    z-index: 3;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0, 0.1);
+}
+
+mat-progress-spinner {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+}
+
+.mfa-selection-button {
+    border: solid black 2px;
+    background-color: aqua;
+    padding: 10px;
+    margin: 10px;
+}
+
+.mfa-selection-button:hover {
+    background-color: azure;
+}

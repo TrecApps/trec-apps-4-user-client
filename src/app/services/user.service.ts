@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { take, Observable } from 'rxjs';
-import { AuthService } from '@tc/tc-ngx-general';
+//import { AuthService } from '@tc/tc-ngx-general';
+import { AuthService, HttpContentType } from './auth.service';
 import { LoginToken, PasswordChange } from '@tc/tc-ngx-general/lib/models/Login';
 import { filterUser } from '../models/User';
 import { environment } from '../Environment/environment';
@@ -50,7 +51,7 @@ export class UserService {
         let code = prompt(`Check your Email ${this.currentUser.email} for a Code from TrecApps and enter it here (within ten minutes):`);
 
         this.httpClient.post(`${environment.user_service_url}Email`, code,
-         {headers: this.authService.getHttpHeaders(true, false)}).pipe(take(1)).subscribe({
+         {headers: this.authService.getHttpHeaders2(HttpContentType.NONE)}).pipe(take(1)).subscribe({
           error,
           next: () => {
             this.currentUser.emailVerified = true;
@@ -62,7 +63,7 @@ export class UserService {
 
 
     this.httpClient.get(`${environment.user_service_url}Email`,
-     {headers: this.authService.getHttpHeaders(true, false)}).pipe(take(1)).subscribe(observe);
+     {headers: this.authService.getHttpHeaders2(HttpContentType.NONE)}).pipe(take(1)).subscribe(observe);
    }
 
    requestPhoneVerification() {
@@ -76,7 +77,7 @@ export class UserService {
         let code = prompt(`Check your Phone ${this.currentUser?.mobilePhone?.number} for a Code from TrecApps and enter it here (within ten minutes):`);
 
         this.httpClient.post(`${environment.user_service_url}Sms`, code,
-         {headers: this.authService.getHttpHeaders(true, false)}).pipe(take(1)).subscribe({
+         {headers: this.authService.getHttpHeaders2(HttpContentType.NONE)}).pipe(take(1)).subscribe({
           error,
           next: () => {
             this.currentUser.phoneVerified = true;
@@ -88,13 +89,13 @@ export class UserService {
 
 
     this.httpClient.get(`${environment.user_service_url}Sms`,
-     {headers: this.authService.getHttpHeaders(true, false)}).pipe(take(1)).subscribe(observe);
+     {headers: this.authService.getHttpHeaders2(HttpContentType.NONE)}).pipe(take(1)).subscribe(observe);
    }
 
    private updateProfilePic()
    {
-    if(this.currentUser.profilePics && "Main" in this.currentUser.profilePics){
-      this.profilePic = `${environment.image_service_url}Profile/of/${this.currentUser?.id}`;
+    if(this.currentUser.profilePics && "main" in this.currentUser.profilePics){
+      this.profilePic = `${environment.image_service_url_2}Images/profile/User-${this.currentUser?.id}`;
     } else {
       this.profilePic = this.profileFallback;
     }
@@ -119,7 +120,7 @@ export class UserService {
     }
 
 
-    this.httpClient.get<string>(`${environment.user_admin_url}Verify/requestVerification`,{headers: this.authService.getHttpHeaders(true, false)})
+    this.httpClient.get<string>(`${environment.user_admin_url}Verify/requestVerification`,{headers: this.authService.getHttpHeaders2(HttpContentType.NONE)})
       .pipe(take(1)).subscribe(observe);
    }
 
@@ -187,9 +188,9 @@ export class UserService {
       }
     };
 
-    this.httpClient.get<TcUser>(`${environment.user_service_url}Users/Current`,{headers: this.authService.getHttpHeaders(true, false)}).pipe(take(1)).subscribe(observe);
+    this.httpClient.get<TcUser>(`${environment.user_service_url}Users/Current`,{headers: this.authService.getHttpHeaders2(HttpContentType.NONE)}).pipe(take(1)).subscribe(observe);
     
-    return this.httpClient.get<string[]>(`${environment.user_service_url}Auth/permissions`,{headers: this.authService.getHttpHeaders(true, false)});
+    return this.httpClient.get<string[]>(`${environment.user_service_url}Auth/permissions`,{headers: this.authService.getHttpHeaders2(HttpContentType.NONE)});
     
     //this.refreshAdminVerificationStatus();
   }
@@ -215,13 +216,13 @@ export class UserService {
         if(response){
           this.verificationStatus = 1;
         } else {
-          this.httpClient.get<Boolean>(`${environment.user_admin_url}Verify/hasVerification`,{headers: this.authService.getHttpHeaders(true, false)})
+          this.httpClient.get<Boolean>(`${environment.user_admin_url}Verify/hasVerification`,{headers: this.authService.getHttpHeaders2(HttpContentType.NONE)})
           .pipe(take(1)).subscribe(observe2);
         }
       }
     }
 
-    this.httpClient.get<Boolean>(`${environment.user_admin_url}Verify/isVerified`,{headers: this.authService.getHttpHeaders(true, false)})
+    this.httpClient.get<Boolean>(`${environment.user_admin_url}Verify/isVerified`,{headers: this.authService.getHttpHeaders2(HttpContentType.NONE)})
     .pipe(take(1)).subscribe(observe1);
   }
 
@@ -250,7 +251,7 @@ export class UserService {
 
   async uploadVerificationPic(data:string, ext:string)
   {
-    let header = this.authService.getHttpHeaders(true, false).append("Content-Type", `image/${ext}`);
+    let header = this.authService.getHttpHeaders2(HttpContentType.NONE).append("Content-Type", `image/${ext}`);
     let observe = {
       next: () =>{
         alert("Successfully Uploaded!");
@@ -280,7 +281,7 @@ export class UserService {
     };
 
     this.httpClient.post(`${environment.user_service_url}Users/passwordUpdate`, passwordChange,
-        {headers: this.authService.getHttpHeaders(true, true)}).pipe(take(1)).subscribe(observe);
+        {headers: this.authService.getHttpHeaders2(HttpContentType.JSON)}).pipe(take(1)).subscribe(observe);
   }
 
   async updateUser() {
@@ -299,7 +300,7 @@ export class UserService {
     fUser.birthday = undefined;
 
     this.httpClient.put(`${environment.user_service_url}Users/UserUpdate`, fUser,
-      {headers: this.authService.getHttpHeaders(true, true)}).pipe(take(1)).subscribe(observe);
+      {headers: this.authService.getHttpHeaders2(HttpContentType.JSON)}).pipe(take(1)).subscribe(observe);
   }
 
   async getSessions(sessionListFunction: Function, currentSessionFunction : Function) {
@@ -327,7 +328,7 @@ export class UserService {
             
           }
         };
-        let headers = this.authService.getHttpHeaders(true, false);
+        let headers = this.authService.getHttpHeaders2(HttpContentType.NONE);
         headers = headers.append("Accept","text/plain;charset=UTF-8");
         this.httpClient.get(`${environment.user_service_url}Sessions/Current`,
           {headers, responseType: 'text' }).pipe(take(1)).subscribe(observe2);
@@ -348,7 +349,7 @@ export class UserService {
 
 
     this.httpClient.get<SessionListV2>(`${environment.user_service_url}Sessions/List`,
-      {headers: this.authService.getHttpHeaders(true, false)}).pipe(take(1)).subscribe(observe1);
+      {headers: this.authService.getHttpHeaders2(HttpContentType.NONE)}).pipe(take(1)).subscribe(observe1);
     
   }
 
@@ -371,6 +372,6 @@ export class UserService {
     };
 
     this.httpClient.delete(`${environment.user_service_url}Sessions/${sessionId}`,
-      {headers: this.authService.getHttpHeaders(true, false)}).pipe(take(1)).subscribe(observe);
+      {headers: this.authService.getHttpHeaders2(HttpContentType.NONE)}).pipe(take(1)).subscribe(observe);
   }
 }

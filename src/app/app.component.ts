@@ -3,7 +3,10 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
-import {BackendService, AuthService, DisplayService} from '@tc/tc-ngx-general';
+import {BackendService, 
+  //AuthService, 
+  DisplayService} from '@tc/tc-ngx-general';
+import { AuthService } from './services/auth.service';
 
 import { environment } from './Environment/environment';
 import { GlobalConstants } from './common/GlobalConstants';
@@ -27,8 +30,9 @@ export class AppComponent {
     this.backEndService.setUserService(true);
     this.backEndService.setAppName(environment.app_name);
     this.authService.setLoginSuccessRoute("user");
+    this.authService.requireAuth = true;
     this.authService.attemptRefresh(undefined);
-    this.authService.requireAuthentication();
+    // this.authService.requireAuthentication();
 
 
     this.screenHeight = 0;

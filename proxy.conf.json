@@ -21,10 +21,11 @@
       "pathRewrite": {"^/sub" : ""}
     },
     "/Images-api/**" : {
-      "target": "https://test.trecapps.com",
+      "target": "http://localhost:8089",
       "secure": false,
       "logLevel": "debug",
-      "changeOrigin": true
+      "changeOrigin": true,
+      "pathRewrite": {"^/Images-api" : ""}
     },
     "/Subscription-be/**" : {
       "target": "http://localhost:8091",

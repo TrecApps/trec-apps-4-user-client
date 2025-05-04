@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from '@tc/tc-ngx-general';
 import { BrandsComponent } from './components/brands/brands.component';
 import { CreateUserComponent } from './components/create-user/create-user.component';
 import { ManageUserComponent } from './components/manage-user/manage-user.component';
@@ -7,6 +6,7 @@ import { SessionComponent } from './components/session/session.component';
 import { SubscriptionComponent } from './components/subscription/subscription.component';
 import { MfaComponent } from './components/mfa/mfa.component';
 import { AddressComponent } from './components/address/address.component';
+import { LoginComponent } from './components/login/login.component';
 
 export const routes: Routes = [
     {path: 'logon', component: LoginComponent},

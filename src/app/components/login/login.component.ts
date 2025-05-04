@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { BackendService, DisplayService } from '@tc/tc-ngx-general';
 import { GlobalConstants } from '../../common/GlobalConstants';
 
-import { Login, LoginToken } from '@tc/tc-ngx-general/lib/models/Login';
+import { Login, LoginToken } from '@tc/tc-ngx-general';
 
 @Component({
     selector: 'app-login',
@@ -82,7 +82,7 @@ export class LoginComponent {
           this.useMfaPage = true;
           break;
         case LoginResult.SUCCESS:
-          
+          this.authService.onSuccessfulLogin();
           break;
         default:
           this.loginFail = true;
@@ -108,10 +108,12 @@ export class LoginComponent {
     if(this.showSpinner) return;
     this.showSpinner = true;
     this.authService.sendMfaCode(this.mfaCode, this.mfaSelection, this.mfaName, (result: LoginResult)=> {
+      
       this.showSpinner = false;
       switch(result){
         case LoginResult.SUCCESS:
-
+          
+          this.authService.onSuccessfulLogin();
         break;
         case LoginResult.CLIENT_FAILURE:
 

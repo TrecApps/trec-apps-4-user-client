@@ -1,12 +1,16 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { AuthService, ImageGalleryComponent, ImageInsert, ImageService } from '@tc/tc-ngx-general';
+import { //AuthService, 
+  ImageGalleryComponent, ImageInsert, ImageService } from '@tc/tc-ngx-general';
 import { BooleanRef } from '../../models/Holders';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavComponent } from '../nav/nav.component';
 import { PasswordChange } from '../../models/Login';
+import { ImageGalleryV2Component } from '../image-gallery-v2/image-gallery-v2.component';
+import { environment } from '../../Environment/environment';
+import { AuthService } from '../../services/auth.service';
 
 
 class BirthdayDetails {
@@ -21,7 +25,7 @@ class BirthdayDetails {
 
 @Component({
     selector: 'app-manage-user',
-    imports: [CommonModule, FormsModule, NavComponent, ImageGalleryComponent],
+    imports: [CommonModule, FormsModule, NavComponent, ImageGalleryComponent, ImageGalleryV2Component],
     templateUrl: './manage-user.component.html',
     styleUrl: './manage-user.component.css',
     standalone: true
@@ -40,22 +44,23 @@ export class ManageUserComponent {
 
   currentBirthdayDetail: string;
 
+  baseUrl = environment.image_service_url_2;
+
   @ViewChild("imgGallery")
   imgGallery: ImageGalleryComponent | undefined;
 
 
   onShowGallery(show: boolean) {
-    if(!this.imgGallery) return;
-    if(show) {
-      this.imgGallery.showGallery();
-    }
+    //if(!this.imgGallery) return;
+    this.showGallery = show;
   }
+
+  showGallery: boolean = false;
 
   setProfilePic(ii: ImageInsert){
     this.imageService.setProfile(ii.id, false, "Main").subscribe({
       next: () => {
-        if(this.imgGallery) 
-          this.imgGallery.hideGallery();
+        this.showGallery = false;
       }
     });
   }

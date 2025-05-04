@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Route, Router } from '@angular/router';
 import { BackendService, TcBrand, TcUser, UserInfo } from '@tc/tc-ngx-general';
 import { Login, LoginToken } from '@tc/tc-ngx-general/lib/models/Login';
 
@@ -46,6 +46,14 @@ export class AuthService {
 
   constructor(private httpClient: HttpClient, private router: Router, private backendService: BackendService) { 
     this.loginRoute = "logon";
+  }
+
+  onSuccessfulLogin(){
+    if(this.onFullyLoggedOn){
+      this.onFullyLoggedOn();
+    }
+    
+    this.router.navigateByUrl(this.loginSuccessRoute);
   }
 
   setLogOnAction(action: Function | undefined){
@@ -322,8 +330,6 @@ export class AuthService {
         if(!this.loginToken) return;
         this.loginToken.access_token = value;
         this.loginToken.token_type = "user-mfa";
-        if(this.onFullyLoggedOn)
-          this.onFullyLoggedOn();
         this.getUserInfo(callable);
       }, 
       error: (e: Response) => {

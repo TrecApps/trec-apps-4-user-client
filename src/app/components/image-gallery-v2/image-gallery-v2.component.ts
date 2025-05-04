@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { ImageService, StylesService, UpSliderComponent } from '@tc/tc-ngx-general';
 //import { ImageEntry } from '@tc/tc-ngx-general/lib/models/Image';
-import SortedList from '@tc/tc-ngx-general/lib/models/SortedList';
+import { SortedList } from '@tc/tc-ngx-general';
 import { ImageRecord, ImageState, ImageEntry, ImageV2Service } from '../../services/image-v2.service';
 import { CommonModule } from '@angular/common';
 import { ImageAlbumFilterPipe } from '../../pipes/image-album-filter.pipe';
@@ -54,7 +54,7 @@ export class ImageGalleryV2Component {
 
 
 
-  albumList: SortedList<string> = new SortedList((a: string, b: string) => {
+  albumList: SortedList<string> = new SortedList<string>((a: string, b: string) => {
     return a.localeCompare(b);
   });
 

@@ -131,6 +131,6 @@
         <br>
         
     </div>
-    <lib-image-gallery #imgGallery (useImage)="setProfilePic($event)" [appName]="'Main'" [executeMessage]="'Set Profile Pic'"></lib-image-gallery>
-    
+    <!-- <lib-image-gallery #imgGallery (useImage)="setProfilePic($event)" [appName]="'Main'" [executeMessage]="'Set Profile Pic'"></lib-image-gallery> -->
+    <app-image-gallery-v2  [baseUrl]="baseUrl" [show]="showGallery" (onClose)="showGallery = false"></app-image-gallery-v2>
 </div>
