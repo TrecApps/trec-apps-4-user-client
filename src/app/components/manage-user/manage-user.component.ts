@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { //AuthService, 
+import { AuthService, 
   ImageGalleryComponent, ImageInsert, ImageService } from '@tc/tc-ngx-general';
 import { BooleanRef } from '../../models/Holders';
 import { UserService } from '../../services/user.service';
@@ -10,7 +10,6 @@ import { NavComponent } from '../nav/nav.component';
 import { PasswordChange } from '../../models/Login';
 import { ImageGalleryV2Component } from '../image-gallery-v2/image-gallery-v2.component';
 import { environment } from '../../Environment/environment';
-import { AuthService } from '../../services/auth.service';
 
 
 class BirthdayDetails {

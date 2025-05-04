@@ -4,9 +4,8 @@ import { RouterOutlet } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
 import {BackendService, 
-  //AuthService, 
+  AuthService, 
   DisplayService} from '@tc/tc-ngx-general';
-import { AuthService } from './services/auth.service';
 
 import { environment } from './Environment/environment';
 import { GlobalConstants } from './common/GlobalConstants';

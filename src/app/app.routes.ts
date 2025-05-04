@@ -6,7 +6,7 @@ import { SessionComponent } from './components/session/session.component';
 import { SubscriptionComponent } from './components/subscription/subscription.component';
 import { MfaComponent } from './components/mfa/mfa.component';
 import { AddressComponent } from './components/address/address.component';
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent } from '@tc/tc-ngx-general';
 
 export const routes: Routes = [
     {path: 'logon', component: LoginComponent},
