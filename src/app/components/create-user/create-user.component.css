@@ -422,7 +422,7 @@ label.RegForm {
               0 4px 8px rgba(0,0,0,0.12),
               0 5px 16px rgba(0,0,0,0.12);
 
-              background-image: url(../../../assets/icons/eggOfLife.png);
+              background-image: url('/assets/icons/eggOfLife.png');
               background-position: center center;
               background-repeat: repeat;
       
