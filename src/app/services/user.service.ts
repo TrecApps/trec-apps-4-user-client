@@ -173,7 +173,7 @@ export class UserService {
         callable();
         
         if( response.profilePics && "Main" in response.profilePics){
-          this.profilePic = `${environment.image_service_url}Profile/of/${response.id}`;
+          this.profilePic = `${environment.image_service_url_2}Images/profile/User-${response.id}`;
         } else {
           console.log("Pics are ", response.profilePics);
         }

@@ -46,11 +46,13 @@ export class ManageUserComponent {
   baseUrl = environment.image_service_url_2;
 
   @ViewChild("imgGallery")
-  imgGallery: ImageGalleryComponent | undefined;
+  imgGallery: ImageGalleryV2Component | undefined;
 
 
   onShowGallery(show: boolean) {
-    //if(!this.imgGallery) return;
+    if(!this.imgGallery) return;
+    this.imgGallery.onOpen();
+    
     this.showGallery = show;
   }
 

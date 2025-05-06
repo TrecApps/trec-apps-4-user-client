@@ -3,12 +3,17 @@
     <div style="display: flex; flex-direction: column; height: calc(100vh - 37px);">
         <div class="element-container" [ngClass]="'element-container-' + ss.style">
             <h3>Albums</h3>
+            <p *ngIf="addedAlbum" class="text-danger">Note: Newly created album will not be saved until an image is assigned to it</p>
             <div class="album-collection">
+                <div class="album-container" style="margin-right: 10px;" (click)="onAddAlbum()">
+                    <img src="assets/plus.png">
+                    <span>Add Album</span>
+                </div>
                 <div class="album-container" *ngFor="let album of albumList" (click)="onSelectAlbum(album)">
-                <img [src]="getAlbumImage(album)">
-                <span>{{ album }}</span>
-                <div *ngIf="album != filterBy" class="album-cover"></div>
-            </div>        
+                    <img [src]="getAlbumImage(album)">
+                    <span>{{ album }}</span>
+                    <div *ngIf="album != filterBy" class="album-cover"></div>
+                </div>        
             </div>
 
         </div>

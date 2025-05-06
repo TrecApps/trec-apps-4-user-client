@@ -1,0 +1,140 @@
+
+
+.album-container {
+
+    position: relative;
+}
+
+.album-collection {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.album-container img {
+    width: 100%;
+    height: 100%;
+}
+
+.album-container span {
+    background-color: black;
+    color: white;
+    position:absolute;
+    left: 0;
+    top: 0;
+    z-index: 16;
+    padding: 3px;
+}
+
+.album-cover {
+    z-index: 15;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0, 0.2);
+}
+
+.image-gallery-holder {
+    overflow-y: scroll;
+    display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.image-gallery {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    padding: 10px;
+    height: fit-content;
+}
+
+.current-image-holder {
+    display: flex;
+    justify-content: center;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.current-image-holder img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+@media (max-width:767px) {
+    .album-container {
+        width: 75px;
+        height: 75px;
+        border: 1px black solid;
+    }
+
+    .image-holder {
+        width: 75px;
+        height: 75px;
+        border: 1px black solid;
+    }
+
+    .image-holder img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .image-holder p {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) {
+
+    .album-collection {
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .album-container {
+        width: 150px;
+        height: 150px;
+    }
+
+    .image-gallery {
+        gap:5px;
+    }
+
+    .image-holder {
+        width: 200px;
+        height: 200px;
+        position: relative;
+    }
+
+    .image-holder img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .image-holder p {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background-color: black;
+        color: white;
+        padding: 3px;
+    }
+
+    .current-image {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .current-image-holder {
+        flex: 1;
+    }
+
+    .current-image-dashboard {
+        width: 350px;
+    border: 1px black solid;
+    padding: 5px;
+    }
+}

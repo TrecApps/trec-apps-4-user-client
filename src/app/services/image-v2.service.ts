@@ -119,12 +119,12 @@ export class ImageV2Service {
   }
 
   // Hint, use "whole" for the "crop" parameter to prevent any cropping
-  retrieveImageAsBase64(id: string, crop: string | undefined, allowAdult: boolean = false): Observable<string> {
+  retrieveImageAsBase64(id: string, crop: string | undefined, allowAdult: boolean = false): Observable<ResponseObj> {
     let params = new HttpParams().append("allowAdult", allowAdult);
     if(crop){
       params = params.append("crop", crop);
     }
-    return this.client.get<string>(`${environment.image_service_url_2}/Image-API/data/${id}`, {
+    return this.client.get<ResponseObj>(`${environment.image_service_url_2}/Image-API/data/${id}`, {
       headers: this.authService.getHttpHeaders2(HttpContentType.NONE),
       params: new HttpParams()
     })

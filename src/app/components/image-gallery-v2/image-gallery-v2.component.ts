@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { ImageService, StylesService, UpSliderComponent } from '@tc/tc-ngx-general';
 //import { ImageEntry } from '@tc/tc-ngx-general/lib/models/Image';
-import { SortedList } from '@tc/tc-ngx-general';
+import { SortedList } from '../../models/SortedList';
 import { ImageRecord, ImageState, ImageEntry, ImageV2Service } from '../../services/image-v2.service';
 import { CommonModule } from '@angular/common';
 import { ImageAlbumFilterPipe } from '../../pipes/image-album-filter.pipe';
@@ -32,9 +32,38 @@ export class ImageGalleryV2Component {
   @Output()
   onClose = new EventEmitter();
 
+  albumList: SortedList<string> = new SortedList((a: string, b: string) => {
+    return a.localeCompare(b);
+  });
+
+
+  onOpen(){
+    this.albumList.clear();
+    this.show = true;
+    this.addedAlbum = false;
+    this.retrieveImages();
+  }
+
+  retrieveImages(){
+    this.imageService.retrieveImageList(this.currentImagePage, this.size, this.app === "main" ? undefined : this.app, undefined).subscribe(
+      {
+        next: (records: ImageRecord[]) => {
+          if(records.length < this.size){
+            this.done = true;
+          }
+          this.size++;
+          let newEntries = records.map((ir: ImageRecord) => this.constructImageEntry(ir));
+          this.imageEntries = this.imageEntries.concat(newEntries);
+          records.forEach((record: ImageRecord) => this.updateAlbumList(record));
+        }
+      }
+    )
+  }
+
   // Basic Image Management
   imageEntries: ImageEntry[] = [];   // Stores the actual images
   size: number = 20;                  // Number of images to retrieve when seeking them
+  currentImagePage: number = 0;
   done: boolean = false;             // Whether there are more images to retrieve
   showAll: boolean = true;            // show all images (if app is not 'main', this can be set to false, at which point, only the app images will be shown)
 
@@ -48,15 +77,6 @@ export class ImageGalleryV2Component {
 
   filterBy: string = "*"; // Show by the current album
 
-
-
-
-
-
-
-  albumList: SortedList<string> = new SortedList<string>((a: string, b: string) => {
-    return a.localeCompare(b);
-  });
 
   // Services
   ss: StylesService;
@@ -91,6 +111,26 @@ export class ImageGalleryV2Component {
 
   selectingAlbum: boolean = false;
   showImages: boolean = true;
+  addedAlbum: boolean = false;
+
+  onAddAlbum(){
+    let albumName = prompt("Enter Album Name");
+    if(albumName === null) return;
+
+    albumName = albumName.trim();
+    console.log("Profile Name: ", albumName)
+    console.log(this.albumList.items);
+
+    if(this.albumList.contains(albumName))
+    {
+      alert("Album already exists!")
+      
+      return;
+    }
+
+    this.albumList.add(albumName);
+    this.addedAlbum=true;
+  }
 
   onSelectAlbum(album: string){
     if(this.selectingAlbum) return;
@@ -123,13 +163,14 @@ export class ImageGalleryV2Component {
     };
 
     if(record.state != ImageState.PUBLIC){
-      this.getBase64Version(ret);
+      if(record.id !== undefined)
+        this.imageService.retrieveImageAsBase64(record.id, "ignore").subscribe({
+          next: (obj: ResponseObj) => {
+            ret.src = obj.message.toString()
+          }
+      })
     }
     return ret;
-
-  }
-
-  getBase64Version(entry: ImageEntry){
 
   }
 
