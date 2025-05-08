@@ -69,22 +69,22 @@ export class ImageV2Service {
     }
 
 
-    return this.client.post<ResponseObj>(`${environment.image_service_url_2}/Image-API`, data[1], {
+    return this.client.post<ResponseObj>(`${environment.image_service_url_2}Image-API`, data[1], {
       headers: this.authService.getHttpHeaders2(HttpContentType.NONE).append("Content-Type", entry.record.type),
       params
     })
   }
 
   setAsProfile(id: string, app: string): Observable<ResponseObj>{
-    return this.client.put<ResponseObj>(`${environment.image_service_url_2}/Image-API/${id}`, null, {
+    return this.client.put<ResponseObj>(`${environment.image_service_url_2}Image-API/${id}`, null, {
       headers: this.authService.getHttpHeaders2(HttpContentType.NONE),
       params: new HttpParams().append("app", app)
     })
   }
 
   updateCrop(id: string, crop: string | undefined): Observable<ResponseObj> {
-    return this.client.patch<ResponseObj>(`${environment.image_service_url_2}/Image-API/${id}`, {
-      field: "crop", crop
+    return this.client.patch<ResponseObj>(`${environment.image_service_url_2}Image-API`, {
+      field: "crop", value: crop
     }, {
       headers: this.authService.getHttpHeaders2(HttpContentType.JSON),
       params: new HttpParams().append("id", id)
@@ -92,7 +92,7 @@ export class ImageV2Service {
   }
 
   updateAlbum(id: string, album: string): Observable<ResponseObj> {
-    return this.client.patch<ResponseObj>(`${environment.image_service_url_2}/Image-API/${id}`, {
+    return this.client.patch<ResponseObj>(`${environment.image_service_url_2}Image-API/${id}`, {
       field: "album", album
     }, {
       headers: this.authService.getHttpHeaders2(HttpContentType.JSON),
@@ -112,7 +112,7 @@ export class ImageV2Service {
       params = params.append("album", album);
     }
 
-    return this.client.get<ImageRecord[]>(`${environment.image_service_url_2}/Image-API`, {
+    return this.client.get<ImageRecord[]>(`${environment.image_service_url_2}Image-API`, {
       headers: this.authService.getHttpHeaders2(HttpContentType.NONE),
       params: new HttpParams()
     });
@@ -124,9 +124,9 @@ export class ImageV2Service {
     if(crop){
       params = params.append("crop", crop);
     }
-    return this.client.get<ResponseObj>(`${environment.image_service_url_2}/Image-API/data/${id}`, {
+    return this.client.get<ResponseObj>(`${environment.image_service_url_2}Image-API/data/${id}`, {
       headers: this.authService.getHttpHeaders2(HttpContentType.NONE),
-      params: new HttpParams()
+      params
     })
   }
 

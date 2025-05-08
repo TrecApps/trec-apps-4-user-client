@@ -21,7 +21,7 @@
 
         <div class="image-gallery-holder">
             <div class="image-gallery" [@imageGalShow]="showImages ? 'expanded' : 'collapse'">
-                <div class="image-holder" *ngFor="let image of imageEntries|imageAlbumFilter:filterBy" (click)="currentImage = image">
+                <div class="image-holder" *ngFor="let image of imageEntries|imageAlbumFilter:filterBy" (click)="onImageClick(image)">
                     <img [src]="image.src">
                     <p *ngIf="image.record.name">{{ image.record.name }}</p>
                 </div>
@@ -33,7 +33,7 @@
     <lib-up-slider [isActive]="currentImage !== undefined" (onClose)="currentImage = undefined">
         <div class="current-image">
             <div class="current-image-holder">
-                <img [src]="currentImage?.src">
+                <img #selectedImg [src]="currentImage?.src">
 
                 <div *ngIf="isCropping" class="crop-shades" style="top: 0; width: 100%" [ngStyle]="{'height.px': squarePosition.top}"></div>
                 <div *ngIf="isCropping" class="crop-shades" style="bottom: 0; width: 100%" [ngStyle]="{'top.px': squarePosition.top + squareSize}"></div>
@@ -48,20 +48,44 @@
                 </div>
             </div>
 
-            <div class="current-image-dashboard form">
+            <div class="current-image-dashboard form" *ngIf="currentImage">
                 <div class="form-group">
                     <label class="form-label">Name</label>
-                    <input class="form-control">
+                    <input class="form-control" [(ngModel)]="currentImage.record.name">
+                    <button class="btn btn-primary" *ngIf="currentImage.record.id">Update Name</button>
+                </div>
+                <div class="form-group" *ngIf="!currentImage.record.id">
+                    <label class="form-label">Upload Mode</label>
+                    <select class="form-select" [(ngModel)]="currentUploadMode">
+                        <option *ngFor="let uploadOption of uploadModes" [value]="uploadOption">{{uploadOption.modeName}}</option>
+                    </select>
+                    <P>{{ currentUploadMode.modeExplaination }}</P>
                 </div>
                 <div class="form-group">
                     <input type="checkbox" class="form-check-input"  [(ngModel)]="isCropping" (change)="onCropCheck()">
                     <label class="form-check-label">Use Crop</label>
                     
-                    <button class="btn btn-submit btn-primary" *ngIf="cropChanged" (click)="onUpdateCrop()">Update Cropping</button>
-                    <p></p>
+                    <button class="btn btn-submit btn-primary" *ngIf="cropChanged && currentImage.record.id" (click)="onUpdateCrop()">Update Cropping</button>
+                    <p *ngIf="isCropping">{{ `${squarePosition.left},${squarePosition.top},${squarePosition.left + squareSize},${squarePosition.top + squareSize}` }}</p>
+                </div>
+                <div class="form-group" *ngIf="albumList.items.length">
+                    <label class="form-label">Album</label>
+                    <select class="form-select" [(ngModel)]="currentImage.record.album">
+                        <option [value]="undefined">(None)</option>
+                        <option *ngFor="let album of albumList" [value]="[album]">{{album}}</option>
+                    </select>
+                    <button class="btn btn-primary" *ngIf="currentImage.record.id">Update Album</button>
                 </div>
                 <div class="form-group">
                     <p>Stats</p>
+                    <p><b>Width: </b> {{currentImage.record.width}}</p>
+                    <p><b>Height: </b> {{currentImage.record.height}}</p>
+                    <p><b>Type: </b> {{currentImage.record.type}}</p>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <button *ngIf="purpose != defaultPurpose && currentImage.record.id" (click)="selectImage()">Select Image</button>
+                    <button *ngIf="!currentImage.record.id" (click)="commenceImageUpload()">Upload Image</button>
                 </div>
             </div>
 

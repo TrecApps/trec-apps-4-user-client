@@ -56,12 +56,37 @@
     max-height: 100%;
     max-width: 100%;
     object-fit: contain;
+    position: relative;
 }
 
 .current-image-holder img {
   max-height: 100%;
   max-width: 100%;
   object-fit: contain;
+}
+
+.crop-shades {
+    background-color: rgba(0,0,0, 0.3);
+    position: absolute; 
+    z-index: 5;
+}
+
+.crop-borders {
+    position: absolute;
+    border: 2px solid black;
+    cursor: move;
+}
+
+.crop-resizer {
+    position: absolute;
+    /* right: 50%; */
+    top: -7px;
+    width: 100%;
+    height: 15px;
+    cursor: nesw-resize;
+    background-color: #fff;
+    border: 1px solid #333;
+    z-index: 7;
 }
 
 @media (max-width:767px) {

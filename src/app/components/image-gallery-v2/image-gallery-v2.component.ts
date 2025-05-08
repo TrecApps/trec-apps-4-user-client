@@ -2,11 +2,24 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewC
 import { ImageService, StylesService, UpSliderComponent } from '@tc/tc-ngx-general';
 //import { ImageEntry } from '@tc/tc-ngx-general/lib/models/Image';
 import { SortedList } from '../../models/SortedList';
-import { ImageRecord, ImageState, ImageEntry, ImageV2Service } from '../../services/image-v2.service';
+import { ImageRecord, ImageState, ImageEntry, ImageV2Service, ImageUploadMode } from '../../services/image-v2.service';
 import { CommonModule } from '@angular/common';
 import { ImageAlbumFilterPipe } from '../../pipes/image-album-filter.pipe';
 import { FormsModule } from '@angular/forms';
 import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
+
+interface ImageUploadModeOption {
+  mode: ImageUploadMode;
+  modeName: string;
+  modeExplaination: string;
+}
+
+export enum ImageSelectionPurpose {
+  BLANK,
+  SELECT,
+  PROFILE,
+  COVER
+}
 
 @Component({
     selector: 'app-image-gallery-v2',
@@ -29,18 +42,46 @@ export class ImageGalleryV2Component {
   @Input()
   show: boolean = false;
 
+  @Input()
+  purpose: ImageSelectionPurpose = ImageSelectionPurpose.BLANK;   // If blank, there is no extra functionality. 
+
+  defaultPurpose: ImageSelectionPurpose = ImageSelectionPurpose.BLANK;
+  
+
   @Output()
   onClose = new EventEmitter();
+
+  @Output()
+  onSelectImage = new EventEmitter<ImageEntry>();
 
   albumList: SortedList<string> = new SortedList((a: string, b: string) => {
     return a.localeCompare(b);
   });
 
+  uploadModes: ImageUploadModeOption[] = [
+    {
+      mode: ImageUploadMode.uploaded,
+      modeName: "Simple Upload",
+      modeExplaination: "Simply upload your image! It will not be publicly accessible and nothing will be done post processing!"
+    }, {
+      mode: ImageUploadMode.prePublic,
+      modeName: "Make Public",
+      modeExplaination: "If public eligible, your image will be made public!"
+    }, {
+      mode: ImageUploadMode.preProfile,
+      modeName: "Make Profile Picture",
+      modeExplaination: "If public eligible, your image will be made public and set as your profile Picture!"
+    }
+  ]
+
+  currentUploadMode: ImageUploadModeOption = this.uploadModes[0];
 
   onOpen(){
     this.albumList.clear();
     this.show = true;
     this.addedAlbum = false;
+    this.imageEntries = [];
+    this.currentImagePage = 0;
     this.retrieveImages();
   }
 
@@ -76,6 +117,31 @@ export class ImageGalleryV2Component {
   selectedFileType: string| undefined;  // Type of image to upload (if uploading new image)
 
   filterBy: string = "*"; // Show by the current album
+
+  selectImage() {
+    if(!this.currentImage?.record.id) return;
+    let useApp = this.app;
+    switch(this.purpose){
+      // @ts-ignore
+      case ImageSelectionPurpose.SELECT:
+        this.onSelectImage.emit(this.currentImage);
+        this.currentImage = undefined;
+        this.onClose.emit();
+        return;
+      case ImageSelectionPurpose.COVER:
+        useApp = `cover-${useApp}`;
+      case ImageSelectionPurpose.PROFILE:
+        this.imageService.setAsProfile(this.currentImage.record.id, useApp).subscribe({
+          next: (responseObj: ResponseObj) => {
+            alert('Successfully set Profile!');
+          },
+          error: (response: Response) => {
+            alert("failed to Set Profile!");
+          }
+        })
+    }
+  }
+
 
 
   // Services
@@ -164,7 +230,7 @@ export class ImageGalleryV2Component {
 
     if(record.state != ImageState.PUBLIC){
       if(record.id !== undefined)
-        this.imageService.retrieveImageAsBase64(record.id, "ignore").subscribe({
+        this.imageService.retrieveImageAsBase64(record.id, "whole").subscribe({
           next: (obj: ResponseObj) => {
             ret.src = obj.message.toString()
           }
@@ -174,9 +240,26 @@ export class ImageGalleryV2Component {
 
   }
 
+  commenceImageUpload(){
+    if(this.currentImage && !this.currentImage.record.id){
+      this.imageService.postImage(this.currentImage, this.currentUploadMode.mode).subscribe({
+        next: (resp: ResponseObj) => {
+          if(this.currentImage?.record)
+            this.currentImage.record.id = resp.id?.toString();
+        }
+      })
+    }
+    
+  }
 
+  onImageClick(image: ImageEntry){
+    this.currentImage = image;
 
-
+    if(this.currentImage.record.defaultCrop){
+      this.isCropping = true;
+      setTimeout(() => this.onCropCheck(), 400);
+    }
+  }
 
 
 
@@ -231,6 +314,9 @@ export class ImageGalleryV2Component {
 
     if(!this.isCropping){
       this.currentImage.record.defaultCrop = undefined;
+    } else {
+      this.currentImage.record.defaultCrop = 
+        `${this.squarePosition.left},${this.squarePosition.top},${this.squarePosition.left + this.squareSize},${this.squarePosition.top + this.squareSize}`
     }
 
     if(this.currentImage.record.id === undefined){
@@ -289,6 +375,33 @@ export class ImageGalleryV2Component {
   
       // if currently on the same image, no need to adjust the cropping
       if(this.currentImage == this.prevImage) return;
+
+      if(this.currentImage.record.defaultCrop){
+
+        let works = true;
+
+        let strDimensions = this.currentImage.record.defaultCrop.split(',');
+        try{
+          let intDimensions = strDimensions.map(str => Number.parseInt(str));
+          this.squarePosition.left = intDimensions[0];
+          this.squarePosition.top = intDimensions[1];
+          this.squareSize = intDimensions[3] - intDimensions[1];
+
+          if(intDimensions[0] < 0 || intDimensions[1] < 0 || intDimensions[2] < 0 || intDimensions[3] < 0)
+            throw Error("Negative number detected in default crop!");
+
+          if(intDimensions[0] + intDimensions[2] > this.imageWidthReal)
+            throw Error("Crop Overflow detected on x-axis");
+          if(intDimensions[1] + intDimensions[3] > this.imageHeightReal)
+            throw Error("Crop Overflow detected on y-axis");
+
+        } catch(e){
+          console.log(e);
+          works = false;
+        }
+
+        if(works) return;
+      }
   
       this.squareSize = 150;
   
@@ -364,25 +477,43 @@ export class ImageGalleryV2Component {
         const minSize = 100;
         const maxSize = Math.min(this.imageWidth, this.imageHeight);
   
-        this.squareSize = Math.max(minSize, Math.min(maxSize, newWidth));
+        let tempSquareSize = Math.max(minSize, Math.min(maxSize, newWidth));
+        
+
     
         // Update the square position to center it (optional)
         // this.squarePosition.left = Math.floor((this.imageWidth - this.squareSize) / 2 - sizeChange * 2);
         // this.squarePosition.top = Math.floor((this.imageHeight - this.squareSize) / 2 - sizeChange * 2);
-        this.squarePosition.left -= sizeChange / 2;
-        this.squarePosition.top -= sizeChange / 2;
+
+        let tempSquarePosition = {
+          left: this.squarePosition.left,
+          top: this.squarePosition.top
+        };
+        tempSquarePosition.left -= sizeChange / 2;
+        tempSquarePosition.top -= sizeChange / 2;
+
+        if(tempSquarePosition.left < 0 || tempSquarePosition.top < 0)
+          return;
+        const maxLeft = this.imageWidth;
+        const maxTop = this.imageHeight;
+
+        if(tempSquarePosition.top + tempSquareSize > maxTop || tempSquarePosition.left + tempSquareSize > maxLeft)
+          return;
+
+        this.squarePosition = tempSquarePosition;
+        this.squareSize = tempSquareSize;
     
-        if(this.squarePosition.left < 0)
-          this.squarePosition.left = 0;
-        let overflow = this.imageWidth - (this.squarePosition.left + this.squareSize) 
-        if(overflow < 0)
-          this.squarePosition.left -= overflow;
+        // if(this.squarePosition.left < 0)
+        //   this.squarePosition.left = 0;
+        // let overflow = this.imageWidth - (this.squarePosition.left + this.squareSize) 
+        // if(overflow < 0)
+        //   this.squarePosition.left -= overflow;
     
-        if(this.squarePosition.top < 0)
-          this.squarePosition.top = 0;
-        overflow = this.imageHeight - (this.squarePosition.top + this.squareSize) 
-        if(overflow < 0)
-          this.squarePosition.top -= overflow;
+        // if(this.squarePosition.top < 0)
+        //   this.squarePosition.top = 0;
+        // overflow = this.imageHeight - (this.squarePosition.top + this.squareSize) 
+        // if(overflow < 0)
+        //   this.squarePosition.top -= overflow;
     
         this.cropChanged = true;
     
