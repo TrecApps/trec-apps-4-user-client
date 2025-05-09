@@ -48,11 +48,11 @@ export class ImageV2Service {
   constructor(private client: HttpClient, private authService: AuthService) { }
 
   postImage(entry: ImageEntry, uploadMode: ImageUploadMode): Observable<ResponseObj>{
-    let data = entry.src.split(',', 1);
+    let data = entry.src.split(',', 2);
 
     let type = data[0].replace("data:", "").replace(";base64", "");
     let params = new HttpParams().appendAll({
-      mode: uploadMode,
+      mode: ImageUploadMode[uploadMode],
       app: entry.record.app
     })
 
@@ -91,9 +91,9 @@ export class ImageV2Service {
     })
   }
 
-  updateAlbum(id: string, album: string): Observable<ResponseObj> {
-    return this.client.patch<ResponseObj>(`${environment.image_service_url_2}Image-API/${id}`, {
-      field: "album", album
+  updateAlbum(id: string, album: string | undefined): Observable<ResponseObj> {
+    return this.client.patch<ResponseObj>(`${environment.image_service_url_2}Image-API`, {
+      field: "album", value: album
     }, {
       headers: this.authService.getHttpHeaders2(HttpContentType.JSON),
       params: new HttpParams().append("id", id)

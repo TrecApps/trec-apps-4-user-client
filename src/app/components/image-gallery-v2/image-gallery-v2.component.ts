@@ -21,6 +21,8 @@ export enum ImageSelectionPurpose {
   COVER
 }
 
+const bytesInMB: number = 1000000;
+
 @Component({
     selector: 'app-image-gallery-v2',
     imports: [
@@ -32,6 +34,14 @@ export enum ImageSelectionPurpose {
     standalone: true
 })
 export class ImageGalleryV2Component {
+
+  permittedFileTypes = [
+    "gif",
+    "jpeg",
+    "png",
+    "svg",
+    "webp"];
+
   // Inputs and outputs
   @Input()
   baseUrl: string = "";   // the URL where the image service can be accessed
@@ -44,6 +54,9 @@ export class ImageGalleryV2Component {
 
   @Input()
   purpose: ImageSelectionPurpose = ImageSelectionPurpose.BLANK;   // If blank, there is no extra functionality. 
+
+  @Input()
+  mbLimit: number = 0;  // Limit for image analysis
 
   defaultPurpose: ImageSelectionPurpose = ImageSelectionPurpose.BLANK;
   
@@ -217,6 +230,24 @@ export class ImageGalleryV2Component {
     }, 330);
   }
 
+  albumChanged: boolean = false;
+
+  onAssignAlbum(){
+    if(!this.currentImage?.record.id) return;
+    let album: string | undefined;
+    if(Array.isArray(this.currentImage.record.album)){
+      album = this.currentImage.record.album.length ? this.currentImage.record.album[0] : undefined;
+    } else if(typeof this.currentImage.record.album === "string"){
+      album = this.currentImage.record.album;
+    }
+    
+    this.imageService.updateAlbum(this.currentImage.record.id, album).subscribe({
+      next: (response: ResponseObj) => {
+        this.albumChanged = false;
+      }
+    })
+  }
+
   constructImageEntry(record: ImageRecord): ImageEntry {
     let src: string;
     if(record.state == ImageState.PUBLIC)
@@ -244,8 +275,12 @@ export class ImageGalleryV2Component {
     if(this.currentImage && !this.currentImage.record.id){
       this.imageService.postImage(this.currentImage, this.currentUploadMode.mode).subscribe({
         next: (resp: ResponseObj) => {
-          if(this.currentImage?.record)
+          if(this.currentImage?.record){
             this.currentImage.record.id = resp.id?.toString();
+            this.imageEntries = [this.currentImage].concat(this.imageEntries);
+            this.albumChanged = false;
+          }
+            
         }
       })
     }
@@ -259,6 +294,53 @@ export class ImageGalleryV2Component {
       this.isCropping = true;
       setTimeout(() => this.onCropCheck(), 400);
     }
+  }
+
+  imageFromDevice(event: any){
+    this.selectedFile = event.target.files[0]
+    if(!this.selectedFile)return;
+
+    let t = this.selectedFile.type.toLowerCase().trim();
+    for(let possibleType of this.permittedFileTypes) {
+      if(t == `image/${possibleType}`)
+      {
+        this.selectedFileType = possibleType;
+        break;
+      }
+    }
+
+    if(this.mbLimit && this.selectedFile.size >= (this.mbLimit * bytesInMB) &&
+      !confirm(`Your image exceeds the ${this.mbLimit} MB limit for moderation.\n You can still upload the image, but you'll need to contact\n
+        the Administrator to use it as a Profile Image or Cover Photo`)){
+          return;
+    }
+
+    this.selectedFile?.arrayBuffer().then((value: ArrayBuffer)=> {
+      let buffer = new Uint8Array(value);
+
+      const STRING_CHAR = buffer.reduce((data, byte)=> {return data + String.fromCharCode(byte);}, '');
+
+      let data = btoa(STRING_CHAR);
+
+      this.isCropping = false;
+
+      this.currentImage = {
+        src: `data:image/${this.selectedFileType};base64,${data}`,
+        record: {
+          id: undefined,
+          name: this.selectedFile?.name || "",
+          defaultCrop: undefined,
+          album: [],
+          app: this.app,
+          type: t,
+          state: ImageState.NEW,
+          uploaded: undefined,
+          width: 0,
+          height: 0
+        }
+      }
+    });
+    
   }
 
 
@@ -364,6 +446,14 @@ export class ImageGalleryV2Component {
       this.setImageParams();
   
     }
+
+    // updateVisibility(){
+    //   if(!this.currentImage){
+    //     return;
+    //   }
+
+
+    // }
 
   // To be called when the user clicks on the check to crop checkbox
   onCropCheck(){
