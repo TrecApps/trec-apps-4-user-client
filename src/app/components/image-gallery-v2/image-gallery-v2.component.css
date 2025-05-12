@@ -110,6 +110,10 @@
     .image-holder p {
         display: none;
     }
+
+    .delete-img-holder {
+        border: 1px solid red;
+    }
 }
 
 @media (min-width: 768px) {
@@ -139,13 +143,23 @@
         height: 100%;
     }
 
-    .image-holder p {
+    .image-holder p.image-name {
         position: absolute;
         bottom: 0;
         right: 0;
         background-color: black;
         color: white;
         padding: 3px;
+    }
+
+    .image-holder p.delete-mark {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        padding: 3px;
+        background-color: red;
+        color: white;
     }
 
     .current-image {
@@ -159,7 +173,7 @@
 
     .current-image-dashboard {
         width: 350px;
-    border: 1px black solid;
-    padding: 5px;
+        border: 1px black solid;
+        padding: 5px;
     }
 }

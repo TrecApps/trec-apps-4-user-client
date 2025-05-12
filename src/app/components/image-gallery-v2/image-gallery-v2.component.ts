@@ -335,6 +335,7 @@ export class ImageGalleryV2Component {
           type: t,
           state: ImageState.NEW,
           uploaded: undefined,
+          deleteOn: undefined,
           width: 0,
           height: 0
         }
@@ -447,13 +448,23 @@ export class ImageGalleryV2Component {
   
     }
 
-    // updateVisibility(){
-    //   if(!this.currentImage){
-    //     return;
-    //   }
+    onDeleteCall(){
+      if(!this.currentImage) return;
 
-
-    // }
+      this.imageService.handleDeletion(this.currentImage.record).subscribe({
+        next: (response: ResponseObj) => {
+          if(this.currentImage?.record.deleteOn) {
+            this.currentImage.record.deleteOn = undefined;
+          } else if(this.currentImage?.record && response.id) {
+            // if setting deletion, the id of the response should hold the deletion data
+            this.currentImage.record.deleteOn = new Date(response.id.toString());
+          }
+        },
+        error: (response: ResponseObj) => {
+          alert(response.message);
+        }
+      })
+    }
 
   // To be called when the user clicks on the check to crop checkbox
   onCropCheck(){

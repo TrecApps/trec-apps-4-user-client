@@ -27,6 +27,8 @@ export interface ImageRecord {
   defaultCrop: string | undefined;     // the type of cropping that should be applied
   width: number;
   height: number;
+
+  deleteOn: Date | undefined;
 } 
 
 export interface ImageEntry {
@@ -130,6 +132,14 @@ export class ImageV2Service {
     })
   }
 
+  handleDeletion(record: ImageRecord): Observable<ResponseObj> {
+    let url = record.deleteOn ?
+    `${environment.image_service_url_2}Image-API/cancel/${record.id}` : `${environment.image_service_url_2}Image-API/${record.id}`;
+
+    return this.client.delete<ResponseObj>(url, {
+      headers: this.authService.getHttpHeaders2(HttpContentType.NONE)
+    })
+  }
   
 
 }
