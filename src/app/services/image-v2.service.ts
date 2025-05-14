@@ -27,6 +27,7 @@ export interface ImageRecord {
   defaultCrop: string | undefined;     // the type of cropping that should be applied
   width: number;
   height: number;
+  allowPublic: boolean;
 
   deleteOn: Date | undefined;
 } 
@@ -40,6 +41,19 @@ export enum ImageUploadMode {
   uploaded,
   prePublic,
   preProfile
+}
+
+export enum ImageVisibility {
+  PUBLIC,         // Accessible without Restriction
+  PUBLIC_AUTH,    // Accessible to all authenticated users (restrictions for adult images still apply)
+  PROTECTED       // Accessible to the owner and authorized readers
+}
+
+export interface ImageVisibilityOption {
+  option: ImageVisibility;
+  optionName: string;
+  optionExplaination: string;
+  available: (ir: ImageRecord) => boolean
 }
 
 @Injectable({
@@ -129,6 +143,15 @@ export class ImageV2Service {
     return this.client.get<ResponseObj>(`${environment.image_service_url_2}Image-API/data/${id}`, {
       headers: this.authService.getHttpHeaders2(HttpContentType.NONE),
       params
+    })
+  }
+
+  updateVisibility(id: string, visibility: ImageVisibility) : Observable<ResponseObj> {
+    return this.client.patch<ResponseObj>(`${environment.image_service_url_2}Image-API`, {
+      field: "visibility", value: ImageVisibility[visibility]
+    }, {
+      headers: this.authService.getHttpHeaders2(HttpContentType.JSON),
+      params: new HttpParams().append("id", id)
     })
   }
 

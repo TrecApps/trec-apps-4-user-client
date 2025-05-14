@@ -2,11 +2,12 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewC
 import { ImageService, StylesService, UpSliderComponent } from '@tc/tc-ngx-general';
 //import { ImageEntry } from '@tc/tc-ngx-general/lib/models/Image';
 import { SortedList } from '../../models/SortedList';
-import { ImageRecord, ImageState, ImageEntry, ImageV2Service, ImageUploadMode } from '../../services/image-v2.service';
+import { ImageRecord, ImageState, ImageEntry, ImageV2Service, ImageUploadMode, ImageVisibility, ImageVisibilityOption } from '../../services/image-v2.service';
 import { CommonModule } from '@angular/common';
 import { ImageAlbumFilterPipe } from '../../pipes/image-album-filter.pipe';
 import { FormsModule } from '@angular/forms';
 import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
+import { ImageVisibilityFilterPipe } from '../../pipes/image-visibility-filter.pipe';
 
 interface ImageUploadModeOption {
   mode: ImageUploadMode;
@@ -26,7 +27,7 @@ const bytesInMB: number = 1000000;
 @Component({
     selector: 'app-image-gallery-v2',
     imports: [
-        CommonModule, ImageAlbumFilterPipe, FormsModule,
+        CommonModule, ImageAlbumFilterPipe, FormsModule, ImageVisibilityFilterPipe,
         UpSliderComponent
     ],
     templateUrl: './image-gallery-v2.component.html',
@@ -87,6 +88,53 @@ export class ImageGalleryV2Component {
     }
   ]
 
+  visibilityModes: ImageVisibilityOption[] = [
+    {
+      option: ImageVisibility.PUBLIC,
+      optionName: "Public",
+      optionExplaination: "Image is visible to everyone!",
+      available: (ir: ImageRecord) => {
+        return ir.state == ImageState.NON_ADULT || ir.state.toString() == 'NON_ADULT';
+      }
+    },
+    {
+      option: ImageVisibility.PUBLIC_AUTH,
+      optionName: "Public (Authenticated)",
+      optionExplaination: "Image will be available to all Trec-Apps users (age-restrictions apply)",
+      available: (ir: ImageRecord) => {
+        if(ir.allowPublic) {
+          return ir.state == ImageState.PUBLIC || ir.state.toString() == 'PUBLIC';
+        }
+        return ir.state  == ImageState.PUBLIC || ir.state.toString() == 'PUBLIC' 
+          || ir.state == ImageState.ADULT || ir.state.toString() == 'ADULT'
+          || ir.state == ImageState.NON_ADULT || ir.state.toString() == 'NON_ADULT'
+      }
+    },
+    {
+      option: ImageVisibility.PROTECTED,
+      optionName: "Protected",
+      optionExplaination: "Image is available to you and your selection of profiles (latter not implemented yet)",
+      available(ir) {
+          if(!ir.allowPublic) {
+          return ir.state == ImageState.PUBLIC || ir.state.toString() == 'PUBLIC';
+        }
+        return ir.state  == ImageState.PUBLIC || ir.state.toString() == 'PUBLIC' 
+          || ir.state == ImageState.ADULT || ir.state.toString() == 'ADULT'
+          || ir.state == ImageState.NON_ADULT || ir.state.toString() == 'NON_ADULT'
+      },
+    }
+  ]
+
+  updateVisibility() {
+    if(!this.currentImage?.record.id) return;
+
+    this.imageService.updateVisibility(this.currentImage.record.id, this.targetVisibility).subscribe({
+      next: (obj: ResponseObj) => {
+        this.currentVisibility = this.targetVisibility;
+      }
+    })
+  }
+
   currentUploadMode: ImageUploadModeOption = this.uploadModes[0];
 
   onOpen(){
@@ -130,6 +178,9 @@ export class ImageGalleryV2Component {
   selectedFileType: string| undefined;  // Type of image to upload (if uploading new image)
 
   filterBy: string = "*"; // Show by the current album
+
+  currentVisibility: ImageVisibility = ImageVisibility.PROTECTED;
+  targetVisibility: ImageVisibility = this.currentVisibility;
 
   selectImage() {
     if(!this.currentImage?.record.id) return;
@@ -290,9 +341,19 @@ export class ImageGalleryV2Component {
   onImageClick(image: ImageEntry){
     this.currentImage = image;
 
+    if(this.currentImage.record.state == ImageState.PUBLIC){
+      this.currentVisibility = ImageVisibility.PUBLIC;
+    } else {
+      this.currentVisibility = this.currentImage.record.allowPublic ? ImageVisibility.PUBLIC_AUTH : ImageVisibility.PROTECTED;
+    }
+
+    this.targetVisibility = this.currentVisibility;
+
     if(this.currentImage.record.defaultCrop){
       this.isCropping = true;
       setTimeout(() => this.onCropCheck(), 400);
+    } else {
+      this.isCropping = false;
     }
   }
 
@@ -337,7 +398,8 @@ export class ImageGalleryV2Component {
           uploaded: undefined,
           deleteOn: undefined,
           width: 0,
-          height: 0
+          height: 0,
+          allowPublic: false
         }
       }
     });

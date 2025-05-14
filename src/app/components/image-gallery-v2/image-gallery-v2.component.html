@@ -67,6 +67,16 @@
                     </select>
                     <P>{{ currentUploadMode.modeExplaination }}</P>
                 </div>
+                <div class="form-group element-item" [ngClass]="'element-item-'+ss.style" *ngIf="currentImage.record.id">
+                    <label class="form-label">Image Visibility</label>
+                    <select class="form-select" [(ngModel)]="targetVisibility">
+                        <option 
+                            *ngFor="let visOption of visibilityModes | imageVisibilityFilter:currentImage.record" 
+                            [ngValue]="visOption.option">{{visOption.optionName}}</option>
+                    </select>
+                    <p>{{visibilityModes[targetVisibility].optionExplaination}}</p>
+                    <button class="btn btn-primary" (click)="updateVisibility()" *ngIf="currentVisibility != targetVisibility">Update Visibility</button>
+                </div>
                 <div class="form-group element-item" [ngClass]="'element-item-'+ss.style">
                     <input type="checkbox" class="form-check-input"  [(ngModel)]="isCropping" (change)="onCropCheck()">
                     <label class="form-check-label">Use Crop</label>

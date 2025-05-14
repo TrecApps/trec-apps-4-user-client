@@ -118,6 +118,14 @@
 
 @media (min-width: 768px) {
 
+    .btn {
+        width: 100%;
+    }
+
+    .element-item {
+        padding: 5px;
+    }
+
     .album-collection {
         justify-content: center;
         gap: 5px;
