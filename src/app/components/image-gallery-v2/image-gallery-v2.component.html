@@ -22,13 +22,18 @@
 
 
         <div class="image-gallery-holder">
-            <div class="image-gallery" [@imageGalShow]="showImages ? 'expanded' : 'collapse'">
+            <div class="image-gallery">
+                <div *ngIf="app != 'main'">
+                    <input type="checkbox" class="form-check-input" (change)="onShowOnlyApps($event)">
+                    <label class="form-check-label">Show only {{app}} images</label>
+                </div>
                 <div class="image-holder" *ngFor="let image of imageEntries|imageAlbumFilter:filterBy" (click)="onImageClick(image)">
                     <img [src]="image.src" [ngClass]="image.record.deleteOn ? 'delete-img-holder' : ''">
                     <p *ngIf="image.record.name" class="image-name">{{ image.record.name }}</p>
                     <p *ngIf="image.record.deleteOn" class="delete-mark">Marked for Deletion</p>
                 </div>
             </div>
+            <button class="btn btn-primary" (click)="retrieveImages()" [disabled]="retrievingImages" *ngIf="!done">More Images</button>
         </div>        
     </div>
 

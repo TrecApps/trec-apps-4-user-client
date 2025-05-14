@@ -5,7 +5,7 @@ import { SortedList } from '../../models/SortedList';
 import { ImageRecord, ImageState, ImageEntry, ImageV2Service, ImageUploadMode, ImageVisibility, ImageVisibilityOption } from '../../services/image-v2.service';
 import { CommonModule } from '@angular/common';
 import { ImageAlbumFilterPipe } from '../../pipes/image-album-filter.pipe';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ValueChangeEvent } from '@angular/forms';
 import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
 import { ImageVisibilityFilterPipe } from '../../pipes/image-visibility-filter.pipe';
 
@@ -35,6 +35,8 @@ const bytesInMB: number = 1000000;
     standalone: true
 })
 export class ImageGalleryV2Component {
+
+
 
   permittedFileTypes = [
     "gif",
@@ -146,7 +148,10 @@ export class ImageGalleryV2Component {
     this.retrieveImages();
   }
 
+  retrievingImages: boolean = false;
   retrieveImages(){
+    if(this.retrievingImages) return;
+    this.retrievingImages = true;
     this.imageService.retrieveImageList(this.currentImagePage, this.size, this.app === "main" ? undefined : this.app, undefined).subscribe(
       {
         next: (records: ImageRecord[]) => {
@@ -155,8 +160,19 @@ export class ImageGalleryV2Component {
           }
           this.size++;
           let newEntries = records.map((ir: ImageRecord) => this.constructImageEntry(ir));
-          this.imageEntries = this.imageEntries.concat(newEntries);
+          this.backupImageEntries = this.backupImageEntries.concat(newEntries);
+          if(this.onlyApps){
+            this.imageEntries = this.imageEntries.concat(newEntries.filter((entry: ImageEntry) => entry.record.app == this.app));
+          } else {
+            this.imageEntries = this.imageEntries.concat(newEntries);
+          }
+          
           records.forEach((record: ImageRecord) => this.updateAlbumList(record));
+          this.retrievingImages = false;
+        },
+        error: () => {
+          //To do report error
+          this.retrievingImages = false;
         }
       }
     )
@@ -164,6 +180,7 @@ export class ImageGalleryV2Component {
 
   // Basic Image Management
   imageEntries: ImageEntry[] = [];   // Stores the actual images
+  backupImageEntries: ImageEntry[] = [];
   size: number = 20;                  // Number of images to retrieve when seeking them
   currentImagePage: number = 0;
   done: boolean = false;             // Whether there are more images to retrieve
@@ -181,6 +198,18 @@ export class ImageGalleryV2Component {
 
   currentVisibility: ImageVisibility = ImageVisibility.PROTECTED;
   targetVisibility: ImageVisibility = this.currentVisibility;
+
+  onlyApps: boolean = false;
+
+  onShowOnlyApps($event: any) {
+    this.onlyApps = $event.target.checked;
+
+    if(this.onlyApps){
+      this.imageEntries = this.backupImageEntries.filter((entry: ImageEntry) => entry.record.app == this.app)
+    } else {
+      this.imageEntries = this.backupImageEntries;
+    }
+  }
 
   selectImage() {
     if(!this.currentImage?.record.id) return;
@@ -329,6 +358,7 @@ export class ImageGalleryV2Component {
           if(this.currentImage?.record){
             this.currentImage.record.id = resp.id?.toString();
             this.imageEntries = [this.currentImage].concat(this.imageEntries);
+            this.backupImageEntries = [this.currentImage].concat(this.backupImageEntries);
             this.albumChanged = false;
           }
             
