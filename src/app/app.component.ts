@@ -25,7 +25,7 @@ export class AppComponent {
   
   constructor(displayService: DisplayService, private backEndService: BackendService, private authService: AuthService){
     this.backEndService.appendUrl("UserService", environment.user_service_url);
-    this.backEndService.appendUrl("ImageService", environment.image_service_url);
+    this.backEndService.appendUrl("ImageService", environment.image_service_url_2);
     this.backEndService.setUserService(true);
     this.backEndService.setAppName(environment.app_name);
     this.authService.setLoginSuccessRoute("user");

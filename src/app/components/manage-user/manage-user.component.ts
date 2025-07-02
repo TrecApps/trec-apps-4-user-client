@@ -1,14 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { AuthService, 
-  ImageGalleryComponent, ImageInsert, ImageService } from '@tc/tc-ngx-general';
+  ImageGalleryComponent, ImageInsert, ImageSelectionPurpose, ImageService } from '@tc/tc-ngx-general';
 import { BooleanRef } from '../../models/Holders';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavComponent } from '../nav/nav.component';
 import { PasswordChange } from '../../models/Login';
-import { ImageGalleryV2Component } from '../image-gallery-v2/image-gallery-v2.component';
+import { ImageGalleryV2Component } from '@tc/tc-ngx-general';
 import { environment } from '../../Environment/environment';
 
 
@@ -31,6 +31,8 @@ class BirthdayDetails {
 })
 export class ManageUserComponent {
   userService: UserService;
+
+  imagePurpose: ImageSelectionPurpose = ImageSelectionPurpose.PROFILE;
 
   
   changePassword: boolean = false;
