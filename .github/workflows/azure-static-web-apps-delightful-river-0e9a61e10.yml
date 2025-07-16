@@ -19,6 +19,19 @@ jobs:
         with:
           submodules: true
           lfs: false
+      - name: Set up Node.js version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.x'
+
+      - uses: ponicode/azure-devops-npm-action@master
+        with:
+          organisation: ${{ secrets.AZURE_ORG }}
+          project: ${{ secrets.AZURE_PROJECT }}
+          registry: ${{ secrets.AZURE_REGISTRY }}
+          user: ${{ secrets.AZURE_USER }}
+          password: ${{ secrets.AZURE_TOKEN }}
+          email: ${{ secrets.AZURE_EMAIL }}
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
