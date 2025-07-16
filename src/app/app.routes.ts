@@ -7,6 +7,7 @@ import { SubscriptionComponent } from './components/subscription/subscription.co
 import { MfaComponent } from './components/mfa/mfa.component';
 import { AddressComponent } from './components/address/address.component';
 import { LoginComponent } from '@tc/tc-ngx-general';
+import { StyleComponent } from './components/style/style.component';
 
 export const routes: Routes = [
     {path: 'logon', component: LoginComponent},
@@ -17,5 +18,6 @@ export const routes: Routes = [
     {path: 'sessions', component: SessionComponent},
     {path: 'mfa', component: MfaComponent},
     {path: 'address',component: AddressComponent},
+    {path: 'styles', component: StyleComponent},
     {path: '', redirectTo: 'logon', pathMatch: 'full'}
 ];

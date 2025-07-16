@@ -1,10 +1,9 @@
 {
     "/User-api/**": {
-      "target": "http://localhost:8081",
-      "secure": false,
+      "target": "https://test.trecapps.com",
+      "secure": true,
       "logLevel": "debug",
-      "changeOrigin": true,
-      "pathRewrite": {"^/User-api" : ""}
+      "changeOrigin": true
     },
     "/admin/*" :{
       "target": "http://localhost:8083",
@@ -21,11 +20,10 @@
       "pathRewrite": {"^/sub" : ""}
     },
     "/Images-api/**" : {
-      "target": "http://localhost:8089",
-      "secure": false,
+      "target": "https://test.trecapps.com",
+      "secure": true,
       "logLevel": "debug",
-      "changeOrigin": true,
-      "pathRewrite": {"^/Images-api" : ""}
+      "changeOrigin": true
     },
     "/Subscription-be/**" : {
       "target": "http://localhost:8091",

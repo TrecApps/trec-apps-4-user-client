@@ -1,0 +1,13 @@
+.color-panel {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 10px;
+    padding: 5px;
+}
+
+.color-button {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    overflow: hidden;
+}

@@ -1,0 +1,8 @@
+<div class="color-panel">
+    <div
+        *ngFor="let color of colors" 
+        class="color-button"
+        [ngStyle]="{'background-color': color.colorStyle}"
+        (click)="onColorSelect.emit(color.styleName)"
+    ></div>
+</div>

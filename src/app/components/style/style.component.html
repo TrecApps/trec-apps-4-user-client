@@ -1,0 +1,58 @@
+<app-nav>
+
+</app-nav>
+
+<div class="container">
+    <div
+        class="element-container"
+        [ngClass]="'element-container-' + styleService.style"
+    >
+
+        <div 
+            class="element-item"
+            [ngClass]="'element-item-' + styleService.style"
+            *ngFor="let fullSpec of appStyles"  
+            style="padding: 10px"
+        >
+            <h2 [id]="fullSpec.app">{{ fullSpec.app }}</h2>
+
+            <app-color-panel 
+                (onColorSelect)="fullSpec.styleSpec.style = $event"
+                [colors]="colorList"
+            ></app-color-panel>
+
+            <div class="form-group">
+                <input 
+                    type="checkbox" 
+                    class="form-check-input" 
+                    [(ngModel)]="fullSpec.styleSpec.useDark" 
+                >
+                <label class="form-check-label">Use Dark mode</label>
+
+                <div class="element-item" [ngClass]="'element-item-' + fullSpec.styleSpec.style" style="height: 10px"></div>
+            </div>
+
+            <div class="button-holder">
+
+                <button 
+                    style="width: 95%" 
+                    class="btn btn-primary" 
+                    [disabled]="isPreviewing" 
+                    (click)="preview(fullSpec.styleSpec)"
+                >Preview</button>
+                <button 
+                    style="width: 95%" 
+                    class="btn btn-primary" 
+                    [disabled]="areSpecsEqual(fullSpec) || fullSpec.updating" 
+                    (click)="updateStyle(fullSpec)"
+                >Update Style</button>
+
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+</div>
