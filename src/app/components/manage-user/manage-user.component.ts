@@ -24,7 +24,7 @@ class BirthdayDetails {
 
 @Component({
     selector: 'app-manage-user',
-    imports: [CommonModule, FormsModule, NavComponent, ImageGalleryComponent, ImageGalleryV2Component],
+    imports: [CommonModule, FormsModule, NavComponent, ImageGalleryV2Component],
     templateUrl: './manage-user.component.html',
     styleUrl: './manage-user.component.css',
     standalone: true
