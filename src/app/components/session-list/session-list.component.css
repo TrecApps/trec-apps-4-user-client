@@ -1,0 +1,13 @@
+
+.session-item{
+    display: flex;
+  gap: 5px;
+  align-items: center;
+  padding: 5px;
+}
+
+.session-content {
+    flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}

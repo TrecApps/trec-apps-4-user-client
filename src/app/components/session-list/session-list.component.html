@@ -1,0 +1,30 @@
+<div 
+    class="element-container container"
+    [ngClass]="'element-container-' + ss.style"    
+>
+    <button style="width: 100%" class="btn btn-danger" [disabled]="selectedList.items.length == 0" (click)="deleteSessions()">Delete Sessions</button>
+
+    <div 
+        class="element-item session-item"
+        [ngClass]="'element-item-' + ss.style"   
+        *ngFor="let session of (sessionList?.sessions || [])"
+    >
+        <input type="checkbox" class="form-check-input" (change)="onSessionChecked($event, session.deviceId)">
+
+        <p style="margin: 0"><b>Session Id: </b>{{ session.deviceId }}</p>
+        
+        <div class="session-content">
+            <p style="margin: 0"><b>Apps: </b>{{ getAppList(session) }} <b *ngIf="session.deviceInfo">Device Info: </b>{{ session.deviceInfo }}
+                <b>Expiration:</b> {{session.expirationStr ? session.expirationStr : "No Expiration"}} 
+                <span *ngIf="session.deviceId == currentSession"> <b>Current Session</b></span>
+            </p>
+        </div>
+
+        <button
+            class="btn"
+            [ngClass]="'btn-' + (session.deviceId == currentSession ? 'danger' : 'warning')"
+            (click)="deleteSession(session.deviceId ? session.deviceId : '')"
+        >Delete Session</button>
+    </div>
+
+</div>

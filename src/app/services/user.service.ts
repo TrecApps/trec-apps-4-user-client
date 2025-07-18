@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { take, Observable } from 'rxjs';
-import { AuthService, HttpContentType } from '@tc/tc-ngx-general';
+import { AuthService, HttpContentType, ResponseObj } from '@tc/tc-ngx-general';
 import { LoginToken, PasswordChange } from '@tc/tc-ngx-general/lib/models/Login';
 import { filterUser } from '../models/User';
 import { environment } from '../Environment/environment';
@@ -372,5 +372,29 @@ export class UserService {
 
     this.httpClient.delete(`${environment.user_service_url}Sessions/${sessionId}`,
       {headers: this.authService.getHttpHeaders2(HttpContentType.NONE)}).pipe(take(1)).subscribe(observe);
+  }
+
+  removeSessions(sessions: string[], doNext: VoidFunction) {
+    let observe = {
+      next: (response: Object) => { 
+        doNext();
+      },
+      error: (error: Response | any) => { 
+        if(error.status && error.status == 200) {
+          doNext();
+        } else {
+          alert((error instanceof Response) ? error.text : (error.message ? error.message : error.toString()));
+        }
+        if(error?.status == 401 || error?.status == 403){
+          this.authService.clearAuth();
+          this.router.navigate(['logon']);
+        }
+      }
+    };
+
+    this.httpClient.delete<ResponseObj>(`${environment.user_service_url}Sessions`, {
+        headers: this.authService.getHttpHeaders2(HttpContentType.JSON),
+        body: sessions
+      }).pipe(take(1)).subscribe(observe);
   }
 }
