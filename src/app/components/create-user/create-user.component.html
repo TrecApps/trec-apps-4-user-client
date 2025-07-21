@@ -14,17 +14,18 @@
             </div>
 
         </div> -->
-        <div *ngIf="displayService.isMobile" style="width: 100%; background-color:khaki;">
-            <h4 style="margin-top: 20px;">Create TrecAccount</h4>
-        </div>
-        <div id="messageJumbo" [ngStyle]="{'background': loginGradient }" class="jumbotron">
+
+        <div id="messageJumbo" [ngStyle]="{'background': loginGradient }" class="jumbotron desktop-message-jumbo">
             <h2 [style.color]=color5 style="float:left"> Create Trec Account</h2> 
-            <div *ngIf="!displayService.isMobile" id="logoContainer" class="containGlobal">
+            <div id="logoContainer" class="containGlobal">
                 <img class="LoginImage fadeInRight" src="assets/icons/outline.png">
                 <div class="clearfix"></div>
                 <img (click)="moveToLogin()" class="LoginImage-ref-2 fadeInLeftRef" id="Globe1" src="assets/icons/world-1.png">
                 <img id="Globe2" class="LoginImage-ref fadeInRightRef" src="../../../assets/icons/glob-2.png">
             </div>
+        </div>
+        <div class="mobile-message-jumbo" style="width: 100%; background-color:khaki;">
+            <h4 style="margin-top: 20px;">Create Trec Account</h4>
         </div>
 
         <h4 *ngIf="updateFail" color="red">Failed To Update</h4>

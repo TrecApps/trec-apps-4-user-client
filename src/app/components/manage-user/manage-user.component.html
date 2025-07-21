@@ -1,20 +1,22 @@
 <app-nav></app-nav>
 
-<div class="container scrollable-child uShadow" style="position: relative;">
+<div class="container element-container" [ngClass]="'element-container-' + ss.style" style="position: relative;">
     <!-- <button class="btn btn-info" (click)="routeToSubscriptions()"  *ngIf="userService.verificationStatus == 1">Subscriptions</button>
     <button class="btn btn-info" (click)="routeToBrands()"  *ngIf="userService.verificationStatus == 1">Brands</button> -->
 
     <div *ngIf="userService.currentUser" class="form">
 
-        <div class="sShadow" *ngIf="userService.currentUser.emailVerified">
-            <div *ngIf="userService.verificationStatus == 1">
+        <div class="element-item " [ngClass]="'element-item-' + ss.style">
+
+        <div *ngIf="userService.currentUser.emailVerified">
+            <div *ngIf="userService.verificationStatus == 1" class="grid-and-center">
                 <div class="profileContainer">
                     <img class="profilePic" [src]="userService.profilePic">
                 </div>
                 <button class="btn btn-info" (click)="onShowGallery(true)">Update Profile Pic</button>
 
                 <!--Has the User been fully verified by TrecApps staff?-->
-                <h2 >UserVerified</h2>
+                <h2 style="text-align: center;">UserVerified</h2>
 
             </div>
 
@@ -35,7 +37,7 @@
                 <button class="btn btn-submit" (click)="uploadVerfiyPic()" *ngIf="selectedVerfiyFile && selectedVerifyFileType">Upload Verify Pic</button><br>
             </div> -->
         </div>
-        <div class="sShadow" *ngIf="!userService.currentUser.emailVerified" class="textBackground">
+        <div *ngIf="!userService.currentUser.emailVerified" class="textBackground">
             <p>Welcome to TrecApps. To begin using our services in earnest, we need to ensure you are who you say you are.</p>
             <p>The process is short and is as follows:</p>
             <ol>
@@ -53,60 +55,79 @@
             </ul>
         </div>
 
+        </div>
+
+
+
         <br>
 
-        <div class="sShadow">
+        <!-- <div class="sShadow"> -->
             <h2>User Details</h2>
-            <div class="mb-3">
-                <label class="form-label">User ID: </label>
-                <input class="form-control" type="text" [(ngModel)]="userService.currentUser.id" readonly>
+
+            <div class="element-item" [ngClass]="'element-item-' + ss.style">
+                <div class="mb-3">
+                    <label class="form-label">User ID: </label>
+                    <input class="form-control" type="text" [(ngModel)]="userService.currentUser.id" readonly>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Username: </label>
+                    <input class="form-control" type="text" [(ngModel)]="userService.currentUser.userProfile" readonly>
+                </div>               
             </div>
-            
-            <div class="mb-3">
-                <label class="form-label">Username: </label>
-                <input class="form-control" type="text" [(ngModel)]="userService.currentUser.userProfile" readonly>
-            </div>
+
             <!-- <label>Country Code: +</label>
             <input type="number"  -->
-            <div class="mb-3">
-                <label class="form-label">Mobile Phone: (Right now, US +1 is assumed, as it is the only one currently supported)</label>
-                <input class="form-control" type="number" *ngIf="userService.currentUser.proposedNumber" [(ngModel)]="userService.currentUser.proposedNumber.number" >
-                <!-- <button *ngIf="!userService?.currentUser?.phoneVerified" (click)="attemptPhoneVerification()" class="btn btn-info">Verify Phone</button> -->
-                 <p class="text-danger">Phone Verification is Currently disabled!</p>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Email: </label>
-                <input class="form-control" type="email" [(ngModel)]="userService.currentUser.proposedEmail"> 
-                <button *ngIf="!userService.currentUser.isEmailVerified()" (click)="attemptEmailVerification()" class="btn btn-info">Verify Email</button>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Birthday:</label>
-                <input class="form-control" type="date" [(ngModel)]="userService.currentUser.birthday" readonly>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Birthday Privacy: {{ currentBirthdayDetail }}</label>
-                <select class="form-select" [(ngModel)]="currentBirthdayDetail">
-                    <option *ngFor="let birthOpt of birthdayDetails" [value]="birthOpt.setting">{{birthOpt.details}}</option>
-                </select>
+
+            <div class="element-item" [ngClass]="'element-item-' + ss.style">
+                <div class="mb-3">
+                    <label class="form-label">Mobile Phone: (Right now, US +1 is assumed, as it is the only one currently supported)</label>
+                    <input class="form-control" type="number" *ngIf="userService.currentUser.proposedNumber" [(ngModel)]="userService.currentUser.proposedNumber.number" >
+                    <!-- <button *ngIf="!userService?.currentUser?.phoneVerified" (click)="attemptPhoneVerification()" class="btn btn-info">Verify Phone</button> -->
+                    <p class="text-danger">Phone Verification is Currently disabled!</p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email: </label>
+                    <input class="form-control" type="email" [(ngModel)]="userService.currentUser.proposedEmail"> 
+                    <button *ngIf="!userService.currentUser.isEmailVerified()" (click)="attemptEmailVerification()" class="btn btn-info">Verify Email</button>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">Account Restrictions: </label>
-                <input class="form-control" type="text" [(ngModel)]="userService.currentUser.restrictions" readonly>
+            <div class="element-item" [ngClass]="'element-item-' + ss.style">
+                <div class="mb-3">
+                    <label class="form-label">Birthday:</label>
+                    <input class="form-control" type="date" [(ngModel)]="userService.currentUser.birthday" readonly>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Birthday Privacy: {{ currentBirthdayDetail }}</label>
+                    <select class="form-select" [(ngModel)]="currentBirthdayDetail">
+                        <option *ngFor="let birthOpt of birthdayDetails" [value]="birthOpt.setting">{{birthOpt.details}}</option>
+                    </select>
+                </div>
+
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">Credibility Rating: </label>
-                <input class="form-control" type="number" [(ngModel)]="userService.currentUser.credibilityRating" readonly>
+            <div class="element-item" [ngClass]="'element-item-' + ss.style">
+                <div class="mb-3">
+                    <label class="form-label">Account Restrictions: </label>
+                    <input class="form-control" type="text" [(ngModel)]="userService.currentUser.restrictions" readonly>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Credibility Rating: </label>
+                    <input class="form-control" type="number" [(ngModel)]="userService.currentUser.credibilityRating" readonly>
+                </div>
+
             </div>
+
             <hr>
             
             <div class="mb-3">
-                <button class="btn btn-submit fButton" (click)="updateUser()">Update Details</button>
-                <button class="btn btn-submit fButton">Go to Brand Menu</button><!--  -->
+                <button class="btn btn-primary fButton" (click)="updateUser()">Update Details</button>
+                <button class="btn btn-secondary fButton">Go to Brand Menu</button><!--  -->
             </div>
 
-            <button class="btn btn-submit fButton" (click)="setChangePassword(true)">Change Password Menu</button>
+            <button class="btn btn-info fButton" (click)="setChangePassword(true)">Change Password Menu</button>
             <br>
 
             <div *ngIf="changePassword" class="mb-3">
@@ -125,8 +146,8 @@
             </div>
             <hr>
 
-            <button *ngIf="changePassword" class="btn btn-submit fButton" (click)="updatePassword()" >Update Password</button>
-        </div>
+            <button *ngIf="changePassword" class="btn btn-primary fButton" (click)="updatePassword()" >Update Password</button>
+        <!-- </div> -->
 
         <br>
         

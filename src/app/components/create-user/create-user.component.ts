@@ -5,7 +5,7 @@ import { GlobalConstants } from '../../common/GlobalConstants';
 import { UserPost, PasswordProfile } from '../../models/User';
 import { UserService } from '../../services/user.service';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DisplayService } from '@tc/tc-ngx-general';
+import { DisplayService, StylesService } from '@tc/tc-ngx-general';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
@@ -40,14 +40,15 @@ export class CreateUserComponent {
   gardiantTwo = 'linear-gradient(45deg, white 50%, gray 80%, black 20%)'
   showTerms = "none"
   displayingSubscribe: boolean = false
-  displayService: DisplayService;
+  //displayService: DisplayService;
 
   showSpinner: boolean = false;
 
   createForm: FormGroup;
+  ss: StylesService;
 
-  constructor(private userService:UserService, private router: Router, private datePipe: DatePipe, private fb: FormBuilder, ds: DisplayService) {
-    this.displayService = ds; 
+  constructor(private userService:UserService, private router: Router, private datePipe: DatePipe, private fb: FormBuilder, ss: StylesService) {
+    this.ss = ss; 
 
     this.birthday = undefined
     this.user = new UserPost();

@@ -341,7 +341,7 @@ img {
           align-items: center;
           margin-right: 60%;
         }
-.container {
+/* .container {
     padding: 10px;
     border-radius: 20px;
     
@@ -352,7 +352,7 @@ img {
   top: 50%;
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-}
+} */
 
 .form{
     margin:auto;
@@ -485,3 +485,16 @@ mat-progress-spinner {
     transform: translate(-50%, -50%);
     z-index: 3;
 }
+
+ @media (min-width:768px) {
+    .mobile-message-jumbo {
+        display:none;
+    }
+ }
+
+ @media (max-width: 767px) {
+    .desktop-message-jumbo {
+        display: none;
+        /* height: 180px; */
+    }
+ }

@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { AuthService, 
-  ImageGalleryComponent, ImageInsert, ImageSelectionPurpose, ImageService } from '@tc/tc-ngx-general';
+  ImageGalleryComponent, ImageInsert, ImageSelectionPurpose, ImageService, 
+  StylesService} from '@tc/tc-ngx-general';
 import { BooleanRef } from '../../models/Holders';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
@@ -50,6 +51,8 @@ export class ManageUserComponent {
   @ViewChild("imgGallery")
   imgGallery: ImageGalleryV2Component | undefined;
 
+  ss: StylesService;
+
 
   onShowGallery(show: boolean) {
     if(!this.imgGallery) return;
@@ -71,7 +74,11 @@ export class ManageUserComponent {
   constructor(userService: UserService,
     private router: Router,
     private authService: AuthService,
-    private imageService: ImageService) { 
+    private imageService: ImageService,
+    ss: StylesService
+  ) { 
+
+    this.ss = ss;
 
    this.userService = userService;
 

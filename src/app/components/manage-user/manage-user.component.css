@@ -21,6 +21,15 @@
 	justify-content: center;
 }
 
+.grid-and-center {
+		margin: 5;
+	display: grid;
+    flex-wrap: wrap;
+	height: min-content;
+	justify-content: center;
+	gap: 5px;;
+}
+
 .formEle {
 	margin-left: 30px;
 	margin-right: 30px;
@@ -54,4 +63,8 @@
 	
 	
 	vertical-align: middle;
+}
+
+.element-item {
+	padding: 5px;
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Address, AddressList, AuthService } from '@tc/tc-ngx-general';
+import { Address, AddressList, AuthService, StylesService } from '@tc/tc-ngx-general';
 import { AddressService } from '../../services/address.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -23,17 +23,11 @@ export class AddressComponent {
 
   addressList: AddressList | undefined;
 
-  constructor(private addressService: AddressService ,authService: AuthService, router:Router) {
+  ss: StylesService;
 
-    // let tempAddress = new Address();
-    // tempAddress.address1 = "1700 W 76th St.";
-    // tempAddress.address2 = "Apt 1B";
-    // tempAddress.country = "US";
-    // tempAddress.postCode = "55423";
-    // tempAddress.region = "MN";
-    // tempAddress.township = "Richfield";
+  constructor(private addressService: AddressService, ss: StylesService, authService: AuthService, router:Router) {
 
-    // this.addressResults.push(tempAddress);
+    this.ss = ss;
 
     this.showSearchBar = false;
 

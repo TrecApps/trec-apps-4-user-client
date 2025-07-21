@@ -22,9 +22,9 @@
 
     </div>
 
-    <div *ngIf="addressList">
+    <div *ngIf="addressList" class="element-container" [ngClass]="'element-container-' + ss.style">
 
-        <div *ngFor="let a of addressList.addressList; let i = index" class="address-element">
+        <div *ngFor="let a of addressList.addressList; let i = index" class="element-item" [ngClass]="'element-item-' + ss.style" style="padding: 5px;">
 
             <div class="div-row row-text-holder">
                 <p *ngIf="addressList.billingAddress == i" class="tc-text-white">Billing Address</p>

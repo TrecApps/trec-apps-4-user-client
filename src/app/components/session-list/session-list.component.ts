@@ -4,10 +4,11 @@ import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { DisplayService, AuthService, StylesService, SortedList } from '@tc/tc-ngx-general';
 import { CommonModule } from '@angular/common';
+import { NavComponent } from '../nav/nav.component';
 
 @Component({
   selector: 'app-session-list',
-  imports: [CommonModule],
+  imports: [CommonModule,NavComponent],
   templateUrl: './session-list.component.html',
   styleUrl: './session-list.component.css'
 })
