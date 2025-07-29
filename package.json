@@ -20,8 +20,10 @@
     "@angular/platform-browser": "^19.2.9",
     "@angular/platform-browser-dynamic": "^19.2.9",
     "@angular/router": "^19.2.9",
+    "@stripe/stripe-js": "^7.7.0",
+    "@tc/tc-ngx-general": "^0.3.34",
+    "ngx-stripe": "^19.7.0",
     "rxjs": "~7.8.0",
-    "@tc/tc-ngx-general": "^0.3.29",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
