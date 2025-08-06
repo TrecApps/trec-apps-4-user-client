@@ -14,7 +14,7 @@ export const routes: Routes = [
     {path: 'create', component: CreateUserComponent},
     {path: 'user', component: ManageUserComponent},
     {path: 'brands', component: BrandsComponent},
-    {path: 'subscriptions', component: SubscriptionComponent},
+   // {path: 'subscriptions', component: SubscriptionComponent},
     {path: 'sessions', component: SessionListComponent},
     {path: 'mfa', component: MfaComponent},
     {path: 'address',component: AddressComponent},
