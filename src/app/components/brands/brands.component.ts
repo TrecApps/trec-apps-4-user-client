@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NavComponent } from '../nav/nav.component';
 import { AuthService, ElementContainerDirective, ElementItemDirective, ImageGalleryV2Component, ImageSelectionPurpose, PopupComponent, ResponseObj, TcBrand } from '@tc/tc-ngx-general';
 import { NavigationEnd, Router } from '@angular/router';
@@ -32,6 +32,9 @@ export class BrandsComponent {
 
     @ViewChild("imgGalleryBrand")
     imgGallery!: ImageGalleryV2Component;
+
+    @ViewChild("makeDedCheck")
+    makeDedCheck!: ElementRef<HTMLInputElement>
 
     imageError(event: Event){
         const target = event.target as HTMLImageElement;
@@ -70,6 +73,8 @@ export class BrandsComponent {
 
         this.showGallery = true;
 
+        this.imgGallery.onOpen();
+
     }
 
 
@@ -106,7 +111,12 @@ export class BrandsComponent {
     prepNewDialog(ded: boolean) {
         this.makeDedicated = this.dedicatedBrand ? false : ded;
 
+        
+
         this.showNewDialog = true;
+        setTimeout(() => {
+            this.makeDedCheck.nativeElement.checked = this.makeDedicated;
+        }, 100);
     }
 
     updateDedicatedField(event: any){
@@ -124,6 +134,7 @@ export class BrandsComponent {
                 let newAccount = new TcBrand();
                 newAccount.id = value.id?.toString();
                 newAccount.name = this.newName;
+                this.aus.ownedAccounts.push(newAccount);
                 if(this.makeDedicated && !this.dedicatedBrand){
                     this.dedicatedBrand = newAccount;
                 }

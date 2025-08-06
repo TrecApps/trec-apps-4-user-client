@@ -6,14 +6,15 @@
         <div class="brand-container">
             <div class="brand-profile-side">
                 <div class="brand-profile-holder">
-                    <img [src]="baseUrlImage + 'Images/profile/Brand-' + dedicatedBrand?.id" (error)="imageError($event)">
-                    <button class="btn btn-primary" style="margin-top: 10px;" (click)="prepareBrandProfile(dedicatedBrand)"></button>
+                    <img [src]="baseUrlImage + 'Images/profile/Brand-' + dedicatedBrand.id" (error)="imageError($event)">
+                    
                 </div>
+                <button class="btn btn-primary" style="margin-top: 10px;" (click)="prepareBrandProfile(dedicatedBrand)">Set Profile Pic</button>
             </div>
             <div class="brand-details-side">
                 <div *ngIf="editingBrandId != dedicatedBrand?.id">
                     <p><b>Name: </b>{{ dedicatedBrand.name }}</p>
-                    <button class="btn btn-primary" (click)="editingBrandId = dedicatedBrand?.id; editingBrandName = dedicatedBrand.name || ''">Edit Name</button>
+                    <button class="btn btn-primary" (click)="editingBrandId = dedicatedBrand.id; editingBrandName = dedicatedBrand.name || ''">Edit Name</button>
                 </div>
 
                 <div *ngIf="editingBrandId && editingBrandId == dedicatedBrand?.id" class="form-group">
@@ -27,19 +28,20 @@
         </div>
     </div>
 
-    <button class="btn btn-warning" >Create Dedicated Brand Account</button>
-    <button class="btn btn-primary" >Create Brand Account</button>
+    <button class="btn btn-warning" (click)="prepNewDialog(true)" *ngIf="!dedicatedBrand">Create Dedicated Brand Account</button>
+    <button class="btn btn-primary" (click)="prepNewDialog(false)">Create Brand Account</button>
 
     <hr>
 
     <div appElementItem *ngFor="let brand of aus.ownedAccounts">
-<div class="brand-container">
+<div class="brand-container" *ngIf="brand.id != dedicatedBrand?.id">
             <div class="brand-profile-side">
                 <div class="brand-profile-holder">
                     <img [src]="baseUrlImage + 'Images/profile/Brand-' + brand.id" (error)="imageError($event)">
-                    <button class="btn btn-primary" style="margin-top: 10px;" (click)="prepareBrandProfile(brand)"></button>
                 </div>
+                <button class="btn btn-primary" style="margin-top: 10px;" (click)="prepareBrandProfile(brand)">Set Profile Pic</button>
             </div>
+            <div class="vertical-stick"></div>
             <div class="brand-details-side">
                 <div *ngIf="editingBrandId != brand?.id">
                     <p><b>Name: </b>{{ brand.name }}</p>
@@ -68,7 +70,7 @@
     [mbLimit]="4"
 ></app-image-gallery-v2>
 
-<app-popup (onClose)="showNewDialog = false;">
+<app-popup *ngIf="showNewDialog" (onClose)="showNewDialog = false;">
     <div appElementContainer class="form">
         <div appElementItem class="form-group">
             <label for="newBrandName" class="form-label">Name</label>
@@ -76,7 +78,7 @@
         </div>
         <div class="form-group" appElementItem>
             <label class="form-check-label">Make Dedicated</label>
-            <input type="checkbox" class="form-check-input" (change)="updateDedicatedField($event)" [disabled]="dedicatedBrand">
+            <input #makeDedCheck type="checkbox" class="form-check-input" (change)="updateDedicatedField($event)" [disabled]="dedicatedBrand" [value]="makeDedicated">
             <p class="text-danger" *ngIf="dedicatedBrand">You Already have a dedicated Brand Account</p>
         </div>
         <button class="btn btn-primary" (click)="submitNewBrandAccount()" [disabled]="makingNewAccount">Create Brand Account</button>
