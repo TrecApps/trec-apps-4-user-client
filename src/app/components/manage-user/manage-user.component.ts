@@ -53,6 +53,11 @@ export class ManageUserComponent {
 
   ss: StylesService;
 
+  imageError(event: Event){
+    const target = event.target as HTMLImageElement;
+    target.src = '/assets/Unknown_Profile.png'
+  }
+
 
   onShowGallery(show: boolean) {
     if(!this.imgGallery) return;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject, LOCALE_ID, ViewChild } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { UserSubscriptionList, UserSubscription } from '../../models/Subscription';
@@ -9,8 +9,19 @@ import { PaymentMethod, PayMethodService } from '../../services/pay-method.servi
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BankAccountType, CardInfoSubmission, SubscriptionPost, TcSubscription, UsBankInfo } from '../../models/Payments';
-import { AddressList, AuthService } from '@tc/tc-ngx-general';
+import { Address, AddressList, AuthService, PopupComponent, StylesService } from '@tc/tc-ngx-general';
 import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
+
+import {
+  injectStripe,
+  StripeElementsDirective,
+  StripePaymentElementComponent
+} from 'ngx-stripe';
+import {
+  StripeElementsOptions, 
+  StripePaymentElementOptions
+} from '@stripe/stripe-js';
+import { environment } from '../../Environment/environment';
 
 
 class PaymentMethodHolder {
@@ -35,7 +46,8 @@ class PaymentMethodHolder {
 
 @Component({
     selector: 'app-subscription',
-    imports: [NavComponent, CommonModule, FormsModule],
+    imports: [NavComponent, CommonModule, FormsModule, StripeElementsDirective,
+  StripePaymentElementComponent, PopupComponent],
     templateUrl: './subscription.component.html',
     styleUrl: './subscription.component.css',
     standalone: true,
@@ -55,6 +67,29 @@ class PaymentMethodHolder {
     ]
 })
 export class SubscriptionComponent {
+  pay() {
+    this.stripe
+      .confirmPayment({
+        elements: this.paymentElement.elements,
+        confirmParams: {
+          payment_method_data: {
+            billing_details: {
+              name: this.name as string,
+              email: this.email as string,
+              address: {
+                line1: this.address as string,
+                postal_code: this.zipcode as string,
+                city: this.city as string
+              }
+            }
+          }
+        },
+        redirect: 'if_required'
+      })
+  }
+
+  @ViewChild(StripePaymentElementComponent)
+  paymentElement!: StripePaymentElementComponent;
 
 
   subList: UserSubscription[] = [];
@@ -63,27 +98,60 @@ export class SubscriptionComponent {
 
   userList: UserSubscriptionList | undefined;
 
-  
-
-  paymentMethods: PaymentMethodHolder[] = [];
-
-  newUsAccount: UsBankInfo | undefined;
-  newCard: CardInfoSubmission | undefined;
-
-
-  // Mask Fields
-  routeNum = "";
-  accountNum1 = "";
-
-  checkingValue = BankAccountType.CHECKING;
-  savingsValue = BankAccountType.SAVINGS;
-
-  cardNumber = "";
-  cardNumberError = false;
-  cardCvc = "";
-  cardCvcError = false;
+  stripe = injectStripe(environment.STRIPE_PUBLIC_KEY);
 
   currentYear = new Date().getFullYear();
+
+  showPayment: boolean = false;
+
+
+  elementsOptions: StripeElementsOptions = {};
+
+  ss: StylesService;
+
+  authService: AuthService;
+
+  prepPayment(key: string){
+
+    let user = this.authService.tcUser;
+    if(!user || !user.verifiedEmail) return;
+    this.elementsOptions = {
+      clientSecret: key
+
+    }
+
+    this.name = user.displayName || "";
+    this.email = user.verifiedEmail;
+
+    if(user.addressList.billingAddress != -1) {
+      let useAddress: Address = user.addressList.addressList[user.addressList.billingAddress];
+      this.address = useAddress.address1 + " " + useAddress.address2;
+      this.zipcode = useAddress.postCode;
+      this.city = useAddress.township;
+    } else {
+      this.address = "";
+      this.zipcode = "";
+      this.city = "";
+    }
+
+
+    
+  }
+
+  paymentElementOptions: StripePaymentElementOptions = {
+    layout: {
+      type: 'tabs',
+      defaultCollapsed: false,
+      radios: false,
+      spacedAccordionItems: false
+    }
+  };
+
+  name: string = "";
+  email: string = "";
+  address: string = "";
+  zipcode: string = "";
+  city: string = "";
 
 
   // Mask Field Methods
@@ -98,59 +166,6 @@ export class SubscriptionComponent {
   }
 
 
-  switchRoutingNum(focusing: boolean){
-    if(!this.newUsAccount) return;
-    if(focusing){
-      this.routeNum = this.newUsAccount.routingNumber;
-    } else {
-      this.newUsAccount.routingNumber = this.routeNum;
-      this.routeNum = this.getMask(this.routeNum);
-    }
-  }
-
-  switchAccountNum(focusing: boolean){
-    if(!this.newUsAccount) return;
-    if(focusing){
-      this.accountNum1 = this.newUsAccount.accountNumber;
-    } else {
-      this.newUsAccount.accountNumber = this.accountNum1;
-      this.accountNum1 = this.getMask(this.accountNum1);
-    }
-  }
-  
-  switchCardNum(focusing: boolean) {
-    if(!this.newCard) return;
-    if(focusing){
-      this.cardNumber = this.newCard.number;
-    } else {
-
-      let numStr = this.cardNumber.trim().replace(" ", "");
-      this.cardNumberError = Number.isNaN(parseInt(numStr));
-      if(this.cardNumberError) return;
-
-      this.newCard.number = numStr;
-      this.cardNumber = this.getMask(this.cardNumber);
-    }
-  }
-
-  switchCvc(focusing: boolean) {
-    if(!this.newCard) return;
-    if(focusing){
-      this.cardCvc = this.newCard.cvc.toString();
-    } else {
-      let numStr = this.cardCvc.trim().replace(" ", "");
-      let num = parseInt(numStr);
-      this.cardCvcError = Number.isNaN(num);
-      if(this.cardCvcError) return;
-
-      this.newCard.cvc = num;
-      let temp = "";
-      for(let i = 0; i < this.cardCvc.length; i++)
-        temp += "•"
-      this.cardCvc = temp;
-    }
-  }
-
 
 
 
@@ -162,7 +177,16 @@ export class SubscriptionComponent {
   showActiveSubscriptions: boolean = false;
   showAvailableSubscriptions: boolean = false;
 
-  constructor(private subscriptionService: SubscriptionService, private authService: AuthService, private paymentService: PayMethodService, private router: Router) {
+  constructor(
+    private subscriptionService: SubscriptionService, 
+    authService: AuthService, 
+    private paymentService: PayMethodService, 
+    private router: Router,
+    ss: StylesService,
+    @Inject(LOCALE_ID) private locale: string
+  ) {
+    this.authService = authService;
+    this.ss = ss;
     this.subListChanged = false;
     router.events.subscribe((event) => {
       if(event instanceof NavigationEnd){
@@ -180,9 +204,7 @@ export class SubscriptionComponent {
 
 
           if(this.addressList.billingAddress < 0) return;
-          this.paymentService.getPaymentMethods().subscribe({
-            next: (pm: PaymentMethod[]) => this.paymentMethods = pm.map(pm => new PaymentMethodHolder(pm))
-          })
+          
 
           this.subscriptionService.getActiveSubscriptions(new SubscriptionsSearchObject()).subscribe({
             next: (us: UserSubscription[]) => this.subList = us
@@ -198,89 +220,6 @@ export class SubscriptionComponent {
   ngOnInit(): void {
   }
 
-  prepUsBankAccount() {
-    if(this.backupPaymentMethod && this.backupPaymentMethod instanceof UsBankInfo){
-      this.newUsAccount = this.backupPaymentMethod;
-    } else {
-      this.newUsAccount = new UsBankInfo();
-    }
-
-    if(this.newCard) {
-      this.backupPaymentMethod = this.newCard;
-    }
-
-    this.newCard = undefined;
-  }
-
-  prepCardAccount(){
-    if(this.backupPaymentMethod && this.backupPaymentMethod instanceof CardInfoSubmission){
-      this.newCard = this.backupPaymentMethod;
-    } else {
-      this.newCard = new CardInfoSubmission();
-    }
-
-    if(this.newUsAccount) {
-      this.backupPaymentMethod = this.newUsAccount;
-    }
-
-    this.newUsAccount = undefined;
-  }
-
-  postUsBank(){
-    if(!this.newUsAccount) return;
-    this.paymentService.postUsBank(this.newUsAccount).subscribe({
-      next:(value: ResponseObj) => {
-        alert("Successfully Added!");
-        if(this.newUsAccount){
-          this.newUsAccount.payId = value.id?.toString() || "";
-          this.paymentMethods.push(new PaymentMethodHolder(this.newUsAccount))
-          this.newUsAccount = undefined;
-        }
-      },
-      error: (e: ResponseObj) => {
-        alert(e.message);
-      }
-    })
-  }
-
-  postCard(){
-    if(!this.newCard) return;
-    this.paymentService.postCard(this.newCard).subscribe({
-      next:(value: ResponseObj) => {
-        alert("Successfully Added!");
-        if(this.newCard){
-          this.newCard.payId = value.id?.toString() || "";
-          this.paymentMethods.push(new PaymentMethodHolder(this.newCard))
-          this.newCard = undefined;
-        }
-      },
-      error: (e: ResponseObj) => {
-        alert(e.message);
-      }
-    })
-  }
-
-  cancelUsBankSubmission(){
-    this.backupPaymentMethod = this.newUsAccount;
-    this.newUsAccount = undefined;
-  }
-
-  cancelCardSubmission(){
-    this.backupPaymentMethod = this.newCard;
-    this.newCard = undefined;
-  }
-
-  removePaymentMethod(paymentMethodId: string) {
-    this.paymentService.removePaymentMethod(paymentMethodId).subscribe({
-      next: (ro: ResponseObj)=> {
-        alert(ro.message);
-        this.paymentMethods = this.paymentMethods.filter(pm => pm.getId() != paymentMethodId);
-      },
-      error: (ro: ResponseObj) => {
-        alert(ro.message);
-      }
-    });
-  }
 
   setDefault(paymentMethodId: string) {
     this.paymentService.setDefault(paymentMethodId).subscribe({

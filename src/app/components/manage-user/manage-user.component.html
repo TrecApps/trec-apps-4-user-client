@@ -11,7 +11,7 @@
         <div *ngIf="userService.currentUser.emailVerified">
             <div *ngIf="userService.verificationStatus == 1" class="grid-and-center">
                 <div class="profileContainer">
-                    <img class="profilePic" [src]="userService.profilePic">
+                    <img class="profilePic" [src]="userService.profilePic" (error)="imageError($event)">
                 </div>
                 <button class="btn btn-info" (click)="onShowGallery(true)">Update Profile Pic</button>
 

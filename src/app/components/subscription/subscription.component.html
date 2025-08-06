@@ -1,56 +1,16 @@
 <app-nav></app-nav>
 
-<div class="container">
-    
-    <h2 *ngIf="addressList.billingAddress >= 0" (click)="showPaymentMethods = !showPaymentMethods">
-        <img [@rotate]="showPaymentMethods ? 'expanded' : 'collapse'" id="exp1" class="expand_icon expand_i_reg" src="assets/Less_than.png">
-        Payment Methods*
-    </h2>
-
-    <div>
-        <p>* Payment Methods are managed by Stripe, Inc. TrecApps is not storing this information on our systems.</p>
-        <h4 class="text-danger" style="background-color: yellow;">Note: This is a test Envrionment. Fake numbers are highly recommended</h4>
-        <div *ngIf="addressList.billingAddress >= 0" class="div-row">
-            <button (click)="prepCardAccount()" class="btn btn-primary" [disabled]="newCard">New Card</button>
-            <button (click)="prepUsBankAccount()" class="btn btn-primary" [disabled]="newUsAccount">New Us Bank Account</button>
-        </div>
-    
-        <h4 style="background-color: yellow;" *ngIf="addressList.billingAddress < 0">You need to <a routerLink="/address">set a billing address</a> before adding a payment method.</h4>
-    
-        <div [@translate]="showPaymentMethods ? 'expanded': 'collapse'">
-            <div *ngFor="let paymentMethod of paymentMethods">
-                <div class="div-row">
-                    <button (click)="removePaymentMethod(paymentMethod.getId())" class="btn btn-danger">Remove Payment Method</button>
-                    <button (click)="setDefault(paymentMethod.getId())" class="btn btn-primary">Set as Default Method</button>
-                </div>
-    
-                <div *ngIf="paymentMethod.card">
-                    <p *ngIf="paymentMethod.card.name.trim().length"><b>Name: </b>{{ paymentMethod.card.name }}</p>
-                    <p>Number: xxxx-xxxx-xxxx-{{paymentMethod.card.number}}</p>
-                    <p>Exp: {{paymentMethod.card.expMonth}}/{{paymentMethod.card.expYear}}</p>
-                </div>
-
-                <div *ngIf="paymentMethod.usBank">
-                    <p *ngIf="paymentMethod.usBank.name.trim().length"><b>Name: </b>{{ paymentMethod.usBank.name }}</p>
-                    <p><b>Routing Number: </b>{{ paymentMethod.usBank.routingNumber }}</p>
-                    <p><b>Account Number: </b>{{ paymentMethod.usBank.accountNumber }}</p>
-                    <p><b>Type: </b>{{ paymentMethod.usBank.accountType.toString() == "CHECKING" ? 'Checking' : 'Savings' }} | 
-                        {{paymentMethod.usBank.isIndividual ? 'Individial' : 'Business' }}</p>
-                </div>
-    
-            </div>
-        </div>
-    </div>
+<div class="container" *ngIf="authService.tcUser?.verifiedEmail">
 
     <div class="subscription-parent">
-        <div>
+        <div class="element-container" [ngClass]="'element-container-' + ss.style">
             <h2 *ngIf="addressList.billingAddress < 0" (click)="showActiveSubscriptions = !showActiveSubscriptions">
                 <img [@rotate]="showActiveSubscriptions ? 'expanded' : 'collapse'" id="exp1" class="expand_icon expand_i_reg" src="assets/Less_than.png">
                 Your Subscriptions
             </h2>
 
             <div [@translate]="showActiveSubscriptions ? 'expanded': 'collapse'">
-                <div *ngFor="let us of subList">
+                <div *ngFor="let us of subList" class="element-item" [ngClass]="'element-item-' + ss.style">
                     <div class="div-row">
                         <button class="btn btn-danger" (click)="removeSubscription(us.id)">Cancel</button>
                         <select *ngIf="us.subscriptionDetails?.subscriptionLevels?.length">
@@ -107,76 +67,38 @@
         </div>
     </div>
 
-    <form class="over-form" *ngIf="newUsAccount">
-        <label>New US Bank Acccount</label>
-        <div class="mb-3">
-            <label class="form-label">Name</label>
-            <input [ngModelOptions]="{standalone: true}" class="form-control" type="text" [(ngModel)]="newUsAccount.name">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Routing Number</label>
-            <h4 class="text-warning" style="background-color: aliceblue;">For Testing, use '110000000'</h4>
-            <input [ngModelOptions]="{standalone: true}" class="form-control" type="text" [(ngModel)]="routeNum" (focus)="switchRoutingNum(true)" (blur)="switchRoutingNum(false)">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Account Number</label>
-            <h4 class="text-warning" style="background-color: aliceblue;">For Testing, use '000123456789'</h4>
-            <input [ngModelOptions]="{standalone: true}" class="form-control" type="text" [(ngModel)]="accountNum1" (focus)="switchAccountNum(true)" (blur)="switchAccountNum(false)">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Individual vs Company</label>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" id="radioInd" [checked]="newUsAccount.isIndividual" (click)="newUsAccount.isIndividual = true">
-                <label class="form-check-label" for="radioInd">Individual</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" id="radioCom" [checked]="!newUsAccount.isIndividual" (click)="newUsAccount.isIndividual = false">
-                <label class="form-check-label" for="radioInd">Company</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Account Type</label>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" id="radioCheck" [checked]="newUsAccount.accountType == checkingValue" (click)="newUsAccount.accountType = checkingValue">
-                <label class="form-check-label" for="radioInd">Checking</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" id="radioCom" [checked]="newUsAccount.accountType == savingsValue" (click)="newUsAccount.accountType = savingsValue">
-                <label class="form-check-label" for="radioInd">Savings</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <button class="btn btn-primary" (click)="postUsBank()">Submit</button>
-            <button class="btn btn-danger" (click)="cancelUsBankSubmission()">Cancel</button>
-        </div>
-        
-    </form>
-
-    <form class="over-form" *ngIf="newCard">
-        <h4 class="text-danger" style="background-color: yellow;">Note: Right now, submitting this will fail!</h4>
-        <label>New Card</label>
-        <div class="mb-3">
-            <label class="form-label">Name</label>
-            <input [ngModelOptions]="{standalone: true}" class="form-control" type="text" [(ngModel)]="newCard.name">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Card Number</label>
-            <input [ngModelOptions]="{standalone: true}" class="form-control" type="text" [(ngModel)]="cardNumber" (focus)="switchCardNum(true)" (blur)="switchCardNum(false)">
-            <p *ngIf="cardNumberError" class="text-danger">Invalid number detected</p>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">CVC (typically a 3-4 digit number)</label>
-            <input [ngModelOptions]="{standalone: true}" class="form-control" type="text" [(ngModel)]="cardCvc" (focus)="switchCvc(true)" (blur)="switchCvc(false)">
-            <p *ngIf="cardCvcError" class="text-danger">Invalid number detected</p>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Expiration Date</label>
-            <input [ngModelOptions]="{standalone: true}" class="form-control" type="number" min="1" max="12" placeholder="MM" [(ngModel)]="newCard.expMonth">
-            <input [ngModelOptions]="{standalone: true}" class="form-control" type="number" [min]="currentYear" [max]="currentYear + 10" placeholder="YYYY" [(ngModel)]="newCard.expYear">
-        </div>
-        <div class="mb-3">
-            <button class="btn btn-primary" (click)="postCard()">Submit</button>
-            <button class="btn btn-danger" (click)="cancelCardSubmission()">Cancel</button>
-        </div>
-    </form>
+    
 </div>
+
+<app-popup *ngIf="showPayment">
+
+    <div class="form element-container" [ngClass]="'element-container-' + ss.style">
+        <div class="element-item" [ngClass]="'element-item-' + ss.style">
+
+            <div class="form-group">
+                <label class="form-label">Name</label>
+                <input class="form-control" [(ngModel)]="name">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Address</label>
+                <input class="form-control" [(ngModel)]="address">
+            </div>
+            <div class="form-group">
+                <label class="form-label">City</label>
+                <input class="form-control" [(ngModel)]="city">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Zip code</label>
+                <input class="form-control" [(ngModel)]="zipcode">
+            </div>
+        </div>
+    </div>
+
+    <ngx-stripe-elements
+      [stripe]="stripe"
+      [elementsOptions]="elementsOptions"
+    >
+      <ngx-stripe-payment [options]="paymentElementOptions" />
+    </ngx-stripe-elements>
+    <button (click)="pay()">Submit Payment</button>
+</app-popup>

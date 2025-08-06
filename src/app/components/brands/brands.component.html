@@ -1,1 +1,84 @@
-<p>brands works!</p>
+<app-nav></app-nav>
+
+<div class="container" appElementContainer>
+
+    <div appElementItem *ngIf="dedicatedBrand && dedicatedBrand.id">
+        <div class="brand-container">
+            <div class="brand-profile-side">
+                <div class="brand-profile-holder">
+                    <img [src]="baseUrlImage + 'Images/profile/Brand-' + dedicatedBrand?.id" (error)="imageError($event)">
+                    <button class="btn btn-primary" style="margin-top: 10px;" (click)="prepareBrandProfile(dedicatedBrand)"></button>
+                </div>
+            </div>
+            <div class="brand-details-side">
+                <div *ngIf="editingBrandId != dedicatedBrand?.id">
+                    <p><b>Name: </b>{{ dedicatedBrand.name }}</p>
+                    <button class="btn btn-primary" (click)="editingBrandId = dedicatedBrand?.id; editingBrandName = dedicatedBrand.name || ''">Edit Name</button>
+                </div>
+
+                <div *ngIf="editingBrandId && editingBrandId == dedicatedBrand?.id" class="form-group">
+                    <label class="form-label">Name</label>
+                    <input class="form-control" [(ngModel)]="editingBrandName">
+                    <button class="btn btn-primary" (click)="saveName(dedicatedBrand)" [disabled]="updatingName">Save Name</button>
+                    
+                    <button class="btn btn-danger" (click)="editingBrandId = ''">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-warning" >Create Dedicated Brand Account</button>
+    <button class="btn btn-primary" >Create Brand Account</button>
+
+    <hr>
+
+    <div appElementItem *ngFor="let brand of aus.ownedAccounts">
+<div class="brand-container">
+            <div class="brand-profile-side">
+                <div class="brand-profile-holder">
+                    <img [src]="baseUrlImage + 'Images/profile/Brand-' + brand.id" (error)="imageError($event)">
+                    <button class="btn btn-primary" style="margin-top: 10px;" (click)="prepareBrandProfile(brand)"></button>
+                </div>
+            </div>
+            <div class="brand-details-side">
+                <div *ngIf="editingBrandId != brand?.id">
+                    <p><b>Name: </b>{{ brand.name }}</p>
+                    <button class="btn btn-primary" (click)="editingBrandId = brand?.id; editingBrandName = brand.name || ''">Edit Name</button>
+                </div>
+
+                <div *ngIf="editingBrandId && editingBrandId == brand?.id" class="form-group">
+                    <label class="form-label">Name</label>
+                    <input class="form-control" [(ngModel)]="editingBrandName">
+                    <button class="btn btn-primary" (click)="saveName(brand)" [disabled]="updatingName">Save Name</button>
+                    
+                    <button class="btn btn-danger" (click)="editingBrandId = ''">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<app-image-gallery-v2 
+    #imgGalleryBrand
+    [baseUrl]="baseUrlImage" 
+    [show]="showGallery" 
+    (onClose)="showGallery = false" 
+    [purpose]="imagePurpose"
+    [mbLimit]="4"
+></app-image-gallery-v2>
+
+<app-popup (onClose)="showNewDialog = false;">
+    <div appElementContainer class="form">
+        <div appElementItem class="form-group">
+            <label for="newBrandName" class="form-label">Name</label>
+            <input id="newBrandName" class="form-control" [(ngModel)]="newName">
+        </div>
+        <div class="form-group" appElementItem>
+            <label class="form-check-label">Make Dedicated</label>
+            <input type="checkbox" class="form-check-input" (change)="updateDedicatedField($event)" [disabled]="dedicatedBrand">
+            <p class="text-danger" *ngIf="dedicatedBrand">You Already have a dedicated Brand Account</p>
+        </div>
+        <button class="btn btn-primary" (click)="submitNewBrandAccount()" [disabled]="makingNewAccount">Create Brand Account</button>
+    </div>
+</app-popup>
