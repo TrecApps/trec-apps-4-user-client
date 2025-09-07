@@ -1,50 +1,70 @@
 <app-nav></app-nav>
 
 <div class="container">
-    <div class="div-row">
-        <button class="btn btn-primary" *ngIf="!showSearchBar" (click)="showSearchBar = true">Search Address</button>
-        <input type="text" *ngIf="showSearchBar" [(ngModel)]="searchAddressText" class="form-control" placeholder="search address" (input)="attemptSearch()">
-        <button class="btn btn-dark" *ngIf="addressResults.length" (click)="addressResults = []">Clear List</button>
-    </div>
-    <div class="div-row" style="height: 30px; position: relative;">
+  <div class="div-row">
+    @if (!showSearchBar) {
+      <button class="btn btn-primary" (click)="showSearchBar = true">Search Address</button>
+    }
+    @if (showSearchBar) {
+      <input type="text" [(ngModel)]="searchAddressText" class="form-control" placeholder="search address" (input)="attemptSearch()">
+    }
+    @if (addressResults.length) {
+      <button class="btn btn-dark" (click)="addressResults = []">Clear List</button>
+    }
+  </div>
+  <div class="div-row" style="height: 30px; position: relative;">
 
-        <div *ngIf="addressResults.length" class="address-result-list">
-            <h3 >Add Address?</h3>
-
-            <div class="address-result" *ngFor="let a of addressResults" (click)="postAddress(a)">
-                <h4><u>Country: {{ a.country }}</u></h4>
-                <p>{{ a.address1 }}</p>
-                <p *ngIf="a.address2">{{ a.address2 }}</p>
-                <p>{{a.township}}, {{ a.region }} {{ a.postCode }}</p>
-            </div>
-        </div>
-        
-
-    </div>
-
-    <div *ngIf="addressList" class="element-container" [ngClass]="'element-container-' + ss.style">
-
-        <div *ngFor="let a of addressList.addressList; let i = index" class="element-item" [ngClass]="'element-item-' + ss.style" style="padding: 5px;">
-
-            <div class="div-row row-text-holder">
-                <p *ngIf="addressList.billingAddress == i" class="tc-text-white">Billing Address</p>
-                <p *ngIf="addressList.mailingAddress == i" class="tc-text-white">mailing Address</p>
-
-            </div>
-
-            <h6>Country: {{ a.country }}</h6>
+    @if (addressResults.length) {
+      <div class="address-result-list">
+        <h3 >Add Address?</h3>
+        @for (a of addressResults; track a) {
+          <div class="address-result" (click)="postAddress(a)">
+            <h4><u>Country: {{ a.country }}</u></h4>
             <p>{{ a.address1 }}</p>
-            <p *ngIf="a.address2">{{ a.address2 }}</p>
+            @if (a.address2) {
+              <p>{{ a.address2 }}</p>
+            }
             <p>{{a.township}}, {{ a.region }} {{ a.postCode }}</p>
+          </div>
+        }
+      </div>
+    }
 
-            <div class="div-row">
-                <button *ngIf="addressList.billingAddress != i" class="btn btn-info" (click)="updateAddress(i, false)">Set as Billing Address</button>
-                <button *ngIf="addressList.mailingAddress != i" class="btn btn-info" (click)="updateAddress(i, true)">Set as Mailing Address</button>
-                <button *ngIf="addressList.billingAddress != i" class="btn btn-danger" (click)="removeAddress(i)">Remove Address</button>
-            </div>
+
+  </div>
+
+  @if (addressList) {
+    <div class="element-container" [ngClass]="'element-container-' + ss.style">
+      @for (a of addressList.addressList; track a; let i = $index) {
+        <div class="element-item" [ngClass]="'element-item-' + ss.style" style="padding: 5px;">
+          <div class="div-row row-text-holder">
+            @if (addressList.billingAddress == i) {
+              <p class="tc-text-white">Billing Address</p>
+            }
+            @if (addressList.mailingAddress == i) {
+              <p class="tc-text-white">mailing Address</p>
+            }
+          </div>
+          <h6>Country: {{ a.country }}</h6>
+          <p>{{ a.address1 }}</p>
+          @if (a.address2) {
+            <p>{{ a.address2 }}</p>
+          }
+          <p>{{a.township}}, {{ a.region }} {{ a.postCode }}</p>
+          <div class="div-row">
+            @if (addressList.billingAddress != i) {
+              <button class="btn btn-info" (click)="updateAddress(i, false)">Set as Billing Address</button>
+            }
+            @if (addressList.mailingAddress != i) {
+              <button class="btn btn-info" (click)="updateAddress(i, true)">Set as Mailing Address</button>
+            }
+            @if (addressList.billingAddress != i) {
+              <button class="btn btn-danger" (click)="removeAddress(i)">Remove Address</button>
+            }
+          </div>
         </div>
-
-
+      }
     </div>
-    
+  }
+
 </div>

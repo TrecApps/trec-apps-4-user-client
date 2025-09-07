@@ -1,104 +1,119 @@
 <app-nav></app-nav>
 
-<div class="container" *ngIf="authService.tcUser?.verifiedEmail">
-
+@if (authService.tcUser?.verifiedEmail) {
+  <div class="container">
     <div class="subscription-parent">
-        <div class="element-container" [ngClass]="'element-container-' + ss.style">
-            <h2 *ngIf="addressList.billingAddress < 0" (click)="showActiveSubscriptions = !showActiveSubscriptions">
-                <img [@rotate]="showActiveSubscriptions ? 'expanded' : 'collapse'" id="exp1" class="expand_icon expand_i_reg" src="assets/Less_than.png">
-                Your Subscriptions
-            </h2>
-
-            <div [@translate]="showActiveSubscriptions ? 'expanded': 'collapse'">
-                <div *ngFor="let us of subList" class="element-item" [ngClass]="'element-item-' + ss.style">
-                    <div class="div-row">
-                        <button class="btn btn-danger" (click)="removeSubscription(us.id)">Cancel</button>
-                        <select *ngIf="us.subscriptionDetails?.subscriptionLevels?.length">
-                            <option *ngFor="let optLevel of us.subscriptionDetails?.subscriptionLevels" [value]="optLevel.level">{{ "Level " + optLevel.level }}</option>
-                        </select>
-                        <button class="btn btn-primary" (click)="updateSubscription(us)" *ngIf="us.level != us.subscriptionDesiredLevel">Set to Level {{ us.subscriptionDesiredLevel }}</button>
-                    </div>
-                    <p *ngIf="us.subscriptionDetails"><b>Name: </b>{{us.subscriptionDetails.name}}</p>
-                    <p><b>Level: </b>{{ us.level}}</p>
-                    <p><b>Price: </b> {{ us.price }}</p>
-
-                    <div [@translate]="us.showDetails ? 'expanded' : 'collapse'">
-                        <div *ngFor="let activeSub of availableList">
-                            <p><b>Name: </b>{{ activeSub.name }}</p>
-                            <p><b>Description: </b>{{ activeSub.desc }}</p>
-                            <p><b>Category: </b>{{ activeSub.category }}</p>
-                            <div *ngFor="let level of activeSub.subscriptionLevels">
-                                <p><b>Level: </b>{{level.level}}</p>
-                                <p><b>Level Description: </b> {{ level.description }}</p>
-                                <p><b>Price: </b> {{ level.currentPrice }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div>
-            <h2 *ngIf="addressList.billingAddress < 0" (click)="showAvailableSubscriptions = !showAvailableSubscriptions">
-                <img [@rotate]="showAvailableSubscriptions ? 'expanded' : 'collapse'" id="exp1" class="expand_icon expand_i_reg" src="assets/Less_than.png">
-                Available Subscriptions
-            </h2>
-
-            <div [@translate]="showAvailableSubscriptions ? 'expanded': 'collapse'">
-
-                
-
-                <div *ngFor="let activeSub of availableList">
-
-                    <div *ngIf="!hasSubscription(activeSub.id)" class="div-row">
-                        <button *ngFor="let level of activeSub.subscriptionLevels" class="btn btn-primary" (click)="beginSubscription(activeSub.id, level.level)">Subscribe at Level {{ level.level }}</button>
-                    </div>
-
+      <div class="element-container" [ngClass]="'element-container-' + ss.style">
+        @if (addressList.billingAddress < 0) {
+          <h2 (click)="showActiveSubscriptions = !showActiveSubscriptions">
+            <img [@rotate]="showActiveSubscriptions ? 'expanded' : 'collapse'" id="exp1" class="expand_icon expand_i_reg" src="assets/Less_than.png">
+            Your Subscriptions
+          </h2>
+        }
+        <div [@translate]="showActiveSubscriptions ? 'expanded': 'collapse'">
+          @for (us of subList; track us) {
+            <div class="element-item" [ngClass]="'element-item-' + ss.style">
+              <div class="div-row">
+                <button class="btn btn-danger" (click)="removeSubscription(us.id)">Cancel</button>
+                @if (us.subscriptionDetails?.subscriptionLevels?.length) {
+                  <select>
+                    @for (optLevel of us.subscriptionDetails?.subscriptionLevels; track optLevel) {
+                      <option [value]="optLevel.level">{{ "Level " + optLevel.level }}</option>
+                    }
+                  </select>
+                }
+                @if (us.level != us.subscriptionDesiredLevel) {
+                  <button class="btn btn-primary" (click)="updateSubscription(us)">Set to Level {{ us.subscriptionDesiredLevel }}</button>
+                }
+              </div>
+              @if (us.subscriptionDetails) {
+                <p><b>Name: </b>{{us.subscriptionDetails.name}}</p>
+              }
+              <p><b>Level: </b>{{ us.level}}</p>
+              <p><b>Price: </b> {{ us.price }}</p>
+              <div [@translate]="us.showDetails ? 'expanded' : 'collapse'">
+                @for (activeSub of availableList; track activeSub) {
+                  <div>
                     <p><b>Name: </b>{{ activeSub.name }}</p>
                     <p><b>Description: </b>{{ activeSub.desc }}</p>
                     <p><b>Category: </b>{{ activeSub.category }}</p>
-                    <div *ngFor="let level of activeSub.subscriptionLevels">
+                    @for (level of activeSub.subscriptionLevels; track level) {
+                      <div>
                         <p><b>Level: </b>{{level.level}}</p>
                         <p><b>Level Description: </b> {{ level.description }}</p>
                         <p><b>Price: </b> {{ level.currentPrice }}</p>
-                    </div>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+      <div>
+        @if (addressList.billingAddress < 0) {
+          <h2 (click)="showAvailableSubscriptions = !showAvailableSubscriptions">
+            <img [@rotate]="showAvailableSubscriptions ? 'expanded' : 'collapse'" id="exp1" class="expand_icon expand_i_reg" src="assets/Less_than.png">
+            Available Subscriptions
+          </h2>
+        }
+        <div [@translate]="showAvailableSubscriptions ? 'expanded': 'collapse'">
+          @for (activeSub of availableList; track activeSub) {
+            <div>
+              @if (!hasSubscription(activeSub.id)) {
+                <div class="div-row">
+                  @for (level of activeSub.subscriptionLevels; track level) {
+                    <button class="btn btn-primary" (click)="beginSubscription(activeSub.id, level.level)">Subscribe at Level {{ level.level }}</button>
+                  }
                 </div>
+              }
+              <p><b>Name: </b>{{ activeSub.name }}</p>
+              <p><b>Description: </b>{{ activeSub.desc }}</p>
+              <p><b>Category: </b>{{ activeSub.category }}</p>
+              @for (level of activeSub.subscriptionLevels; track level) {
+                <div>
+                  <p><b>Level: </b>{{level.level}}</p>
+                  <p><b>Level Description: </b> {{ level.description }}</p>
+                  <p><b>Price: </b> {{ level.currentPrice }}</p>
+                </div>
+              }
             </div>
+          }
         </div>
+      </div>
     </div>
+  </div>
+}
 
-    
-</div>
-
-<app-popup *ngIf="showPayment">
-
+@if (showPayment) {
+  <app-popup>
     <div class="form element-container" [ngClass]="'element-container-' + ss.style">
-        <div class="element-item" [ngClass]="'element-item-' + ss.style">
-
-            <div class="form-group">
-                <label class="form-label">Name</label>
-                <input class="form-control" [(ngModel)]="name">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Address</label>
-                <input class="form-control" [(ngModel)]="address">
-            </div>
-            <div class="form-group">
-                <label class="form-label">City</label>
-                <input class="form-control" [(ngModel)]="city">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Zip code</label>
-                <input class="form-control" [(ngModel)]="zipcode">
-            </div>
+      <div class="element-item" [ngClass]="'element-item-' + ss.style">
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <input class="form-control" [(ngModel)]="name">
         </div>
+        <div class="form-group">
+          <label class="form-label">Address</label>
+          <input class="form-control" [(ngModel)]="address">
+        </div>
+        <div class="form-group">
+          <label class="form-label">City</label>
+          <input class="form-control" [(ngModel)]="city">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Zip code</label>
+          <input class="form-control" [(ngModel)]="zipcode">
+        </div>
+      </div>
     </div>
-
     <ngx-stripe-elements
       [stripe]="stripe"
       [elementsOptions]="elementsOptions"
-    >
+      >
       <ngx-stripe-payment [options]="paymentElementOptions" />
     </ngx-stripe-elements>
     <button (click)="pay()">Submit Payment</button>
-</app-popup>
+  </app-popup>
+}
