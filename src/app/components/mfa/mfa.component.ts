@@ -6,7 +6,7 @@ import { MfaMechanism, MfaReq, TcUser } from '@tc/tc-ngx-general';
 import { UserService } from '../../services/user.service';
 
 import { MfaRegistrationData } from '../../models/Mfa';
-import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
+import { ResponseObj } from '@tc/tc-ngx-general';
 import { FormsModule } from '@angular/forms';
 
 interface MfaReqExt {

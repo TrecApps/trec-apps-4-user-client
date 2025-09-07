@@ -5,7 +5,7 @@ import { TcUser, MfaReq } from '@tc/tc-ngx-general';
 import { environment } from '../Environment/environment';
 import { Observable } from 'rxjs';
 import { MfaRegistrationData } from '../models/Mfa';
-import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
+import { ResponseObj } from '@tc/tc-ngx-general';
 
 @Injectable({
   providedIn: 'root'

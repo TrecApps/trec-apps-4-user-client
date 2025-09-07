@@ -4,7 +4,7 @@ import { Address, AddressList, AuthService, StylesService } from '@tc/tc-ngx-gen
 import { AddressService } from '../../services/address.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
+import { ResponseObj } from '@tc/tc-ngx-general';
 import { NavComponent } from '../nav/nav.component';
 
 @Component({

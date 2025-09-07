@@ -6,7 +6,7 @@ import { AuthService, HttpContentType } from '@tc/tc-ngx-general';
 import { environment } from '../Environment/environment';
 import { UserSubscription, UserSubscriptionList } from '../models/Subscription';
 import { SubscriptionPost, TcSubscription } from '../models/Payments';
-import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
+import { ResponseObj } from '@tc/tc-ngx-general';
 
 export class SubscriptionsSearchObject {
   category: string | undefined;

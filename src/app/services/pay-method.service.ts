@@ -3,7 +3,7 @@ import { CardInfoSubmission, UsBankInfo } from '../models/Payments';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { AuthService, HttpContentType } from '@tc/tc-ngx-general';
 import { Observable } from 'rxjs';
-import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
+import { ResponseObj } from '@tc/tc-ngx-general';
 import { environment } from '../Environment/environment';
 
 export type PaymentMethod = UsBankInfo | CardInfoSubmission; 
