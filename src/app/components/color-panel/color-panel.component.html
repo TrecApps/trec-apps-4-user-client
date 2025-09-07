@@ -1,8 +1,9 @@
 <div class="color-panel">
+  @for (color of colors; track color) {
     <div
-        *ngFor="let color of colors" 
-        class="color-button"
-        [ngStyle]="{'background-color': color.colorStyle}"
-        (click)="onColorSelect.emit(color.styleName)"
+      class="color-button"
+      [ngStyle]="{'background-color': color.colorStyle}"
+      (click)="onColorSelect.emit(color.styleName)"
     ></div>
+  }
 </div>

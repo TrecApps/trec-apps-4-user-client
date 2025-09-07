@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Address, AuthService, HttpContentType } from '@tc/tc-ngx-general';
 import { environment } from '../Environment/environment';
-import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
+import { ResponseObj } from '@tc/tc-ngx-general';
 
 @Injectable({
   providedIn: 'root'

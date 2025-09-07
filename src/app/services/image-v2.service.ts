@@ -1,7 +1,7 @@
 // import { HttpClient, HttpParams } from '@angular/common/http';
 // import { Injectable } from '@angular/core';
 // import { AuthService, HttpContentType } from '@tc/tc-ngx-general';
-// import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
+// import { ResponseObj } from '@tc/tc-ngx-general';
 // import { environment } from '../Environment/environment';
 // import { Observable } from 'rxjs';
 

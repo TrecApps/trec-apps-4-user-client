@@ -6,7 +6,7 @@
 // import { CommonModule } from '@angular/common';
 // import { ImageAlbumFilterPipe } from '../../pipes/image-album-filter.pipe';
 // import { FormsModule, ValueChangeEvent } from '@angular/forms';
-// import { ResponseObj } from '@tc/tc-ngx-general/lib/models/ResponseObj';
+// import { ResponseObj } from '@tc/tc-ngx-general';
 // import { ImageVisibilityFilterPipe } from '../../pipes/image-visibility-filter.pipe';
 
 // interface ImageUploadModeOption {

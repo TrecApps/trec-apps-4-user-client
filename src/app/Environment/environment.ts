@@ -8,17 +8,16 @@ export const environment = {
   //user_service_url: 'https://trecappsusertest.azurewebsites.net/',
   
   
-  user_admin_url: 'https://test.trecapps.com/Admin-api/',
-  user_service_url: 'https://test.trecapps.com/User-api/',
-  user_subscription_url: 'https://test.trecapps.com/sub/',
-  image_service_url_2: "https://test.trecapps.com/Images-api/",
+  // user_admin_url: 'https://test.trecapps.com/Admin-api/',
+  // user_service_url: 'https://test.trecapps.com/User-api/',
+  // user_subscription_url: 'https://test.trecapps.com/sub/',
+  // image_service_url_2: "https://test.trecapps.com/Images-api/",
   // user_subscription_url: 'https://test.trecapps.com/Subscription-be/',
 
-  // user_subscription_url: 'http://localhost:4200/Subscription-be/',
-  // user_service_url: 'http://localhost:4200/User-api/',
-  // user_admin_url: 'http://localhost:4200/admin/',
-  // image_service_url: "http://localhost:4200/Images-api/",
-  // image_service_url_2: "http://localhost:4200/Images-api/",
+  user_subscription_url: 'http://localhost:4200/Subscription-be/',
+  user_service_url: 'http://localhost:4200/User-api/',
+  user_admin_url: 'http://localhost:4200/admin/',
+  image_service_url_2: "http://localhost:4200/Images-api/",
 
 
   STRIPE_PUBLIC_KEY: '',

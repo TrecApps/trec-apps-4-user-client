@@ -4,15 +4,13 @@ import { AuthService, ElementContainerDirective, ElementItemDirective, ImageGall
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { environment } from '../../Environment/environment';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { BrandsService } from '../../services/brands.service';
 
 @Component({
     selector: 'app-brands',
-    imports: [NavComponent, CommonModule, FormsModule,
-        ElementContainerDirective, ElementItemDirective,
-    ImageGalleryV2Component, PopupComponent],
+    imports: [NavComponent, FormsModule, ElementContainerDirective, ElementItemDirective, ImageGalleryV2Component, PopupComponent],
     templateUrl: './brands.component.html',
     styleUrl: './brands.component.css',
     standalone: true
