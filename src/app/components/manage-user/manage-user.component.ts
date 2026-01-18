@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { AuthService, 
-  ImageGalleryComponent, ImageInsert, ImageSelectionPurpose, ImageService, 
+import { AuthService,
+  ImageGalleryV2Component, ImageSelectionPurpose, ImageService, 
   StylesService} from '@tc/tc-ngx-general';
 import { BooleanRef } from '../../models/Holders';
 import { UserService } from '../../services/user.service';
@@ -9,7 +9,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavComponent } from '../nav/nav.component';
 import { PasswordChange } from '../../models/Login';
-import { ImageGalleryV2Component } from '@tc/tc-ngx-general';
 import { environment } from '../../Environment/environment';
 
 
@@ -68,13 +67,6 @@ export class ManageUserComponent {
 
   showGallery: boolean = false;
 
-  setProfilePic(ii: ImageInsert){
-    this.imageService.setProfile(ii.id, false, "Main").subscribe({
-      next: () => {
-        this.showGallery = false;
-      }
-    });
-  }
   
   constructor(userService: UserService,
     private router: Router,
